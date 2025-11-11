@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kids Quiz Adventure</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* General Styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f4f4f4;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      overflow: hidden;
+      color: #333;
+    }
+
+    .page {
+      display: none;
+      height: 100vh;
+      width: 100vw;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* Background for all pages */
+    .page-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('./imgs/bg.png');
+      background-size: cover;
+      background-position: center;
+      z-index: -1;
+    }
+
+    /* Holding Page */
+    #holding-page {
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .holding-content {
+      z-index: 2;
+      position: relative;
+      max-width: 800px;
+      padding: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .character-container {
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      width: 200px;
+      height: 300px;
+      z-index: 3;
+    }
+
+    .robot-character {
+      width: 100%;
+      height: 100%;
+      background-image: url('./imgs/charachter.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      animation: bounce 2s infinite alternate;
+    }
+
+    .speech-bubble {
+      position: absolute;
+      top: -80px;
+      right: 200px;
+      width: 250px;
+      height: 120px;
+      background-image: url('./imgs/bubble-speech.png');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: wiggle 3s infinite;
+    }
+
+    .speech-bubble p {
+      color: #fff; /* Changed from #333 to #fff */
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .holding-content h1 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .holding-content p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+    }
+
+    .lang-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .lang-buttons button {
+      background-color: white;
+      color: #1f2152;
+      font-weight: bold;
+      border: none;
+      padding: 15px 25px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 180px;
+    }
+
+    .lang-buttons button:hover {
+      background-color: #ef6622;
+      color: white;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .lang-buttons button:active {
+      transform: translateY(0);
+    }
+
+    .lang-buttons button.active {
+      background-color: #ef6622;
+      color: white;
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .start-btn-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .start-btn-container button {
+      background: linear-gradient(135deg, #ff9a3d, #ef6622);
+      color: white;
+      font-weight: bold;
+      border: none;
+      padding: 18px 30px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 160px;
+    }
+
+    .start-btn-container button:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.4);
+    }
+
+    .start-btn-container button:active {
+      transform: translateY(0) scale(1);
+    }
+
+    /* Animations */
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-20px); }
+    }
+
+    @keyframes wiggle {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(2deg); }
+      50% { transform: rotate(0deg); }
+      75% { transform: rotate(-2deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .floating-icon {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.7;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    /* Topics Page */
+    #topics-page {
+      color: white;
+    }
+
+    #topics-title {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .topics {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 800px;
+    }
+
+    .topics button {
+      padding: 25px 20px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      color: white;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.2rem;
+      font-weight: 600;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .topics button:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .topics button i {
+      font-size: 2rem;
+    }
+
+    /* Quiz Page */
+    #quiz-page {
+      position: relative;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .quiz-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background-size: cover;
+      background-position: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    .quiz-content {
+      position: relative;
+      z-index: 1;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 20px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(5px);
+    }
+
+    #quiz-title {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #ef6622;
+    }
+
+    #question-text {
+      font-size: 1.4rem;
+      margin-bottom: 30px;
+      line-height: 1.5;
+    }
+
+    #quiz-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    #quiz-container button {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 15px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #quiz-container button:hover {
+      background-color: rgba(239, 102, 34, 0.7);
+      transform: translateX(10px);
+    }
+
+    #quiz-container button.correct {
+      background-color: rgba(76, 175, 80, 0.8);
+      border-color: #4CAF50;
+    }
+
+    #quiz-container button.incorrect {
+      background-color: rgba(244, 67, 54, 0.8);
+      border-color: #F44336;
+    }
+
+    .option-letter {
+      background: rgba(255, 255, 255, 0.2);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .progress-container {
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      margin: 20px 0;
+      height: 10px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background-color: #ef6622;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+    }
+
+    /* Result Page */
+    #result-page {
+      color: #fff;
+    }
+
+    .result-content {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      max-width: 600px;
+    }
+
+    #result-message {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+    }
+
+    #score-display {
+      font-size: 5rem;
+      font-weight: bold;
+      margin: 20px 0;
+      color: #ef6622;
+      text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    #result-page button {
+      background: white;
+      color: #1f2152;
+      border: none;
+      padding: 15px 30px;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #result-page button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Animated Backgrounds */
+    @keyframes moveSymbols {
+      0% { background-position: 0 0; }
+      100% { background-position: 1000px 1000px; }
+    }
+
+    /* Topic Backgrounds */
+    .math-bg {
+      background-color: #1f2152;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 40%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 100px 100px;
+      animation: moveSymbols 20s linear infinite;
+    }
+
+    .science-bg {
+      background-color: #2c3e50;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 60% 10%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 120px 120px;
+      animation: moveSymbols 25s linear infinite;
+    }
+
+    .history-bg {
+      background-color: #8e44ad;
+      background-image: 
+        radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 70% 70%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 50% 90%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 150px 150px;
+      animation: moveSymbols 30s linear infinite;
+    }
+
+    .geography-bg {
+      background-color: #27ae60;
+      background-image: 
+        radial-gradient(circle at 10% 50%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+      background-size: 130px 130px;
+      animation: moveSymbols 22s linear infinite;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .topics {
+        grid-template-columns: 1fr;
+      }
+      
+      .lang-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .start-btn-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      .holding-content, .quiz-content, .result-content {
+        margin: 20px;
+        padding: 30px 20px;
+      }
+      
+      .holding-content h1, #topics-title, #result-message {
+        font-size: 1.8rem;
+      }
+      
+      .lang-buttons button, .start-btn-container button {
+        width: 100%;
+        max-width: 250px;
+      }
+      
+      .character-container {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 200px;
+        margin-bottom: 20px;
+      }
+      
+      .speech-bubble {
+        position: relative;
+        top: 0;
+        right: 0;
+        width: 200px;
+        margin: 0 auto 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background for all pages -->
+  <div class="page-bg"></div>
+
+  <!-- Holding Page -->
+  <div id="holding-page" class="page active">
+    <div class="character-container">
+      <div class="robot-character"></div>
+      <div class="speech-bubble">
+        <p>Are you ready to test your knowledge?</p>
+      </div>
+    </div>
+    
+    <div class="floating-icon" style="top: 10%; left: 10%; animation-delay: 0s;"><i class="fas fa-brain"></i></div>
+    <div class="floating-icon" style="top: 20%; right: 15%; animation-delay: 1s;"><i class="fas fa-lightbulb"></i></div>
+    <div class="floating-icon" style="bottom: 15%; left: 20%; animation-delay: 2s;"><i class="fas fa-question"></i></div>
+    <div class="floating-icon" style="bottom: 25%; right: 10%; animation-delay: 3s;"><i class="fas fa-star"></i></div>
+    
+    <div class="holding-content">
+      <h1 id="holding-title">Kids Quiz Adventure!</h1>
+      <p id="lang-prompt">Select your language:</p>
+      <div class="lang-buttons">
+        <button id="lang-en" onclick="setLanguage('en')" class="active">
+          <i class="fas fa-flag-usa"></i> English
+        </button>
+        <button id="lang-ru" onclick="setLanguage('ru')">
+          <i class="fas fa-flag"></i> Русский
+        </button>
+        <button id="lang-uz" onclick="setLanguage('uz')">
+          <i class="fas fa-flag"></i> O'zbek
+        </button>
+      </div>
+      <div class="start-btn-container">
+        <button onclick="goToTopics()">
+          <i class="fas fa-play"></i> <span id="start-btn">Start Adventure!</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topics Page -->
+  <div id="topics-page" class="page">
+    <h2 id="topics-title">Choose a Topic</h2>
+    <div class="topics">
+      <button onclick="startQuiz('math')">
+        <i class="fas fa-calculator"></i>
+        <span id="math-topic">Mathematics</span>
+      </button>
+      <button onclick="startQuiz('science')">
+        <i class="fas fa-flask"></i>
+        <span id="science-topic">Science</span>
+      </button>
+      <button onclick="startQuiz('history')">
+        <i class="fas fa-landmark"></i>
+        <span id="history-topic">History</span>
+      </button>
+      <button onclick="startQuiz('geography')">
+        <i class="fas fa-globe"></i>
+        <span id="geography-topic">Geography</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Quiz Page -->
+  <div id="quiz-page" class="page">
+    <div class="quiz-overlay" id="quiz-bg"></div>
+    <div class="quiz-content">
+      <h2 id="quiz-title"></h2>
+      <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <p id="question-text"></p>
+      <div id="quiz-container"></div>
+    </div>
+  </div>
+
+  <!-- Result Page -->
+  <div id="result-page" class="page">
+    <div class="result-content">
+      <h2 id="result-message">🎉 Congratulations!</h2>
+      <p id="result-text">You've completed the quiz!</p>
+      <div id="score-display">0/0</div>
+      <button onclick="goHome()"><i class="fas fa-home"></i> <span id="back-to-topics">Back to Topics</span></button>
+    </div>
+  </div>
+
+  <script>
+    let currentLang = "en";
+    let currentTopic = "";
+    let currentQuestion = 0;
+    let score = 0;
+    let shuffledQuestions = [];
+
+    const pages = {
+      holding: document.getElementById("holding-page"),
+      topics: document.getElementById("topics-page"),
+      quiz: document.getElementById("quiz-page"),
+      result: document.getElementById("result-page"),
+    };
+
+    const quizBg = document.getElementById("quiz-bg");
+    const progressBar = document.getElementById("progress-bar");
+    const questionText = document.getElementById("question-text");
+    const scoreDisplay = document.getElementById("score-display");
+    const resultText = document.getElementById("result-text");
+    const backToTopics = document.getElementById("back-to-topics");
+    const startBtn = document.getElementById("start-btn");
+
+    // All quiz questions organized by topic
+    const quizData = {
+      math: [
+        { q: "8 + 6 = ?", options: ["14", "13", "15"], correct: 0 },
+        { q: "9 - 4 = ?", options: ["6", "5", "4"], correct: 1 },
+        { q: "7 × 2 = ?", options: ["12", "14", "16"], correct: 1 },
+        { q: "18 ÷ 3 = ?", options: ["6", "5", "4"], correct: 0 },
+        { q: "Find the odd number:", options: ["24", "19", "10"], correct: 1 },
+        { q: "How many days are there in a week?", options: ["5", "6", "7"], correct: 2 },
+        { q: "What is the smallest two-digit number?", options: ["11", "10", "12"], correct: 1 },
+        { q: "4 + 9 = ?", options: ["13", "12", "14"], correct: 0 },
+        { q: "5 × 5 = ?", options: ["20", "30", "25"], correct: 2 },
+        { q: "2, 4, 6, 8, … What is the next number?", options: ["9", "10", "12"], correct: 1 }
+      ],
+      science: [
+        { q: "What does the Sun give us?", options: ["Heat and light", "Electricity", "Water"], correct: 0 },
+        { q: "Which one lives in water?", options: ["Bird", "Fish", "Cat"], correct: 1 },
+        { q: "Which animal can see well in the dark?", options: ["Cow", "Cat", "Rabbit"], correct: 1 },
+        { q: "Where do leaves grow?", options: ["On trees", "In the soil", "In winter"], correct: 0 },
+        { q: "During which season do people wear more clothes?", options: ["Spring", "Summer", "Winter"], correct: 2 },
+        { q: "Where do animals live?", options: ["In houses", "In forests, fields, and homes", "In cars"], correct: 1 },
+        { q: "What do flowers grow from?", options: ["Seeds", "Leaves", "Water"], correct: 0 },
+        { q: "Why do we need air?", options: ["For breathing", "For drinking", "For running"], correct: 0 },
+        { q: "In which season does it rain the most?", options: ["Spring", "Summer", "Winter"], correct: 0 },
+        { q: "What is the purpose of a tree's roots?", options: ["To produce leaves", "To attach to the soil and absorb nutrients", "To produce fruit"], correct: 1 }
+      ],
+      history: [
+        { q: "What was Amir Temur's motto?", options: ["Knowledge and power", "Justice and order", "Patience and courage"], correct: 1 },
+        { q: "How many languages did Beruni know?", options: ["2", "4", "More than 5"], correct: 2 },
+        { q: "What kind of works did Alisher Navoi write?", options: ["Scientific articles", "Ghazals and rubaiyat (poems and quatrains)", "Epics"], correct: 1 },
+        { q: "Where was Ibn Sina born?", options: ["Bukhara", "Termez", "Andijan"], correct: 0 },
+        { q: "How many years did it take to build Ulughbek's observatory?", options: ["1 year", "3 years", "5 years"], correct: 1 },
+        { q: "In which century did Al-Khwarizmi live?", options: ["9th century", "13th century", "15th century"], correct: 0 },
+        { q: "Where is Amir Temur's mausoleum located?", options: ["Bukhara", "Samarkand", "Tashkent"], correct: 1 },
+        { q: "In which city is the statue of Alisher Navoi located in the city centre?", options: ["Termez", "Namangan", "Tashkent"], correct: 2 },
+        { q: "From which city did Beruni come?", options: ["Khwarazm", "Bukhara", "Samarkand"], correct: 0 },
+        { q: "What did Ulughbek mainly study?", options: ["Music", "Astronomy", "Medicine"], correct: 1 }
+      ],
+      geography: [
+        { q: "How many regions does Uzbekistan have?", options: ["14", "12", "13"], correct: 1 },
+        { q: "Which river flows through Uzbekistan?", options: ["Nile", "Amu Darya", "Danube"], correct: 1 },
+        { q: "What is the national currency of Uzbekistan?", options: ["Soʻm", "Ruble", "Riyal"], correct: 0 },
+        { q: "Where is Uzbekistan located?", options: ["North America", "Central Asia", "South Africa"], correct: 1 },
+        { q: "In which city is the Kok Saroy Palace located?", options: ["Bukhara", "Tashkent", "Qarshi"], correct: 1 },
+        { q: "What is Andijan famous for?", options: ["Its sea", "Its gardens", "Its mountains"], correct: 1 },
+        { q: "How many verses does Uzbekistan's national anthem have?", options: ["3", "4", "5"], correct: 1 },
+        { q: "What is the official language of Uzbekistan?", options: ["Uzbek", "Persian", "Turkmen"], correct: 0 },
+        { q: "Where is the 'Hazrati Imam' complex located?", options: ["Tashkent", "Khiva", "Urgench"], correct: 0 },
+        { q: "In which city is 'Ichan Qal'a' located?", options: ["Samarkand", "Khiva", "Fergana"], correct: 1 }
+      ]
+    };
+
+    // Language translations
+    const translations = {
+      en: {
+        holdingTitle: "Kids Quiz Adventure!",
+        langPrompt: "Select your language:",
+        startBtn: "Start Adventure!",
+        topicsTitle: "Choose a Topic",
+        mathTopic: "Mathematics",
+        scienceTopic: "Science",
+        historyTopic: "History",
+        geographyTopic: "Geography",
+        resultText: "You've completed the quiz!",
+        backToTopics: "Back to Topics"
+      },
+      ru: {
+        holdingTitle: "Приключение с Викториной!",
+        langPrompt: "Выберите язык:",
+        startBtn: "Начать Приключение!",
+        topicsTitle: "Выберите тему",
+        mathTopic: "Математика",
+        scienceTopic: "Наука",
+        historyTopic: "История",
+        geographyTopic: "География",
+        resultText: "Вы завершили викторину!",
+        backToTopics: "Вернуться к темам"
+      },
+      uz: {
+        holdingTitle: "Bolalar Kviz Sarguzashti!",
+        langPrompt: "Tilni tanlang:",
+        startBtn: "Sarguzashtni Boshlash!",
+        topicsTitle: "Mavzuni tanlang",
+        mathTopic: "Matematika",
+        scienceTopic: "Fan",
+        historyTopic: "Tarix",
+        geographyTopic: "Geografiya",
+        resultText: "Siz viktorinani tugatdingiz!",
+        backToTopics: "Mavzularga qaytish"
+      }
+    };
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      
+      // Update active state of language buttons
+      document.getElementById('lang-en').classList.remove('active');
+      document.getElementById('lang-ru').classList.remove('active');
+      document.getElementById('lang-uz').classList.remove('active');
+      document.getElementById('lang-' + lang).classList.add('active');
+      
+      updateTexts();
+    }
+
+    function updateTexts() {
+      const t = translations[currentLang];
+      
+      // Update holding page
+      document.getElementById("holding-title").textContent = t.holdingTitle;
+      document.getElementById("lang-prompt").textContent = t.langPrompt;
+      startBtn.textContent = t.startBtn;
+      
+      // Update topics page
+      document.getElementById("topics-title").textContent = t.topicsTitle;
+      document.getElementById("math-topic").textContent = t.mathTopic;
+      document.getElementById("science-topic").textContent = t.scienceTopic;
+      document.getElementById("history-topic").textContent = t.historyTopic;
+      document.getElementById("geography-topic").textContent = t.geographyTopic;
+      
+      // Update result page
+      resultText.textContent = t.resultText;
+      backToTopics.textContent = t.backToTopics;
+    }
+
+    function goToTopics() {
+      pages.holding.classList.remove("active");
+      pages.topics.classList.add("active");
+    }
+
+    function startQuiz(topic) {
+      currentTopic = topic;
+      currentQuestion = 0;
+      score = 0;
+      
+      // Shuffle questions for random order
+      shuffledQuestions = [...quizData[topic]];
+      shuffleArray(shuffledQuestions);
+      
+      pages.topics.classList.remove("active");
+      pages.quiz.classList.add("active");
+
+      // Set dynamic background
+      quizBg.className = "quiz-overlay " + topic + "-bg";
+
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const quizContainer = document.getElementById("quiz-container");
+
+      if (currentQuestion >= shuffledQuestions.length) {
+        showResults();
+        return;
+      }
+
+      const question = shuffledQuestions[currentQuestion];
+      document.getElementById("quiz-title").textContent = `${translations[currentLang].topicsTitle} - ${currentQuestion + 1}/${shuffledQuestions.length}`;
+      questionText.textContent = question.q;
+      
+      // Update progress bar
+      const progress = ((currentQuestion) / shuffledQuestions.length) * 100;
+      progressBar.style.width = `${progress}%`;
+      
+      quizContainer.innerHTML = '';
+      
+      const optionLetters = ['A', 'B', 'C'];
+      
+      question.options.forEach((opt, index) => {
+        const button = document.createElement("button");
+        button.innerHTML = `
+          <span class="option-letter">${optionLetters[index]}</span>
+          <span>${opt}</span>
+        `;
+        button.onclick = () => checkAnswer(index);
+        quizContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selected) {
+      const correct = shuffledQuestions[currentQuestion].correct;
+      const buttons = document.querySelectorAll("#quiz-container button");
+      
+      // Disable all buttons
+      buttons.forEach(button => {
+        button.style.pointerEvents = "none";
+      });
+      
+      // Highlight correct and incorrect answers
+      if (selected === correct) {
+        buttons[selected].classList.add("correct");
+        score++;
+      } else {
+        buttons[selected].classList.add("incorrect");
+        buttons[correct].classList.add("correct");
+      }
+      
+      // Move to next question after a delay
+      setTimeout(() => {
+        currentQuestion++;
+        showQuestion();
+      }, 1500);
+    }
+
+    function showResults() {
+      pages.quiz.classList.remove("active");
+      pages.result.classList.add("active");
+      
+      scoreDisplay.textContent = `${score}/${shuffledQuestions.length}`;
+      
+      // Custom message based on score
+      let message = "";
+      const percentage = (score / shuffledQuestions.length) * 100;
+      
+      if (percentage >= 90) {
+        message = "🎉 Excellent! You're a genius!";
+      } else if (percentage >= 70) {
+        message = "👏 Great job! You know your stuff!";
+      } else if (percentage >= 50) {
+        message = "👍 Good effort! Keep learning!";
+      } else {
+        message = "💪 Keep practicing! You'll get better!";
+      }
+      
+      document.getElementById("result-message").textContent = message;
+    }
+
+    function goHome() {
+      pages.result.classList.remove("active");
+      pages.topics.classList.add("active");
+    }
+
+    // Utility function to shuffle array
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    // Initialize with English by default
+    updateTexts();
+  </script>
+</body>
+</html>
