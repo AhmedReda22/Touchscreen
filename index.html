@@ -61,7 +61,7 @@
       font-weight: 500;
       color: white;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-      max-width: 800px;
+      max-width: 1200px;
     }
 
     .character-speech-container {
@@ -97,16 +97,16 @@
     }
 
     .speech-bubble-container {
-      max-width: min(850px, 70vw);
+      width: 650PX;
       background-image: url('./imgs/2.png');
-      background-size: 150% 120%;
+      background-size: 130% 120%;
       background-repeat: no-repeat;
       background-position: center;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: clamp(80px, 15vw, 130px) clamp(30px, 8vw, 70px);
+      padding: clamp(80px, 15vw, 150px) clamp(30px, 8vw, 120px);
       z-index: 9;
       flex-shrink: 0;
       margin: 0 clamp(20px, 5vw, 40px);
@@ -115,7 +115,7 @@
     .speech-bubble-container p {
       color: #ffffff;
       font-weight: 600;
-      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      font-size: clamp(0.9rem, 2vw, 1.4rem);
       line-height: 1.5;
     }
 
@@ -254,10 +254,17 @@
       text-align: center;
     }
 
-    .home-button {
+    /* ========== زر العودة وزر الصفحة الرئيسية ========== */
+    .navigation-buttons {
       position: fixed;
       bottom: 1.5rem;
       left: 1.5rem;
+      display: flex;
+      gap: 1rem;
+      z-index: 10;
+    }
+
+    .home-button, .main-home-button {
       width: clamp(4rem, 8vw, 5rem);
       height: clamp(4rem, 8vw, 5rem);
       border-radius: 50%;
@@ -268,19 +275,18 @@
       justify-content: center;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       transition: all 0.2s ease;
-      z-index: 10;
       background: transparent;
       padding: 0;
     }
 
-    .home-button img {
+    .home-button img, .main-home-button img {
       width: 100%;
       height: 100%;
       object-fit: contain;
       border-radius: 50%;
     }
 
-    .home-button:hover {
+    .home-button:hover, .main-home-button:hover {
       transform: scale(1.1);
     }
 
@@ -558,9 +564,10 @@
         gap: 1rem;
       }
       
-      .home-button {
+      .navigation-buttons {
         bottom: 1rem;
         left: 1rem;
+        gap: 0.8rem;
       }
       
       .lang-buttons {
@@ -603,6 +610,11 @@
       
       .character-speech-container {
         height: 35vh;
+      }
+      
+      .navigation-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
       }
     }
 
@@ -722,9 +734,14 @@
       </div>
     </div>
 
-    <button class="home-button" aria-label="Home" id="home-btn">
-      <img src="./imgs/0.png" alt="Home">
-    </button>
+    <div class="navigation-buttons">
+      <button class="main-home-button" aria-label="Main Home" id="main-home-btn">
+        <img src="./imgs/home.png" alt="Main Home">
+      </button>
+      <button class="home-button" aria-label="Home" id="home-btn">
+        <img src="./imgs/0.png" alt="Home">
+      </button>
+    </div>
   </div>
 
   <!-- MATH QUESTIONS PAGE -->
@@ -762,9 +779,14 @@
       <button class="restart-button" id="math-restart-button">Try Again</button>
     </div>
 
-    <button class="home-button" aria-label="Home" id="math-home-btn">
-      <img src="./imgs/0.png" alt="Home">
-    </button>
+    <div class="navigation-buttons">
+      <button class="main-home-button" aria-label="Main Home" id="math-main-home-btn">
+        <img src="./imgs/home.png" alt="Main Home">
+      </button>
+      <button class="home-button" aria-label="Home" id="math-home-btn">
+        <img src="./imgs/0.png" alt="Home">
+      </button>
+    </div>
   </div>
 
   <!-- باقي الصفحات (Nature, Uzbekistan, Ancestors) ستتبع نفس النمط -->
@@ -803,9 +825,14 @@
       <button class="restart-button" id="nature-restart-button">Try Again</button>
     </div>
 
-    <button class="home-button" aria-label="Home" id="nature-home-btn">
-      <img src="./imgs/0.png" alt="Home">
-    </button>
+    <div class="navigation-buttons">
+      <button class="main-home-button" aria-label="Main Home" id="nature-main-home-btn">
+        <img src="./imgs/home.png" alt="Main Home">
+      </button>
+      <button class="home-button" aria-label="Home" id="nature-home-btn">
+        <img src="./imgs/0.png" alt="Home">
+      </button>
+    </div>
   </div>
 
   <!-- UZBEKISTAN QUESTIONS PAGE -->
@@ -843,9 +870,14 @@
       <button class="restart-button" id="uzbekistan-restart-button">Try Again</button>
     </div>
 
-    <button class="home-button" aria-label="Home" id="uzbekistan-home-btn">
-      <img src="./imgs/0.png" alt="Home">
-    </button>
+    <div class="navigation-buttons">
+      <button class="main-home-button" aria-label="Main Home" id="uzbekistan-main-home-btn">
+        <img src="./imgs/home.png" alt="Main Home">
+      </button>
+      <button class="home-button" aria-label="Home" id="uzbekistan-home-btn">
+        <img src="./imgs/0.png" alt="Home">
+      </button>
+    </div>
   </div>
 
   <!-- ANCESTORS QUESTIONS PAGE -->
@@ -883,9 +915,14 @@
       <button class="restart-button" id="ancestors-restart-button">Try Again</button>
     </div>
 
-    <button class="home-button" aria-label="Home" id="ancestors-home-btn">
-      <img src="./imgs/0.png" alt="Home">
-    </button>
+    <div class="navigation-buttons">
+      <button class="main-home-button" aria-label="Main Home" id="ancestors-main-home-btn">
+        <img src="./imgs/home.png" alt="Main Home">
+      </button>
+      <button class="home-button" aria-label="Home" id="ancestors-home-btn">
+        <img src="./imgs/0.png" alt="Home">
+      </button>
+    </div>
   </div>
 
   <script>
@@ -927,8 +964,15 @@
       }, 500);
     }
 
-    // زر الرجوع
+    // زر الرجوع إلى صفحة المعرفة
     document.getElementById('home-btn').addEventListener('click', () => {
+      document.getElementById('knowledge-page').style.display = 'none';
+      document.getElementById('holding-page').style.display = 'flex';
+      window.scrollTo(0, 0);
+    });
+
+    // زر العودة إلى الصفحة الرئيسية الأولى
+    document.getElementById('main-home-btn').addEventListener('click', () => {
       document.getElementById('knowledge-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
       window.scrollTo(0, 0);
@@ -941,9 +985,21 @@
       window.scrollTo(0, 0);
     });
 
+    document.getElementById('math-main-home-btn').addEventListener('click', () => {
+      document.getElementById('math-questions-page').style.display = 'none';
+      document.getElementById('holding-page').style.display = 'flex';
+      window.scrollTo(0, 0);
+    });
+
     document.getElementById('nature-home-btn').addEventListener('click', () => {
       document.getElementById('nature-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      window.scrollTo(0, 0);
+    });
+
+    document.getElementById('nature-main-home-btn').addEventListener('click', () => {
+      document.getElementById('nature-questions-page').style.display = 'none';
+      document.getElementById('holding-page').style.display = 'flex';
       window.scrollTo(0, 0);
     });
 
@@ -953,9 +1009,21 @@
       window.scrollTo(0, 0);
     });
 
+    document.getElementById('uzbekistan-main-home-btn').addEventListener('click', () => {
+      document.getElementById('uzbekistan-questions-page').style.display = 'none';
+      document.getElementById('holding-page').style.display = 'flex';
+      window.scrollTo(0, 0);
+    });
+
     document.getElementById('ancestors-home-btn').addEventListener('click', () => {
       document.getElementById('ancestors-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      window.scrollTo(0, 0);
+    });
+
+    document.getElementById('ancestors-main-home-btn').addEventListener('click', () => {
+      document.getElementById('ancestors-questions-page').style.display = 'none';
+      document.getElementById('holding-page').style.display = 'flex';
       window.scrollTo(0, 0);
     });
 
