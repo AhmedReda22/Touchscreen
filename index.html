@@ -1278,29 +1278,29 @@ window.addEventListener('load', () => {
 
     // ========== MATH FUNCTIONS ==========
     function loadMathQuestion() {
-      if (currentMathQuestionIndex >= mathQuestions.length) {
-        showMathResults();
-        return;
-      }
+  if (currentMathQuestionIndex >= mathQuestions.length) {
+    showMathResults();
+    return;
+  }
 
-      const question = mathQuestions[currentMathQuestionIndex];
-      document.getElementById('math-question-text').textContent = question.question;
-      
-      const progress = ((currentMathQuestionIndex + 1) / mathQuestions.length) * 100;
-      document.getElementById('math-progress-bar').style.width = `${progress}%`;
-      
-      const optionsContainer = document.getElementById('math-options-container');
-      optionsContainer.innerHTML = "";
-      
-      question.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.className = 'option-button';
-        button.textContent = option;
-        adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
-        button.addEventListener('click', () => checkMathAnswer(index));
-        optionsContainer.appendChild(button);
-      });
-    }
+  const question = mathQuestions[currentMathQuestionIndex];
+  document.getElementById('math-question-text').textContent = question.question;
+  
+  const progress = ((currentMathQuestionIndex + 1) / mathQuestions.length) * 100;
+  document.getElementById('math-progress-bar').style.width = `${progress}%`;
+  
+  const optionsContainer = document.getElementById('math-options-container');
+  optionsContainer.innerHTML = "";
+  
+  question.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.className = 'option-button';
+    button.innerHTML = option; // تغيير إلى innerHTML
+    adjustFontSize(button);
+    button.addEventListener('click', () => checkMathAnswer(index));
+    optionsContainer.appendChild(button);
+  });
+}
 
     function checkMathAnswer(selectedIndex) {
       const question = mathQuestions[currentMathQuestionIndex];
@@ -1323,6 +1323,21 @@ window.addEventListener('load', () => {
         loadMathQuestion();
       }, 1500);
     }
+
+    // زر العودة من صفحة الرياضيات إلى صفحة المعرفة
+document.getElementById('math-home-btn').addEventListener('click', () => {
+  document.getElementById('math-questions-page').style.display = 'none';
+  document.getElementById('knowledge-page').style.display = 'flex';
+  resetMathQuiz();
+});
+
+// دالة لإعادة تعيين اختبار الرياضيات
+function resetMathQuiz() {
+  currentMathQuestionIndex = 0;
+  mathScore = 0;
+  document.getElementById('math-result-container').style.display = 'none';
+  document.getElementById('math-progress-bar').style.width = '0%';
+}
 
     function showMathResults() {
       document.getElementById('math-question-text').textContent = "You've completed the math quiz!";
