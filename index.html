@@ -346,18 +346,26 @@
       100% { transform: scale(1); }
     }
 
-    .character-speech-container.quiz {
-  display: flex;
-  align-items: center;
-  justify-content: center; 
-  height: 20vh;
-  margin: 0 auto;
-  flex-shrink: 0;
-  width: 100%;
-  max-width: 1200px; 
-}
+    /* التعديلات المطلوبة: جعل العناصر تنزل لأسفل في الصفحات التعليمية */
+    #math-questions-page .character-speech-container.quiz,
+    #nature-questions-page .character-speech-container.quiz,
+    #uzbekistan-questions-page .character-speech-container.quiz,
+    #ancestors-questions-page .character-speech-container.quiz {
+      display: flex;
+      align-items: center;
+      justify-content: center; 
+      height: 20vh;
+      margin: 0 auto;
+      flex-shrink: 0;
+      width: 100%;
+      max-width: 1200px; 
+      margin-top: 8rem; /* إضافة مسافة من الأعلى */
+    }
 
-    .question-container {
+    #math-questions-page .question-container,
+    #nature-questions-page .question-container,
+    #uzbekistan-questions-page .question-container,
+    #ancestors-questions-page .question-container {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -367,6 +375,7 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 1rem;
+      margin-top: 4rem; /* إضافة مسافة من الأعلى */
     }
 
     .options-container {
