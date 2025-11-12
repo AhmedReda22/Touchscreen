@@ -18,7 +18,7 @@
       background: #f4f4f4;
       text-align: center;
       color: #333;
-      overflow-x: hidden;
+      overflow: hidden;
       height: 100vh;
     }
 
@@ -27,7 +27,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       height: 100vh;
       width: 100vw;
       color: white;
@@ -36,31 +36,32 @@
       background-image: url('./imgs/8.png');
       background-size: cover;
       background-position: center;
+      padding: 2vh 20px;
     }
 
     .top-content {
-      position: absolute;
-      top: 10%;
       width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       z-index: 10;
+      flex-shrink: 0;
     }
 
     .top-content h1 {
-      font-size: 3.5rem;
+      font-size: clamp(2rem, 5vw, 3.5rem);
       font-weight: 900;
       color: #ffc900;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      margin-bottom: 1vh;
     }
 
     .top-content p {
-      font-size: 1.5rem;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
       font-weight: 500;
       color: white;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-      margin-bottom: 40px;
+      max-width: 800px;
     }
 
     .character-speech-container {
@@ -70,19 +71,21 @@
       width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      margin-top: 80px;
       position: relative;
-      gap: 5px;
+      gap: 20px;
+      flex-shrink: 0;
+      height: 30vh;
     }
 
     .robot-character {
-      width: 250px;
-      height: 250px;
+      width: clamp(120px, 20vw, 250px);
+      height: clamp(120px, 20vw, 250px);
       background-image: url('./imgs/charachter.png');
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
       animation: robotMove 2.5s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
     @keyframes robotMove {
@@ -94,7 +97,7 @@
     }
 
     .speech-bubble-container {
-      max-width: 550px;
+      max-width: min(550px, 70vw);
       background-image: url('./imgs/2.png');
       background-size: 100% 120%;
       background-repeat: no-repeat;
@@ -103,25 +106,27 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 130px 70px;
+      padding: clamp(80px, 15vw, 130px) clamp(30px, 8vw, 70px);
       z-index: 9;
+      flex-shrink: 0;
     }
 
     .speech-bubble-container p {
       color: #ffffff;
       font-weight: 600;
-      font-size: 1.2rem;
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
       line-height: 1.5;
     }
 
     .lang-buttons {
-      position: absolute;
-      bottom: 10%;
       width: 100%;
       display: flex;
       justify-content: center;
-      gap: 50px;
+      gap: clamp(20px, 5vw, 50px);
       z-index: 10;
+      flex-shrink: 0;
+      height: 15vh;
+      align-items: center;
     }
 
     .lang-buttons button {
@@ -132,13 +137,13 @@
       background-color: transparent;
       color: white;
       font-weight: 800;
-      font-size: 2rem;
+      font-size: clamp(1.2rem, 3vw, 2rem);
       border: none;
       cursor: pointer;
       transition: transform 0.3s ease;
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      width: 300px;
-      height: 120px;
+      width: clamp(180px, 30vw, 300px);
+      height: clamp(70px, 12vw, 120px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -152,30 +157,61 @@
     #knowledge-page {
       display: none;
       flex-direction: column;
-      min-height: 100vh;
+      height: 100vh;
       background-image: url('./imgs/8.png');
       background-size: cover;
       background-position: center;
-      background-attachment: fixed;
       color: white;
+      padding: 2vh 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .knowledge-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: center; /* توسيط كل المحتوى رأسيًا */
+      align-items: center; /* توسيط كل المحتوى أفقيًا */
+      gap: 2rem; /* مسافة بين العناصر */
+    }
+
+    .character-speech-container.knowledge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 20px;
+      flex-shrink: 0;
     }
 
     .topics-section {
-      padding: 3rem 2rem 5rem;
+      padding: 0 1rem;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .topics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
-      max-width: 1400px;
-      margin: 0 auto;
+      width: 100%;
+      max-height: 60vh;
+      overflow-y: auto;
+      padding: 10px;
     }
 
     .topic-card {
       background-color: rgba(64, 120, 120, 0.8);
       border-radius: 1.5rem;
-      padding: 2rem;
+      padding: 1.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -183,7 +219,7 @@
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      min-height: 300px;
+      min-height: 200px;
     }
 
     .topic-card:hover {
@@ -196,19 +232,23 @@
     }
 
     .topic-icon {
-      width: 100px;
-      height: 100px;
-      margin-bottom: 1.5rem;
+      width: clamp(80px, 15vw, 150px);
+      height: clamp(80px, 15vw, 150px);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .topic-icon img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      animation: zoomInOut 3s ease-in-out infinite;
     }
 
     .topic-title {
-      font-size: 1.5rem;
+      font-size: clamp(1rem, 2vw, 1.3rem);
       font-weight: bold;
       text-align: center;
     }
@@ -217,10 +257,9 @@
       position: fixed;
       bottom: 1.5rem;
       left: 1.5rem;
-      width: 4rem;
-      height: 4rem;
+      width: clamp(4rem, 8vw, 5rem);
+      height: clamp(4rem, 8vw, 5rem);
       border-radius: 50%;
-      background-color: #fbbf24;
       border: none;
       cursor: pointer;
       display: flex;
@@ -229,47 +268,62 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       transition: all 0.2s ease;
       z-index: 10;
+      background: transparent;
+      padding: 0;
+    }
+
+    .home-button img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 50%;
     }
 
     .home-button:hover {
-      background-color: #f59e0b;
       transform: scale(1.1);
-    }
-
-    .home-button svg {
-      width: 2rem;
-      height: 2rem;
-      color: #166534;
     }
 
     /* ========== QUIZ PAGES ========== */
     .quiz-page {
       display: none;
       flex-direction: column;
-      min-height: 100vh;
+      height: 100vh;
       color: white;
-      padding: 2rem;
+      padding: 2vh 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      justify-content: space-between;
     }
 
     .quiz-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      margin-bottom: 2rem;
+      padding: 0 1rem;
+      flex-shrink: 0;
+      height: 15vh;
     }
 
     .quiz-title {
-      font-size: 2.5rem;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
       font-weight: 800;
       color: #ffc900;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+      text-align: left;
+      flex: 1;
     }
 
     .quiz-icon {
-      width: 120px;
-      height: 120px;
+      width: clamp(80px, 15vw, 150px);
+      height: clamp(80px, 15vw, 150px);
       animation: zoomInOut 3s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
     .quiz-icon img {
@@ -281,8 +335,14 @@
     /* أنيميشن الزووم */
     @keyframes zoomInOut {
       0% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      50% { transform: scale(1.15); }
       100% { transform: scale(1); }
+    }
+
+    .character-speech-container.quiz {
+      height: 20vh;
+      margin: 0;
+      flex-shrink: 0;
     }
 
     .question-container {
@@ -290,16 +350,17 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 2rem auto;
+      flex-grow: 1;
+      width: 100%;
       max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
     }
 
     .options-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 2rem;
-      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
       width: 100%;
       max-width: 1200px;
     }
@@ -312,41 +373,42 @@
       background-color: transparent;
       color: white;
       font-weight: 700;
-      font-size: 2.2rem;
+      font-size: clamp(1.2rem, 2.5vw, 2.2rem);
       border: none;
       cursor: pointer;
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
       text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
-      width: 250px;
-      height: 180px;
+      width: 100%;
+      height: clamp(100px, 15vw, 150px);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 1rem;
       border-radius: 15px;
-      flex: 0 0 auto;
     }
 
     .option-button:hover {
       transform: scale(1.08);
     }
 
+    /* التغييرات الجديدة للإجابات الصحيحة والخاطئة */
     .option-button.correct {
-      box-shadow: 0 0 20px #4CAF50;
+      background-image: url('./imgs/green-button.png');
     }
 
     .option-button.incorrect {
-      box-shadow: 0 0 20px #F44336;
+      background-image: url('./imgs/red-button.png');
     }
 
     .progress-container {
       width: 100%;
       max-width: 800px;
-      margin: 2rem auto;
+      margin: 1rem auto;
       background-color: rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       height: 20px;
       overflow: hidden;
+      flex-shrink: 0;
     }
 
     .progress-bar {
@@ -361,30 +423,32 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin: 2rem auto;
+      margin: 0 auto;
       max-width: 800px;
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 2rem;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      flex-grow: 1;
     }
 
     .result-title {
-      font-size: 2.5rem;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
       color: #ffc900;
       margin-bottom: 1.5rem;
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
     }
 
     .result-score {
-      font-size: 3rem;
+      font-size: clamp(2rem, 5vw, 3rem);
       font-weight: 800;
       color: white;
       margin-bottom: 1.5rem;
     }
 
     .result-message {
-      font-size: 1.5rem;
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
       color: white;
       margin-bottom: 2rem;
       text-align: center;
@@ -399,13 +463,13 @@
       background-color: transparent;
       color: white;
       font-weight: 700;
-      font-size: 1.8rem;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
       border: none;
       cursor: pointer;
       transition: transform 0.3s ease;
       text-shadow: 0 2px 5px rgba(0, 0, 0, 0.8);
-      width: 250px;
-      height: 100px;
+      width: clamp(180px, 30vw, 250px);
+      height: clamp(70px, 12vw, 100px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -418,70 +482,157 @@
       transform: scale(1.05);
     }
 
+    /* ========== MEDIA QUERIES ========== */
     @media (max-width: 1200px) {
       .options-container {
         max-width: 900px;
       }
+    }
+
+    @media (max-width: 992px) {
+      .character-speech-container {
+        flex-direction: column;
+        gap: 10px;
+        height: 25vh;
+      }
       
-      .option-button {
-        width: 200px;
-        height: 150px;
-        font-size: 1.8rem;
+      .speech-bubble-container {
+        max-width: 90%;
+      }
+      
+      .quiz-header {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        height: 20vh;
+        gap: 10px;
+      }
+      
+      .quiz-title {
+        text-align: center;
       }
     }
 
     @media (max-width: 768px) {
-      .options-container {
-        grid-template-columns: repeat(2, 1fr);
-        max-width: 600px;
+      .character-speech-container {
+        height: 30vh;
+      }
+      
+      .topics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
       }
       
       .topic-card {
-        min-height: 250px;
+        min-height: 180px;
+        padding: 1rem;
       }
       
-      .quiz-title {
-        font-size: 1.8rem;
+      .options-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .home-button {
+        bottom: 1rem;
+        left: 1rem;
+      }
+      
+      .lang-buttons {
+        flex-wrap: wrap;
+        height: auto;
+        padding: 10px 0;
+      }
+    }
+
+    @media (max-width: 576px) {
+      #holding-page, #knowledge-page, .quiz-page {
+        padding: 1vh 10px;
+      }
+      
+      .topics-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .options-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .option-button {
+        height: 100px;
+      }
+      
+      .quiz-header {
+        flex-direction: column;
+        height: 25vh;
+      }
+      
+      .result-container {
+        padding: 1.5rem;
       }
       
       .character-speech-container {
-        flex-direction: column;
+        height: 35vh;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .topic-card {
+        min-height: 150px;
       }
       
-      .quiz-icon {
+      .topic-icon {
         width: 80px;
         height: 80px;
       }
       
       .option-button {
-        width: 160px;
-        height: 120px;
-        font-size: 1.5rem;
+        font-size: 1.2rem;
       }
       
-      .result-title {
-        font-size: 2rem;
-      }
-      
-      .result-score {
-        font-size: 2.5rem;
-      }
-      
-      .result-message {
-        font-size: 1.3rem;
+      .lang-buttons {
+        flex-direction: column;
+        gap: 10px;
       }
     }
 
-    @media (max-width: 480px) {
-      .options-container {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+    /* تحسينات خاصة للشاشات الطويلة */
+    @media (max-height: 700px) {
+      .top-content h1 {
+        margin-bottom: 0.5vh;
       }
       
-      .option-button {
-        width: 90%;
-        height: 100px;
-        font-size: 1.4rem;
+      .topic-card {
+        min-height: 140px;
+        padding: 0.8rem;
+      }
+      
+      .topic-icon {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 0.5rem;
+      }
+      
+      .character-speech-container {
+        height: 35vh;
+      }
+      
+      .quiz-header {
+        height: 18vh;
+      }
+    }
+    
+    @media (max-height: 600px) {
+      .character-speech-container {
+        height: 40vh;
+      }
+      
+      .topics-grid {
+        max-height: 50vh;
+      }
+      
+      .quiz-header {
+        height: 15vh;
       }
     }
   </style>
@@ -511,65 +662,67 @@
 
   <!-- KNOWLEDGE PAGE -->
   <div id="knowledge-page">
-    <div class="character-speech-container">
-      <div class="robot-character"></div>
-      <div class="speech-bubble-container">
-        <p>Choose a topic to begin your adventure of knowledge!</p>
+    <div class="knowledge-content">
+      <div class="character-speech-container knowledge">
+        <div class="robot-character"></div>
+        <div class="speech-bubble-container">
+          <p>Choose a topic to begin your adventure of knowledge!</p>
+        </div>
       </div>
-    </div>
 
-    <div class="topics-section">
-      <div class="topics-grid">
-        <div class="topic-card" onclick="selectTopic(this, 'ancestors')">
-          <div class="topic-icon"><img src="./imgs/3.png" alt="Ancestors"></div>
-          <div class="topic-title">Great Ancestors</div>
-        </div>
-        <div class="topic-card" onclick="selectTopic(this, 'uzbekistan')">
-          <div class="topic-icon"><img src="./imgs/4.png" alt="Uzbekistan"></div>
-          <div class="topic-title">Uzbekistan Knowledge</div>
-        </div>
-        <div class="topic-card" onclick="selectTopic(this, 'nature')">
-          <div class="topic-icon"><img src="./imgs/5.png" alt="Nature"></div>
-          <div class="topic-title">Nature & Environment</div>
-        </div>
-        <div class="topic-card" onclick="selectTopic(this, 'math')">
-          <div class="topic-icon"><img src="./imgs/6.png" alt="Math"></div>
-          <div class="topic-title">Simple Mathematics</div>
+      <div class="topics-section">
+        <div class="topics-grid">
+          <div class="topic-card" onclick="selectTopic(this, 'ancestors')">
+            <div class="topic-icon"><img src="./imgs/3.png" alt="Ancestors"></div>
+            <div class="topic-title">Great Ancestors</div>
+          </div>
+          <div class="topic-card" onclick="selectTopic(this, 'uzbekistan')">
+            <div class="topic-icon"><img src="./imgs/4.png" alt="Uzbekistan"></div>
+            <div class="topic-title">Uzbekistan Knowledge</div>
+          </div>
+          <div class="topic-card" onclick="selectTopic(this, 'nature')">
+            <div class="topic-icon"><img src="./imgs/5.png" alt="Nature"></div>
+            <div class="topic-title">Nature & Environment</div>
+          </div>
+          <div class="topic-card" onclick="selectTopic(this, 'math')">
+            <div class="topic-icon"><img src="./imgs/6.png" alt="Math"></div>
+            <div class="topic-title">Simple Mathematics</div>
+          </div>
         </div>
       </div>
     </div>
 
     <button class="home-button" aria-label="Home" id="home-btn">
-      <svg fill="currentColor" viewBox="0 0 24 24">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-      </svg>
+      <img src="./imgs/0.png" alt="Home">
     </button>
   </div>
 
   <!-- MATH QUESTIONS PAGE -->
-  <div id="math-questions-page" class="quiz-page" style="background-image: url('./imgs/9.png'); background-size: cover; background-position: center; background-attachment: fixed;">
-    <div class="quiz-header">
-      <div class="quiz-title">Simple Mathematics</div>
-      <div class="quiz-icon">
-        <img src="./imgs/6.png" alt="Math Icon">
+  <div id="math-questions-page" class="quiz-page" style="background-image: url('./imgs/9.png'); background-size: cover; background-position: center;">
+    <div class="quiz-content">
+      <div class="quiz-header">
+        <div class="quiz-title">Simple Mathematics</div>
+        <div class="quiz-icon">
+          <img src="./imgs/6.png" alt="Math Icon">
+        </div>
       </div>
-    </div>
 
-    <div class="character-speech-container">
-      <div class="robot-character"></div>
-      <div class="speech-bubble-container">
-        <p id="math-question-text">What is the largest three-digit number?</p>
+      <div class="character-speech-container quiz">
+        <div class="robot-character"></div>
+        <div class="speech-bubble-container">
+          <p id="math-question-text">What is the largest three-digit number?</p>
+        </div>
       </div>
-    </div>
 
-    <div class="question-container">
-      <div class="options-container" id="math-options-container">
-        <!-- Options will be populated by JavaScript -->
+      <div class="question-container">
+        <div class="options-container" id="math-options-container">
+          <!-- Options will be populated by JavaScript -->
+        </div>
       </div>
-    </div>
 
-    <div class="progress-container">
-      <div class="progress-bar" id="math-progress-bar"></div>
+      <div class="progress-container">
+        <div class="progress-bar" id="math-progress-bar"></div>
+      </div>
     </div>
 
     <div class="result-container" id="math-result-container">
@@ -580,36 +733,37 @@
     </div>
 
     <button class="home-button" aria-label="Home" id="math-home-btn">
-      <svg fill="currentColor" viewBox="0 0 24 24">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-      </svg>
+      <img src="./imgs/0.png" alt="Home">
     </button>
   </div>
 
+  <!-- باقي الصفحات (Nature, Uzbekistan, Ancestors) ستتبع نفس النمط -->
   <!-- NATURE QUESTIONS PAGE -->
-  <div id="nature-questions-page" class="quiz-page" style="background-image: url('./imgs/10.png'); background-size: cover; background-position: center; background-attachment: fixed;">
-    <div class="quiz-header">
-      <div class="quiz-title">Nature & Environment</div>
-      <div class="quiz-icon">
-        <img src="./imgs/5.png" alt="Nature Icon">
+  <div id="nature-questions-page" class="quiz-page" style="background-image: url('./imgs/10.png'); background-size: cover; background-position: center;">
+    <div class="quiz-content">
+      <div class="quiz-header">
+        <div class="quiz-title">Nature & Environment</div>
+        <div class="quiz-icon">
+          <img src="./imgs/5.png" alt="Nature Icon">
+        </div>
       </div>
-    </div>
 
-    <div class="character-speech-container">
-      <div class="robot-character"></div>
-      <div class="speech-bubble-container">
-        <p id="nature-question-text">What does the Sun give us?</p>
+      <div class="character-speech-container quiz">
+        <div class="robot-character"></div>
+        <div class="speech-bubble-container">
+          <p id="nature-question-text">What does the Sun give us?</p>
+        </div>
       </div>
-    </div>
 
-    <div class="question-container">
-      <div class="options-container" id="nature-options-container">
-        <!-- Options will be populated by JavaScript -->
+      <div class="question-container">
+        <div class="options-container" id="nature-options-container">
+          <!-- Options will be populated by JavaScript -->
+        </div>
       </div>
-    </div>
 
-    <div class="progress-container">
-      <div class="progress-bar" id="nature-progress-bar"></div>
+      <div class="progress-container">
+        <div class="progress-bar" id="nature-progress-bar"></div>
+      </div>
     </div>
 
     <div class="result-container" id="nature-result-container">
@@ -620,36 +774,36 @@
     </div>
 
     <button class="home-button" aria-label="Home" id="nature-home-btn">
-      <svg fill="currentColor" viewBox="0 0 24 24">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-      </svg>
+      <img src="./imgs/0.png" alt="Home">
     </button>
   </div>
 
   <!-- UZBEKISTAN QUESTIONS PAGE -->
-  <div id="uzbekistan-questions-page" class="quiz-page" style="background-image: url('./imgs/11.png'); background-size: cover; background-position: center; background-attachment: fixed;">
-    <div class="quiz-header">
-      <div class="quiz-title">Uzbekistan Knowledge</div>
-      <div class="quiz-icon">
-        <img src="./imgs/4.png" alt="Uzbekistan Icon">
+  <div id="uzbekistan-questions-page" class="quiz-page" style="background-image: url('./imgs/11.png'); background-size: cover; background-position: center;">
+    <div class="quiz-content">
+      <div class="quiz-header">
+        <div class="quiz-title">Uzbekistan Knowledge</div>
+        <div class="quiz-icon">
+          <img src="./imgs/4.png" alt="Uzbekistan Icon">
+        </div>
       </div>
-    </div>
 
-    <div class="character-speech-container">
-      <div class="robot-character"></div>
-      <div class="speech-bubble-container">
-        <p id="uzbekistan-question-text">How many regions does Uzbekistan have?</p>
+      <div class="character-speech-container quiz">
+        <div class="robot-character"></div>
+        <div class="speech-bubble-container">
+          <p id="uzbekistan-question-text">How many regions does Uzbekistan have?</p>
+        </div>
       </div>
-    </div>
 
-    <div class="question-container">
-      <div class="options-container" id="uzbekistan-options-container">
-        <!-- Options will be populated by JavaScript -->
+      <div class="question-container">
+        <div class="options-container" id="uzbekistan-options-container">
+          <!-- Options will be populated by JavaScript -->
+        </div>
       </div>
-    </div>
 
-    <div class="progress-container">
-      <div class="progress-bar" id="uzbekistan-progress-bar"></div>
+      <div class="progress-container">
+        <div class="progress-bar" id="uzbekistan-progress-bar"></div>
+      </div>
     </div>
 
     <div class="result-container" id="uzbekistan-result-container">
@@ -660,36 +814,36 @@
     </div>
 
     <button class="home-button" aria-label="Home" id="uzbekistan-home-btn">
-      <svg fill="currentColor" viewBox="0 0 24 24">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-      </svg>
+      <img src="./imgs/0.png" alt="Home">
     </button>
   </div>
 
   <!-- ANCESTORS QUESTIONS PAGE -->
-  <div id="ancestors-questions-page" class="quiz-page" style="background-image: url('./imgs/12.png'); background-size: cover; background-position: center; background-attachment: fixed;">
-    <div class="quiz-header">
-      <div class="quiz-title">Great Ancestors</div>
-      <div class="quiz-icon">
-        <img src="./imgs/3.png" alt="Ancestors Icon">
+  <div id="ancestors-questions-page" class="quiz-page" style="background-image: url('./imgs/12.png'); background-size: cover; background-position: center;">
+    <div class="quiz-content">
+      <div class="quiz-header">
+        <div class="quiz-title">Great Ancestors</div>
+        <div class="quiz-icon">
+          <img src="./imgs/3.png" alt="Ancestors Icon">
+        </div>
       </div>
-    </div>
 
-    <div class="character-speech-container">
-      <div class="robot-character"></div>
-      <div class="speech-bubble-container">
-        <p id="ancestors-question-text">What was Amir Temur's motto?</p>
+      <div class="character-speech-container quiz">
+        <div class="robot-character"></div>
+        <div class="speech-bubble-container">
+          <p id="ancestors-question-text">What was Amir Temur's motto?</p>
+        </div>
       </div>
-    </div>
 
-    <div class="question-container">
-      <div class="options-container" id="ancestors-options-container">
-        <!-- Options will be populated by JavaScript -->
+      <div class="question-container">
+        <div class="options-container" id="ancestors-options-container">
+          <!-- Options will be populated by JavaScript -->
+        </div>
       </div>
-    </div>
 
-    <div class="progress-container">
-      <div class="progress-bar" id="ancestors-progress-bar"></div>
+      <div class="progress-container">
+        <div class="progress-bar" id="ancestors-progress-bar"></div>
+      </div>
     </div>
 
     <div class="result-container" id="ancestors-result-container">
@@ -700,9 +854,7 @@
     </div>
 
     <button class="home-button" aria-label="Home" id="ancestors-home-btn">
-      <svg fill="currentColor" viewBox="0 0 24 24">
-        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-      </svg>
+      <img src="./imgs/0.png" alt="Home">
     </button>
   </div>
 
