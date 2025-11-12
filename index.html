@@ -99,7 +99,7 @@
     .speech-bubble-container {
       width: 650PX;
       background-image: url('./imgs/2.png');
-      background-size: 130% 120%;
+      background-size: 148% 120%;
       background-repeat: no-repeat;
       background-position: center;
       display: flex;
@@ -971,19 +971,25 @@
       window.scrollTo(0, 0);
     });
 
-    // زر العودة إلى الصفحة الرئيسية الأولى
-    document.getElementById('main-home-btn').addEventListener('click', () => {
-      document.getElementById('knowledge-page').style.display = 'none';
-      document.getElementById('holding-page').style.display = 'flex';
-      window.scrollTo(0, 0);
-    });
+    // زر الرجوع إلى صفحة المعرفة - إخفاء هذا الزر في صفحة المعرفة
+document.getElementById('home-btn').addEventListener('click', () => {
+  document.getElementById('knowledge-page').style.display = 'none';
+  document.getElementById('holding-page').style.display = 'flex';
+  window.scrollTo(0, 0);
+});
 
-    // أزرار الرجوع للصفحات المختلفة
-    document.getElementById('math-home-btn').addEventListener('click', () => {
-      document.getElementById('math-questions-page').style.display = 'none';
-      document.getElementById('knowledge-page').style.display = 'flex';
-      window.scrollTo(0, 0);
-    });
+// زر العودة إلى الصفحة الرئيسية الأولى - إبقاء هذا الزر مرئيًا
+document.getElementById('main-home-btn').addEventListener('click', () => {
+  document.getElementById('knowledge-page').style.display = 'none';
+  document.getElementById('holding-page').style.display = 'flex';
+  window.scrollTo(0, 0);
+});
+
+// إخفاء زر الصفحة الرئيسية (0.png) في صفحة المعرفة عند تحميل الصفحة
+window.addEventListener('load', () => {
+  // إخفاء زر الصفحة الرئيسية في صفحة المعرفة فقط
+  document.getElementById('home-btn').style.display = 'none';
+});
 
     document.getElementById('math-main-home-btn').addEventListener('click', () => {
       document.getElementById('math-questions-page').style.display = 'none';
@@ -1130,7 +1136,7 @@
       },
       {
         question: "What is the purpose of a tree's roots?",
-        options: ["To produce leaves", "To attach to the soil and absorb nutrients", "To produce fruit"],
+        options: ["To produce leaves", "To attach to the soil<br>and absorb nutrients", "To produce fruit"],
         correctAnswer: 1
       }
     ];
@@ -1202,10 +1208,10 @@
         correctAnswer: 2
       },
       {
-        question: "What kind of works did Alisher Navoi write?",
-        options: ["Scientific articles", "Ghazals and rubaiyat (poems and quatrains)", "Epics"],
-        correctAnswer: 1
-      },
+  question: "What kind of works did Alisher Navoi write?",
+  options: ["Scientific articles", "Ghazals and rubaiyat<br>(poems and quatrains)", "Epics"],
+  correctAnswer: 1
+},
       {
         question: "Where was Ibn Sina born?",
         options: ["Bukhara", "Termez", "Andijan"],
@@ -1357,30 +1363,29 @@
 
     // ========== NATURE FUNCTIONS ==========
     function loadNatureQuestion() {
-      if (currentNatureQuestionIndex >= natureQuestions.length) {
-        showNatureResults();
-        return;
-      }
+  if (currentNatureQuestionIndex >= natureQuestions.length) {
+    showNatureResults();
+    return;
+  }
 
-      const question = natureQuestions[currentNatureQuestionIndex];
-      document.getElementById('nature-question-text').textContent = question.question;
+  const question = natureQuestions[currentNatureQuestionIndex];
+  document.getElementById('nature-question-text').textContent = question.question;
 
-      
-      const progress = ((currentNatureQuestionIndex + 1) / natureQuestions.length) * 100;
-      document.getElementById('nature-progress-bar').style.width = `${progress}%`;
-      
-      const optionsContainer = document.getElementById('nature-options-container');
-      optionsContainer.innerHTML = "";
-      
-      question.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.className = 'option-button';
-        button.textContent = option;
-        adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
-        button.addEventListener('click', () => checkNatureAnswer(index));
-        optionsContainer.appendChild(button);
-      });
-    }
+  const progress = ((currentNatureQuestionIndex + 1) / natureQuestions.length) * 100;
+  document.getElementById('nature-progress-bar').style.width = `${progress}%`;
+  
+  const optionsContainer = document.getElementById('nature-options-container');
+  optionsContainer.innerHTML = "";
+  
+  question.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.className = 'option-button';
+    button.innerHTML = option; // تغيير إلى innerHTML
+    adjustFontSize(button);
+    button.addEventListener('click', () => checkNatureAnswer(index));
+    optionsContainer.appendChild(button);
+  });
+}
 
     function checkNatureAnswer(selectedIndex) {
       const question = natureQuestions[currentNatureQuestionIndex];
@@ -1527,30 +1532,31 @@
     });
 
     // ========== ANCESTORS FUNCTIONS ==========
-    function loadAncestorsQuestion() {
-      if (currentAncestorsQuestionIndex >= ancestorsQuestions.length) {
-        showAncestorsResults();
-        return;
-      }
+    // ========== ANCESTORS FUNCTIONS ==========
+function loadAncestorsQuestion() {
+  if (currentAncestorsQuestionIndex >= ancestorsQuestions.length) {
+    showAncestorsResults();
+    return;
+  }
 
-      const question = ancestorsQuestions[currentAncestorsQuestionIndex];
-      document.getElementById('ancestors-question-text').textContent = question.question;
-      
-      const progress = ((currentAncestorsQuestionIndex + 1) / ancestorsQuestions.length) * 100;
-      document.getElementById('ancestors-progress-bar').style.width = `${progress}%`;
-      
-      const optionsContainer = document.getElementById('ancestors-options-container');
-      optionsContainer.innerHTML = "";
-      
-      question.options.forEach((option, index) => {
-        const button = document.createElement('button');
-        button.className = 'option-button';
-        button.textContent = option;
-        adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
-        button.addEventListener('click', () => checkAncestorsAnswer(index));
-        optionsContainer.appendChild(button);
-      });
-    }
+  const question = ancestorsQuestions[currentAncestorsQuestionIndex];
+  document.getElementById('ancestors-question-text').textContent = question.question;
+  
+  const progress = ((currentAncestorsQuestionIndex + 1) / ancestorsQuestions.length) * 100;
+  document.getElementById('ancestors-progress-bar').style.width = `${progress}%`;
+  
+  const optionsContainer = document.getElementById('ancestors-options-container');
+  optionsContainer.innerHTML = "";
+  
+  question.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.className = 'option-button';
+    button.innerHTML = option; // تغيير من textContent إلى innerHTML
+    adjustFontSize(button);
+    button.addEventListener('click', () => checkAncestorsAnswer(index));
+    optionsContainer.appendChild(button);
+  });
+}
 
     function checkAncestorsAnswer(selectedIndex) {
       const question = ancestorsQuestions[currentAncestorsQuestionIndex];
