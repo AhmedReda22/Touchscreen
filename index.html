@@ -97,19 +97,21 @@
     }
 
     .speech-bubble-container {
-      max-width: min(550px, 70vw);
-      background-image: url('./imgs/2.png');
-      background-size: 100% 120%;
-      background-repeat: no-repeat;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: clamp(80px, 15vw, 130px) clamp(30px, 8vw, 70px);
-      z-index: 9;
-      flex-shrink: 0;
-    }
+  max-width: min(850px, 70vw);
+  background-image: url('./imgs/2.png');
+  background-size: 150% 120%;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(80px, 15vw, 130px) clamp(30px, 8vw, 70px);
+  z-index: 9;
+  flex-shrink: 0;
+  /* إضافة مسافات بيضاء على الجانبين */
+  margin: 0 clamp(20px, 5vw, 40px);
+}
 
     .speech-bubble-container p {
       color: #ffffff;
