@@ -97,21 +97,20 @@
     }
 
     .speech-bubble-container {
-  max-width: min(850px, 70vw);
-  background-image: url('./imgs/2.png');
-  background-size: 150% 120%;
-  background-repeat: no-repeat;
-  background-position: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: clamp(80px, 15vw, 130px) clamp(30px, 8vw, 70px);
-  z-index: 9;
-  flex-shrink: 0;
-  /* إضافة مسافات بيضاء على الجانبين */
-  margin: 0 clamp(20px, 5vw, 40px);
-}
+      max-width: min(850px, 70vw);
+      background-image: url('./imgs/2.png');
+      background-size: 150% 120%;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(80px, 15vw, 130px) clamp(30px, 8vw, 70px);
+      z-index: 9;
+      flex-shrink: 0;
+      margin: 0 clamp(20px, 5vw, 40px);
+    }
 
     .speech-bubble-container p {
       color: #ffffff;
@@ -173,9 +172,9 @@
       display: flex;
       flex-direction: column;
       height: 100%;
-      justify-content: center; /* توسيط كل المحتوى رأسيًا */
-      align-items: center; /* توسيط كل المحتوى أفقيًا */
-      gap: 2rem; /* مسافة بين العناصر */
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
     }
 
     .character-speech-container.knowledge {
@@ -342,10 +341,15 @@
     }
 
     .character-speech-container.quiz {
-      height: 20vh;
-      margin: 0;
-      flex-shrink: 0;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  height: 20vh;
+  margin: 0 auto;
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 1200px; 
+}
 
     .question-container {
       display: flex;
@@ -385,9 +389,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem; /* مسافة بيضاء ثابتة حول النص */
+      padding: 1.5rem;
       border-radius: 15px;
-      /* إضافة خصائص لضبط النص */
       word-wrap: break-word;
       overflow-wrap: break-word;
       word-break: break-word;
@@ -567,7 +570,7 @@
       }
       
       .option-button {
-        padding: 1rem; /* تقليل المسافة في الشاشات الصغيرة */
+        padding: 1rem;
       }
     }
 
@@ -586,7 +589,7 @@
       
       .option-button {
         height: 100px;
-        padding: 0.8rem; /* تقليل المسافة أكثر في الشاشات الصغيرة جداً */
+        padding: 0.8rem;
       }
       
       .quiz-header {
@@ -959,22 +962,22 @@
     // ========== MATH QUESTIONS ==========
     const mathQuestions = [
       {
-        question: "8 + 6 = ?",
+        question: "Let's add! What is 8 + 6?",
         options: ["14", "13", "15"],
         correctAnswer: 0
       },
       {
-        question: "9 – 4 = ?",
+        question: "Let's subtract! What is 9 – 4?",
         options: ["6", "5", "4"],
         correctAnswer: 1
       },
       {
-        question: "7 × 2 = ?",
+        question: "Let's multiply! What is 7 × 2?",
         options: ["12", "14", "16"],
         correctAnswer: 1
       },
       {
-        question: "18 ÷ 3 = ?",
+        question: "Let's divide! What is 18 ÷ 3?",
         options: ["6", "5", "4"],
         correctAnswer: 0
       },
@@ -994,12 +997,12 @@
         correctAnswer: 1
       },
       {
-        question: "4 + 9 = ?",
+        question: "Let's add! What is 4 + 9?",
         options: ["13", "12", "14"],
         correctAnswer: 0
       },
       {
-        question: "5 × 5 = ?",
+        question: "Let's multiply! What is 5 × 5?",
         options: ["20", "30", "25"],
         correctAnswer: 2
       },
