@@ -383,8 +383,15 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 1rem;
+      padding: 1.5rem; /* مسافة بيضاء ثابتة حول النص */
       border-radius: 15px;
+      /* إضافة خصائص لضبط النص */
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      hyphens: auto;
+      text-align: center;
+      line-height: 1.3;
     }
 
     .option-button:hover {
@@ -398,6 +405,19 @@
 
     .option-button.incorrect {
       background-image: url('./imgs/red-button.png');
+    }
+
+    /* فئات جديدة لضبط حجم الخط للنصوص الطويلة */
+    .option-button.medium-text {
+      font-size: clamp(1rem, 2vw, 1.8rem);
+    }
+
+    .option-button.small-text {
+      font-size: clamp(0.8rem, 1.8vw, 1.5rem);
+    }
+
+    .option-button.very-small-text {
+      font-size: clamp(0.7rem, 1.5vw, 1.2rem);
     }
 
     .progress-container {
@@ -543,6 +563,10 @@
         height: auto;
         padding: 10px 0;
       }
+      
+      .option-button {
+        padding: 1rem; /* تقليل المسافة في الشاشات الصغيرة */
+      }
     }
 
     @media (max-width: 576px) {
@@ -560,6 +584,7 @@
       
       .option-button {
         height: 100px;
+        padding: 0.8rem; /* تقليل المسافة أكثر في الشاشات الصغيرة جداً */
       }
       
       .quiz-header {
@@ -1155,6 +1180,23 @@
     let currentAncestorsQuestionIndex = 0;
     let ancestorsScore = 0;
 
+    // دالة محسنة لضبط حجم الخط بناءً على طول النص
+    function adjustFontSize(button) {
+      const textLength = button.textContent.length;
+      
+      // إزالة جميع فئات حجم الخط السابقة
+      button.classList.remove('medium-text', 'small-text', 'very-small-text');
+      
+      // تطبيق حجم الخط المناسب بناءً على طول النص
+      if (textLength > 25) {
+        button.classList.add('very-small-text');
+      } else if (textLength > 15) {
+        button.classList.add('small-text');
+      } else if (textLength > 10) {
+        button.classList.add('medium-text');
+      }
+    }
+
     // ========== MATH FUNCTIONS ==========
     function loadMathQuestion() {
       if (currentMathQuestionIndex >= mathQuestions.length) {
@@ -1175,6 +1217,7 @@
         const button = document.createElement('button');
         button.className = 'option-button';
         button.textContent = option;
+        adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
         button.addEventListener('click', () => checkMathAnswer(index));
         optionsContainer.appendChild(button);
       });
@@ -1260,6 +1303,7 @@
         const button = document.createElement('button');
         button.className = 'option-button';
         button.textContent = option;
+        adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
         button.addEventListener('click', () => checkNatureAnswer(index));
         optionsContainer.appendChild(button);
       });
@@ -1344,6 +1388,7 @@
         const button = document.createElement('button');
         button.className = 'option-button';
         button.textContent = option;
+        adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
         button.addEventListener('click', () => checkUzbekistanAnswer(index));
         optionsContainer.appendChild(button);
       });
@@ -1428,6 +1473,7 @@
         const button = document.createElement('button');
         button.className = 'option-button';
         button.textContent = option;
+        adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
         button.addEventListener('click', () => checkAncestorsAnswer(index));
         optionsContainer.appendChild(button);
       });
