@@ -872,13 +872,7 @@
     animation: none !important;
 }
 
-/* إخفاء فقاعة الكلام في صفحة النتائج */
-#uzbekistan-result-container ~ .character-speech-container.quiz,
-#math-result-container ~ .character-speech-container.quiz,
-#nature-result-container ~ .character-speech-container.quiz,
-#ancestors-result-container ~ .character-speech-container.quiz {
-    display: none !important;
-}
+
   </style>
 </head>
 <body>
@@ -1986,43 +1980,38 @@
       document.getElementById('uzbekistan-progress-bar').style.width = '0%';
     }
 
-   function showUzbekistanResults() {
-    // إخفاء فقاعة الكلام
-    document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz').style.display = 'none';
-    
-    // إخفاء حاوية الأسئلة
-    document.querySelector('#uzbekistan-questions-page .question-container').style.display = 'none';
-    
-    // إخفاء شريط التقدم
-    document.querySelector('#uzbekistan-questions-page .progress-container').style.display = 'none';
-    
-    // إظهار النتائج
-    document.getElementById('uzbekistan-result-container').style.display = 'flex';
-    
-    // باقي الكود كما هو...
-    const percentage = (uzbekistanScore / uzbekistanQuestions.length) * 100;
-    document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${uzbekistanQuestions.length}`;
-    
-    let message = "";
-    let title = "";
-    
-    if (percentage >= 90) {
+    function showUzbekistanResults() {
+      document.getElementById('uzbekistan-question-text').textContent = "You've completed the Uzbekistan quiz!";
+      document.getElementById('uzbekistan-options-container').innerHTML = "";
+      document.getElementById('uzbekistan-progress-bar').style.width = "100%";
+      
+      const percentage = (uzbekistanScore / uzbekistanQuestions.length) * 100;
+      document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${uzbekistanQuestions.length}`;
+      
+      let message = "";
+      let title = "";
+      
+      if (percentage >= 90) {
         title = "Uzbekistan Expert!";
         message = "Incredible! You have excellent knowledge about Uzbekistan's rich culture and history!";
-    } else if (percentage >= 70) {
+      } else if (percentage >= 70) {
         title = "Great Job!";
         message = "Wonderful! You know Uzbekistan very well!";
-    } else if (percentage >= 50) {
+      } else if (percentage >= 50) {
         title = "Good Effort!";
         message = "Well done! You're learning about Uzbekistan's amazing heritage!";
-    } else {
+      } else {
         title = "Keep Learning!";
         message = "Uzbekistan has a fascinating history and culture! Keep exploring and learning!";
+      }
+      
+      document.getElementById('uzbekistan-result-title').textContent = title;
+      document.getElementById('uzbekistan-result-message').textContent = message;
+      document.getElementById('uzbekistan-result-container').style.display = 'flex';
+      
+      // إعادة إضافة الأصوات للأزرار في صفحة النتائج
+      onPageChange();
     }
-    
-    document.getElementById('uzbekistan-result-title').textContent = title;
-    document.getElementById('uzbekistan-result-message').textContent = message;
-}
 
     document.getElementById('uzbekistan-restart-button').addEventListener('click', () => {
       currentUzbekistanQuestionIndex = 0;
