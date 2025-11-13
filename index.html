@@ -203,6 +203,20 @@
       gap: 2rem;
     }
 
+    /* إعادة إضافة فقاعة الكلام لصفحة المعرفة */
+    .character-speech-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      gap: 20px;
+      flex-shrink: 0;
+      height: 30vh;
+    }
+
     .character-speech-container.knowledge {
       display: flex;
       align-items: center;
@@ -213,6 +227,33 @@
       gap: 20px;
       flex-shrink: 0;
       margin-top: 50px;
+    }
+
+    .speech-bubble-container {
+      width: 650PX;
+      background-image: url('./imgs/2.png');
+      background-size: 148% 120%;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: clamp(80px, 15vw, 150px) clamp(30px, 8vw, 120px);
+      z-index: 9;
+      flex-shrink: 0;
+      margin: 0 clamp(20px, 5vw, 40px);
+    }
+
+    .speech-bubble-container p {
+      color: #ffffff;
+      font-weight: 600;
+      font-size: clamp(0.9rem, 2vw, 1.4rem);
+      line-height: 1.5;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .topics-section {
@@ -763,6 +804,7 @@
     <!-- إذا لم يدعم المتصالف الفيديو، سيتم استخدام الصورة الخلفية -->
   </video>
     <div class="knowledge-content">
+      <!-- إعادة إضافة فقاعة الكلام لصفحة المعرفة -->
       <div class="character-speech-container knowledge">
         <div class="robot-character"></div>
         <div class="speech-bubble-container">
@@ -812,6 +854,7 @@
         </div>
       </div>
 
+      <!-- إعادة إضافة فقاعة الكلام لصفحة الرياضيات -->
       <div class="character-speech-container quiz">
         <div class="robot-character"></div>
         <div class="speech-bubble-container">
@@ -857,6 +900,7 @@
         </div>
       </div>
 
+      <!-- إعادة إضافة فقاعة الكلام لصفحة الطبيعة -->
       <div class="character-speech-container quiz">
         <div class="robot-character"></div>
         <div class="speech-bubble-container">
@@ -902,6 +946,7 @@
         </div>
       </div>
 
+      <!-- إعادة إضافة فقاعة الكلام لصفحة أوزبكستان -->
       <div class="character-speech-container quiz">
         <div class="robot-character"></div>
         <div class="speech-bubble-container">
@@ -947,6 +992,7 @@
         </div>
       </div>
 
+      <!-- إعادة إضافة فقاعة الكلام لصفحة الأسلاف -->
       <div class="character-speech-container quiz">
         <div class="robot-character"></div>
         <div class="speech-bubble-container">
@@ -1023,6 +1069,58 @@
       });
     }
     
+    // ========== AUTO-RETURN TIMER ==========
+    let inactivityTimer;
+    const INACTIVITY_TIMEOUT = 90000; // 90 ثانية
+
+    // دالة إعادة تعيين المؤقت
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimer);
+        inactivityTimer = setTimeout(returnToMainScreen, INACTIVITY_TIMEOUT);
+    }
+
+    // دالة العودة إلى الشاشة الرئيسية
+    function returnToMainScreen() {
+        // إيقاف جميع المؤقتات
+        clearTimeout(inactivityTimer);
+        
+        // إخفاء جميع الصفحات وإظهار الشاشة الرئيسية فقط
+        document.getElementById('holding-page').style.display = 'flex';
+        document.getElementById('knowledge-page').style.display = 'none';
+        document.getElementById('math-questions-page').style.display = 'none';
+        document.getElementById('nature-questions-page').style.display = 'none';
+        document.getElementById('uzbekistan-questions-page').style.display = 'none';
+        document.getElementById('ancestors-questions-page').style.display = 'none';
+        
+        // إعادة تعيين جميع الاختبارات
+        resetMathQuiz();
+        resetNatureQuiz();
+        resetUzbekistanQuiz();
+        resetAncestorsQuiz();
+        
+        // إعادة تشغيل تغيير اللغات
+        startLanguageRotation();
+        
+        // التمرير إلى الأعلى
+        window.scrollTo(0, 0);
+        
+        // إعادة إضافة الأصوات للأزرار
+        onPageChange();
+    }
+
+    // إضافة مستمعي الأحداث لتتبع التفاعل
+    function setupInactivityTracking() {
+        // إعادة تعيين المؤقت عند أي تفاعل
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keypress', resetInactivityTimer);
+        document.addEventListener('click', resetInactivityTimer);
+        document.addEventListener('touchstart', resetInactivityTimer);
+        document.addEventListener('scroll', resetInactivityTimer);
+        
+        // بدء المؤقت لأول مرة
+        resetInactivityTimer();
+    }
+    
     // ========== LANGUAGE ROTATION FOR HOLDING PAGE ==========
     const languages = [
   {
@@ -1078,11 +1176,15 @@
       
       // إضافة الأصوات لجميع الأزرار بعد تحميل الصفحة
       setTimeout(addSoundToButtons, 1000);
+      
+      // بدء تتبع عدم النشاط - أضف هذا السطر
+      setupInactivityTracking();
     });
 
     // إعادة إضافة الأصوات عند تغيير الصفحات
     function onPageChange() {
       setTimeout(addSoundToButtons, 100);
+      resetInactivityTimer(); // أضف هذا السطر
     }
 
     // الانتقال إلى صفحة المعرفة
