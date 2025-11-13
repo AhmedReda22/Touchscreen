@@ -94,22 +94,19 @@
       justify-content: center;
     }
 
-    .character-speech-container {
+    /* التعديلات الجديدة: إزالة فقاعة الكلام وتكبير الروبوت */
+    .character-container {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      position: relative;
-      gap: 20px;
+      height: 40vh; /* زيادة الارتفاع لاستيعاب الروبوت الأكبر */
       flex-shrink: 0;
-      height: 30vh;
     }
 
     .robot-character {
-      width: clamp(120px, 20vw, 250px);
-      height: clamp(120px, 20vw, 250px);
+      width: clamp(200px, 40vw, 400px); /* تكبير الروبوت بشكل ملحوظ */
+      height: clamp(200px, 40vw, 400px);
       background-image: url('./imgs/charachter.png');
       background-size: contain;
       background-repeat: no-repeat;
@@ -124,33 +121,6 @@
       50% { transform: translateY(0) rotate(-1deg); }
       75% { transform: translateY(3px) rotate(0.5deg); }
       100% { transform: translateY(0) rotate(0deg); }
-    }
-
-    .speech-bubble-container {
-      width: 650PX;
-      background-image: url('./imgs/2.png');
-      background-size: 148% 120%;
-      background-repeat: no-repeat;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: clamp(80px, 15vw, 150px) clamp(30px, 8vw, 120px);
-      z-index: 9;
-      flex-shrink: 0;
-      margin: 0 clamp(20px, 5vw, 40px);
-    }
-
-    .speech-bubble-container p {
-      color: #ffffff;
-      font-weight: 600;
-      font-size: clamp(0.9rem, 2vw, 1.4rem);
-      line-height: 1.5;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .lang-buttons {
@@ -625,8 +595,8 @@
     }
 
     @media (max-width: 768px) {
-      .character-speech-container {
-        height: 30vh;
+      .character-container {
+        height: 35vh;
       }
       
       .topics-grid {
@@ -688,8 +658,8 @@
         padding: 1.5rem;
       }
       
-      .character-speech-container {
-        height: 35vh;
+      .character-container {
+        height: 40vh;
       }
       
       .navigation-buttons {
@@ -735,8 +705,8 @@
         margin-bottom: 0.5rem;
       }
       
-      .character-speech-container {
-        height: 35vh;
+      .character-container {
+        height: 45vh;
       }
       
       .quiz-header {
@@ -745,8 +715,8 @@
     }
     
     @media (max-height: 600px) {
-      .character-speech-container {
-        height: 40vh;
+      .character-container {
+        height: 50vh;
       }
       
       .topics-grid {
@@ -774,11 +744,9 @@
       <p id="subtitle-text">Challenge your brain with fun questions about numbers and patterns.</p>
     </div>
 
-    <div class="character-speech-container">
+    <!-- التعديل: استبدال حاوية الشخصية والفقاعة بحاوية الروبوت فقط -->
+    <div class="character-container">
       <div class="robot-character"></div>
-      <div class="speech-bubble-container">
-        <p id="speech-text">Before you start your journey, are you ready to test your knowledge? Join me and sharpen your mind with every question!</p>
-      </div>
     </div>
 
     <div class="lang-buttons">
@@ -788,7 +756,6 @@
     </div>
   </div>
 
-  <!-- باقي الصفحات تبقى كما هي -->
   <!-- KNOWLEDGE PAGE -->
   <div id="knowledge-page">
      <video id="knowledge-bg-video" autoplay muted loop playsinline>
@@ -835,7 +802,6 @@
     </div>
   </div>
 
-  <!-- باقي الصفحات (Math, Nature, Uzbekistan, Ancestors) تبقى كما هي -->
   <!-- MATH QUESTIONS PAGE -->
   <div id="math-questions-page" class="quiz-page" style="background-image: url('./imgs/9.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
@@ -881,7 +847,6 @@
     </div>
   </div>
 
-  <!-- باقي الصفحات (Nature, Uzbekistan, Ancestors) -->
   <!-- NATURE QUESTIONS PAGE -->
   <div id="nature-questions-page" class="quiz-page" style="background-image: url('./imgs/10.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
@@ -1098,7 +1063,7 @@
       const currentLang = languages[currentLanguageIndex];
       document.getElementById('title-text').textContent = currentLang.title;
       document.getElementById('subtitle-text').textContent = currentLang.subtitle;
-      document.getElementById('speech-text').textContent = currentLang.speech;
+      // تم إزالة تحديث نص الفقاعة
     }
 
     function stopLanguageRotation() {
