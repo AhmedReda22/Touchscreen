@@ -136,24 +136,25 @@
     }
 
     .lang-buttons button {
-      background-image: url('./imgs/1.png');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-color: transparent;
-      color: white;
-      font-weight: 800;
-      font-size: clamp(1.2rem, 3vw, 2rem);
-      border: none;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-      width: clamp(180px, 30vw, 300px);
-      height: clamp(70px, 12vw, 120px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  background-image: url('./imgs/1.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  color: #1e3a8a; /* أزرق داكن */
+  font-weight: 800;
+  font-size: clamp(1.5rem, 4vw, 2.5rem); /* تكبير الخط */
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  text-shadow: 0 2px 5px rgba(255, 255, 255, 0.8); /* ظل نص أبيض لتحسين القراءة */
+  width: clamp(220px, 40vw, 400px); /* تكبير العرض */
+  height: clamp(90px, 18vw, 160px); /* تكبير الارتفاع */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)); /* إضافة ظل إضافي */
+}
 
     .lang-buttons button:hover {
       transform: scale(1.05);
