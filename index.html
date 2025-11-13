@@ -33,10 +33,31 @@
       color: white;
       position: relative;
       overflow: hidden;
-      background-image: url('./imgs/8.png');
+      padding: 2vh 20px;
+    }
+
+    /* إضافة الفيديو كخلفية */
+    #holding-page::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('./imgs/8.png'); /* صورة احتياطية */
       background-size: cover;
       background-position: center;
-      padding: 2vh 20px;
+      z-index: -2;
+    }
+
+    #bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
     }
 
     .top-content {
@@ -46,6 +67,7 @@
       align-items: center;
       z-index: 10;
       flex-shrink: 0;
+      margin-top: 50px;
     }
 
     .top-content h1 {
@@ -54,6 +76,10 @@
       color: #ffc900;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
       margin-bottom: 1vh;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .top-content p {
@@ -62,6 +88,10 @@
       color: white;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
       max-width: 1200px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .character-speech-container {
@@ -117,6 +147,10 @@
       font-weight: 600;
       font-size: clamp(0.9rem, 2vw, 1.4rem);
       line-height: 1.5;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .lang-buttons {
@@ -128,6 +162,7 @@
       flex-shrink: 0;
       height: 15vh;
       align-items: center;
+      margin-bottom: 50px;
     }
 
     .lang-buttons button {
@@ -186,6 +221,7 @@
       margin: 0 auto;
       gap: 20px;
       flex-shrink: 0;
+      margin-top: 50px;
     }
 
     .topics-section {
@@ -692,15 +728,21 @@
 
   <!-- HOLDING PAGE -->
   <div id="holding-page">
+    <!-- إضافة الفيديو كخلفية -->
+    <video id="bg-video" autoplay muted loop playsinline>
+      <source src="./imgs/bg.mp4" type="video/mp4">
+      <!-- إذا لم يدعم المتصالف الفيديو، سيتم استخدام الصورة الخلفية -->
+    </video>
+    
     <div class="top-content">
-      <h1>Sharpen Your Mind!</h1>
-      <p>Challenge your brain with fun questions about numbers and patterns.</p>
+      <h1 id="title-text">Sharpen Your Mind!</h1>
+      <p id="subtitle-text">Challenge your brain with fun questions about numbers and patterns.</p>
     </div>
 
     <div class="character-speech-container">
       <div class="robot-character"></div>
       <div class="speech-bubble-container">
-        <p>Before you start your journey, are you ready to test your knowledge? Join me and sharpen your mind with every question!</p>
+        <p id="speech-text">Before you start your journey, are you ready to test your knowledge? Join me and sharpen your mind with every question!</p>
       </div>
     </div>
 
@@ -711,6 +753,7 @@
     </div>
   </div>
 
+  <!-- باقي الصفحات تبقى كما هي -->
   <!-- KNOWLEDGE PAGE -->
   <div id="knowledge-page">
     <div class="knowledge-content">
@@ -753,6 +796,7 @@
     </div>
   </div>
 
+  <!-- باقي الصفحات (Math, Nature, Uzbekistan, Ancestors) تبقى كما هي -->
   <!-- MATH QUESTIONS PAGE -->
   <div id="math-questions-page" class="quiz-page" style="background-image: url('./imgs/9.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
@@ -798,7 +842,7 @@
     </div>
   </div>
 
-  <!-- باقي الصفحات (Nature, Uzbekistan, Ancestors) ستتبع نفس النمط -->
+  <!-- باقي الصفحات (Nature, Uzbekistan, Ancestors) -->
   <!-- NATURE QUESTIONS PAGE -->
   <div id="nature-questions-page" class="quiz-page" style="background-image: url('./imgs/10.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
@@ -935,12 +979,119 @@
   </div>
 
   <script>
+    // ========== SOUND EFFECTS ==========
+    // إنشاء عناصر صوتية للتأثيرات الصوتية
+    const buttonClickSound = new Audio();
+    buttonClickSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="; // صوت افتراضي
+    
+    // محاولة تحميل أصوات حقيقية إذا كانت متوفرة
+    function loadSoundEffects() {
+      // يمكن استبدال هذه بالمقاطع الصوتية الفعلية
+      try {
+        // صوت نقرة زر عادي
+        buttonClickSound.src = './sounds/button-click.mp3';
+        buttonClickSound.load();
+      } catch (e) {
+        console.log('Using default button sound');
+      }
+    }
+    
+    // دالة تشغيل صوت النقر
+    function playButtonSound() {
+      try {
+        buttonClickSound.currentTime = 0;
+        buttonClickSound.play().catch(e => console.log('Sound play failed:', e));
+      } catch (e) {
+        console.log('Sound error:', e);
+      }
+    }
+    
+    // دالة إضافة مستمعات الأصوات لجميع الأزرار
+    function addSoundToButtons() {
+      // جميع الأزرار في الصفحة
+      const allButtons = document.querySelectorAll('button, .topic-card, .option-button');
+      
+      allButtons.forEach(button => {
+        // إزالة المستمعين السابقين لمنع التكرار
+        button.removeEventListener('click', playButtonSound);
+        // إضافة مستمع جديد
+        button.addEventListener('click', playButtonSound);
+      });
+    }
+    
+    // ========== LANGUAGE ROTATION FOR HOLDING PAGE ==========
+    const languages = [
+      {
+        code: 'en',
+        title: 'Sharpen Your Mind!',
+        subtitle: 'Challenge your brain with fun questions about numbers and patterns.',
+        speech: 'Before you start your journey, are you ready to test your knowledge? Join me and sharpen your mind with every question!'
+      },
+      {
+        code: 'uz',
+        title: 'Aqlingizni Oʻtkirlashtiring!',
+        subtitle: 'Raqamlar va naqunlar haqida qiziqarli savollar bilan miyangizni sinab koʻring.',
+        speech: 'Sayohatingizni boshlashdan oldin, bilimingizni sinab koʻrishga tayyormisiz? Menga qoʻshiling va har bir savol bilan aqlingizni oʻtkirlashtiring!'
+      },
+      {
+        code: 'ru',
+        title: 'Острите Свой Ум!',
+        subtitle: 'Проверьте свой мозг с помощью интересных вопросов о числах и закономерностях.',
+        speech: 'Прежде чем начать свое путешествие, готовы ли вы проверить свои знания? Присоединяйтесь ко мне и оттачивайте свой ум с каждым вопросом!'
+      }
+    ];
+
+    let currentLanguageIndex = 0;
+    let languageInterval;
+
+    function startLanguageRotation() {
+      // تحديث المحتوى فوراً
+      updateLanguageContent();
+      
+      // تعيين الفاصل الزمني لتغيير اللغة كل 6 ثوانٍ
+      languageInterval = setInterval(() => {
+        currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
+        updateLanguageContent();
+      }, 6000);
+    }
+
+    function updateLanguageContent() {
+      const currentLang = languages[currentLanguageIndex];
+      document.getElementById('title-text').textContent = currentLang.title;
+      document.getElementById('subtitle-text').textContent = currentLang.subtitle;
+      document.getElementById('speech-text').textContent = currentLang.speech;
+    }
+
+    function stopLanguageRotation() {
+      if (languageInterval) {
+        clearInterval(languageInterval);
+      }
+    }
+
+    // بدء تغيير اللغات عند تحميل الصفحة
+    window.addEventListener('load', () => {
+      loadSoundEffects();
+      startLanguageRotation();
+      // إخفاء زر الصفحة الرئيسية في صفحة المعرفة فقط
+      document.getElementById('home-btn').style.display = 'none';
+      
+      // إضافة الأصوات لجميع الأزرار بعد تحميل الصفحة
+      setTimeout(addSoundToButtons, 1000);
+    });
+
+    // إعادة إضافة الأصوات عند تغيير الصفحات
+    function onPageChange() {
+      setTimeout(addSoundToButtons, 100);
+    }
+
     // الانتقال إلى صفحة المعرفة
     document.querySelectorAll('#start-btn, #boshlash-btn, #nachat-btn').forEach(btn => {
       btn.addEventListener('click', () => {
+        stopLanguageRotation(); // إيقاف تغيير اللغات عند الانتقال
         document.getElementById('holding-page').style.display = 'none';
         document.getElementById('knowledge-page').style.display = 'flex';
         window.scrollTo(0, 0);
+        onPageChange();
       });
     });
 
@@ -970,76 +1121,95 @@
             break;
         }
         window.scrollTo(0, 0);
+        onPageChange();
       }, 500);
     }
 
-    // زر الرجوع إلى صفحة المعرفة
+    // زر الرجوع إلى صفحة المعرفة - إخفاء هذا الزر في صفحة المعرفة
     document.getElementById('home-btn').addEventListener('click', () => {
       document.getElementById('knowledge-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
-    // زر الرجوع إلى صفحة المعرفة - إخفاء هذا الزر في صفحة المعرفة
-document.getElementById('home-btn').addEventListener('click', () => {
-  document.getElementById('knowledge-page').style.display = 'none';
-  document.getElementById('holding-page').style.display = 'flex';
-  window.scrollTo(0, 0);
-});
+    // زر العودة إلى الصفحة الرئيسية الأولى - إبقاء هذا الزر مرئيًا
+    document.getElementById('main-home-btn').addEventListener('click', () => {
+      document.getElementById('knowledge-page').style.display = 'none';
+      document.getElementById('holding-page').style.display = 'flex';
+      startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
+      window.scrollTo(0, 0);
+      onPageChange();
+    });
 
-// زر العودة إلى الصفحة الرئيسية الأولى - إبقاء هذا الزر مرئيًا
-document.getElementById('main-home-btn').addEventListener('click', () => {
-  document.getElementById('knowledge-page').style.display = 'none';
-  document.getElementById('holding-page').style.display = 'flex';
-  window.scrollTo(0, 0);
-});
-
-// إخفاء زر الصفحة الرئيسية (0.png) في صفحة المعرفة عند تحميل الصفحة
-window.addEventListener('load', () => {
-  // إخفاء زر الصفحة الرئيسية في صفحة المعرفة فقط
-  document.getElementById('home-btn').style.display = 'none';
-});
+    // أزرار العودة من صفحات الاختبارات
+    document.getElementById('math-home-btn').addEventListener('click', () => {
+      document.getElementById('math-questions-page').style.display = 'none';
+      document.getElementById('knowledge-page').style.display = 'flex';
+      resetMathQuiz();
+      window.scrollTo(0, 0);
+      onPageChange();
+    });
 
     document.getElementById('math-main-home-btn').addEventListener('click', () => {
       document.getElementById('math-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      resetMathQuiz();
+      startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
     document.getElementById('nature-home-btn').addEventListener('click', () => {
       document.getElementById('nature-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      resetNatureQuiz();
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
     document.getElementById('nature-main-home-btn').addEventListener('click', () => {
       document.getElementById('nature-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      resetNatureQuiz();
+      startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
     document.getElementById('uzbekistan-home-btn').addEventListener('click', () => {
       document.getElementById('uzbekistan-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      resetUzbekistanQuiz();
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
     document.getElementById('uzbekistan-main-home-btn').addEventListener('click', () => {
       document.getElementById('uzbekistan-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      resetUzbekistanQuiz();
+      startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
     document.getElementById('ancestors-home-btn').addEventListener('click', () => {
       document.getElementById('ancestors-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      resetAncestorsQuiz();
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
     document.getElementById('ancestors-main-home-btn').addEventListener('click', () => {
       document.getElementById('ancestors-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      resetAncestorsQuiz();
+      startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
+      onPageChange();
     });
 
     // ========== MATH QUESTIONS ==========
@@ -1309,6 +1479,9 @@ window.addEventListener('load', () => {
     button.addEventListener('click', () => checkMathAnswer(index));
     optionsContainer.appendChild(button);
   });
+  
+  // إعادة إضافة الأصوات للأزرار الجديدة
+  onPageChange();
 }
 
     function checkMathAnswer(selectedIndex) {
@@ -1333,20 +1506,13 @@ window.addEventListener('load', () => {
       }, 1500);
     }
 
-    // زر العودة من صفحة الرياضيات إلى صفحة المعرفة
-document.getElementById('math-home-btn').addEventListener('click', () => {
-  document.getElementById('math-questions-page').style.display = 'none';
-  document.getElementById('knowledge-page').style.display = 'flex';
-  resetMathQuiz();
-});
-
-// دالة لإعادة تعيين اختبار الرياضيات
-function resetMathQuiz() {
-  currentMathQuestionIndex = 0;
-  mathScore = 0;
-  document.getElementById('math-result-container').style.display = 'none';
-  document.getElementById('math-progress-bar').style.width = '0%';
-}
+    // دالة لإعادة تعيين اختبار الرياضيات
+    function resetMathQuiz() {
+      currentMathQuestionIndex = 0;
+      mathScore = 0;
+      document.getElementById('math-result-container').style.display = 'none';
+      document.getElementById('math-progress-bar').style.width = '0%';
+    }
 
     function showMathResults() {
       document.getElementById('math-question-text').textContent = "You've completed the math quiz!";
@@ -1376,6 +1542,9 @@ function resetMathQuiz() {
       document.getElementById('math-result-title').textContent = title;
       document.getElementById('math-result-message').textContent = message;
       document.getElementById('math-result-container').style.display = 'flex';
+      
+      // إعادة إضافة الأصوات للأزرار في صفحة النتائج
+      onPageChange();
     }
 
     document.getElementById('math-restart-button').addEventListener('click', () => {
@@ -1409,6 +1578,9 @@ function resetMathQuiz() {
     button.addEventListener('click', () => checkNatureAnswer(index));
     optionsContainer.appendChild(button);
   });
+  
+  // إعادة إضافة الأصوات للأزرار الجديدة
+  onPageChange();
 }
 
     function checkNatureAnswer(selectedIndex) {
@@ -1431,6 +1603,13 @@ function resetMathQuiz() {
         currentNatureQuestionIndex++;
         loadNatureQuestion();
       }, 1500);
+    }
+
+    function resetNatureQuiz() {
+      currentNatureQuestionIndex = 0;
+      natureScore = 0;
+      document.getElementById('nature-result-container').style.display = 'none';
+      document.getElementById('nature-progress-bar').style.width = '0%';
     }
 
     function showNatureResults() {
@@ -1461,6 +1640,9 @@ function resetMathQuiz() {
       document.getElementById('nature-result-title').textContent = title;
       document.getElementById('nature-result-message').textContent = message;
       document.getElementById('nature-result-container').style.display = 'flex';
+      
+      // إعادة إضافة الأصوات للأزرار في صفحة النتائج
+      onPageChange();
     }
 
     document.getElementById('nature-restart-button').addEventListener('click', () => {
@@ -1494,6 +1676,9 @@ function resetMathQuiz() {
         button.addEventListener('click', () => checkUzbekistanAnswer(index));
         optionsContainer.appendChild(button);
       });
+      
+      // إعادة إضافة الأصوات للأزرار الجديدة
+      onPageChange();
     }
 
     function checkUzbekistanAnswer(selectedIndex) {
@@ -1516,6 +1701,13 @@ function resetMathQuiz() {
         currentUzbekistanQuestionIndex++;
         loadUzbekistanQuestion();
       }, 1500);
+    }
+
+    function resetUzbekistanQuiz() {
+      currentUzbekistanQuestionIndex = 0;
+      uzbekistanScore = 0;
+      document.getElementById('uzbekistan-result-container').style.display = 'none';
+      document.getElementById('uzbekistan-progress-bar').style.width = '0%';
     }
 
     function showUzbekistanResults() {
@@ -1546,6 +1738,9 @@ function resetMathQuiz() {
       document.getElementById('uzbekistan-result-title').textContent = title;
       document.getElementById('uzbekistan-result-message').textContent = message;
       document.getElementById('uzbekistan-result-container').style.display = 'flex';
+      
+      // إعادة إضافة الأصوات للأزرار في صفحة النتائج
+      onPageChange();
     }
 
     document.getElementById('uzbekistan-restart-button').addEventListener('click', () => {
@@ -1556,8 +1751,7 @@ function resetMathQuiz() {
     });
 
     // ========== ANCESTORS FUNCTIONS ==========
-    // ========== ANCESTORS FUNCTIONS ==========
-function loadAncestorsQuestion() {
+    function loadAncestorsQuestion() {
   if (currentAncestorsQuestionIndex >= ancestorsQuestions.length) {
     showAncestorsResults();
     return;
@@ -1580,6 +1774,9 @@ function loadAncestorsQuestion() {
     button.addEventListener('click', () => checkAncestorsAnswer(index));
     optionsContainer.appendChild(button);
   });
+  
+  // إعادة إضافة الأصوات للأزرار الجديدة
+  onPageChange();
 }
 
     function checkAncestorsAnswer(selectedIndex) {
@@ -1602,6 +1799,13 @@ function loadAncestorsQuestion() {
         currentAncestorsQuestionIndex++;
         loadAncestorsQuestion();
       }, 1500);
+    }
+
+    function resetAncestorsQuiz() {
+      currentAncestorsQuestionIndex = 0;
+      ancestorsScore = 0;
+      document.getElementById('ancestors-result-container').style.display = 'none';
+      document.getElementById('ancestors-progress-bar').style.width = '0%';
     }
 
     function showAncestorsResults() {
@@ -1632,6 +1836,9 @@ function loadAncestorsQuestion() {
       document.getElementById('ancestors-result-title').textContent = title;
       document.getElementById('ancestors-result-message').textContent = message;
       document.getElementById('ancestors-result-container').style.display = 'flex';
+      
+      // إعادة إضافة الأصوات للأزرار في صفحة النتائج
+      onPageChange();
     }
 
     document.getElementById('ancestors-restart-button').addEventListener('click', () => {
@@ -1639,11 +1846,6 @@ function loadAncestorsQuestion() {
       ancestorsScore = 0;
       document.getElementById('ancestors-result-container').style.display = 'none';
       loadAncestorsQuestion();
-    });
-
-    // تهيئة أول سؤال عند تحميل الصفحة
-    window.addEventListener('load', () => {
-      // لا تفعل شيئًا هنا، سيتم تحميل السؤال عند النقر على الموضوعات
     });
   </script>
 
