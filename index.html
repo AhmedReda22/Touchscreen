@@ -145,16 +145,16 @@
   font-weight: 800;
   font-size: clamp(1.5rem, 4vw, 2.5rem); /* تكبير الخط */
   border: none;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-  width: clamp(220px, 40vw, 400px); /* تكبير العرض */
-  height: clamp(90px, 18vw, 160px); /* تكبير الارتفاع */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)); /* إضافة ظل إضافي */
-}
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      width: clamp(220px, 40vw, 400px); /* تكبير العرض */
+      height: clamp(90px, 18vw, 160px); /* تكبير الارتفاع */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)); /* إضافة ظل إضافي */
+    }
 
     .lang-buttons button:hover {
       transform: scale(1.05);
@@ -227,7 +227,7 @@
       margin: 0 auto;
       gap: 20px;
       flex-shrink: 0;
-      margin-top: 50px;
+      margin-top: 65px;
     }
 
     .speech-bubble-container {
@@ -481,7 +481,6 @@
       border: none;
       cursor: pointer;
       transition: all 0.3s ease;
-      text-shadow: 0 2px 8px #1e3b8a5e;
       width: 100%;
       height: clamp(100px, 15vw, 150px);
       display: flex;
@@ -603,6 +602,76 @@
 
     .restart-button:hover {
       transform: scale(1.05);
+    }
+
+    /* ========== ANIMATIONS FOR QUESTIONS AND ANSWERS ========== */
+    /* أنيميشن السؤال ينزل من أعلى الشاشة */
+    .character-speech-container.quiz {
+      animation: slideDownQuestion 0.5s ease-out forwards;
+      opacity: 0;
+      transform: translateY(-100vh);
+    }
+
+    @keyframes slideDownQuestion {
+      0% {
+        opacity: 0;
+        transform: translateY(-100vh);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* أنيميشن الإجابات تظهر من أسفل الشاشة */
+    .question-container {
+      animation: slideUpAnswers 0.5s ease-out forwards;
+      opacity: 0;
+      transform: translateY(100vh);
+      animation-delay: 0.3s;
+    }
+
+    @keyframes slideUpAnswers {
+      0% {
+        opacity: 0;
+        transform: translateY(100vh);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* أنيميشن اختفاء السؤال للأعلى */
+    .character-speech-container.quiz.exit {
+      animation: slideUpQuestion 0.4s ease-in forwards;
+    }
+
+    @keyframes slideUpQuestion {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-100vh);
+      }
+    }
+
+    /* أنيميشن اختفاء الإجابات للأسفل */
+    .question-container.exit {
+      animation: slideDownAnswers 0.4s ease-in forwards;
+    }
+
+    @keyframes slideDownAnswers {
+      0% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(100vh);
+      }
     }
 
     /* ========== MEDIA QUERIES ========== */
@@ -1561,32 +1630,32 @@
 
     // ========== MATH FUNCTIONS ==========
     function loadMathQuestion() {
-  if (currentMathQuestionIndex >= mathQuestions.length) {
-    showMathResults();
-    return;
-  }
+      if (currentMathQuestionIndex >= mathQuestions.length) {
+        showMathResults();
+        return;
+      }
 
-  const question = mathQuestions[currentMathQuestionIndex];
-  document.getElementById('math-question-text').textContent = question.question;
-  
-  const progress = ((currentMathQuestionIndex + 1) / mathQuestions.length) * 100;
-  document.getElementById('math-progress-bar').style.width = `${progress}%`;
-  
-  const optionsContainer = document.getElementById('math-options-container');
-  optionsContainer.innerHTML = "";
-  
-  question.options.forEach((option, index) => {
-    const button = document.createElement('button');
-    button.className = 'option-button';
-    button.innerHTML = option; // تغيير إلى innerHTML
-    adjustFontSize(button);
-    button.addEventListener('click', () => checkMathAnswer(index));
-    optionsContainer.appendChild(button);
-  });
-  
-  // إعادة إضافة الأصوات للأزرار الجديدة
-  onPageChange();
-}
+      const question = mathQuestions[currentMathQuestionIndex];
+      document.getElementById('math-question-text').textContent = question.question;
+      
+      const progress = ((currentMathQuestionIndex + 1) / mathQuestions.length) * 100;
+      document.getElementById('math-progress-bar').style.width = `${progress}%`;
+      
+      const optionsContainer = document.getElementById('math-options-container');
+      optionsContainer.innerHTML = "";
+      
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.innerHTML = option; // تغيير إلى innerHTML
+        adjustFontSize(button);
+        button.addEventListener('click', () => checkMathAnswer(index));
+        optionsContainer.appendChild(button);
+      });
+      
+      // إعادة إضافة الأصوات للأزرار الجديدة
+      onPageChange();
+    }
 
     function checkMathAnswer(selectedIndex) {
       const question = mathQuestions[currentMathQuestionIndex];
@@ -1604,10 +1673,26 @@
         buttons[question.correctAnswer].classList.add('correct');
       }
       
+      // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        currentMathQuestionIndex++;
-        loadMathQuestion();
-      }, 1500);
+        // إضافة أنيميشن الخروج للسؤال أولاً
+        const speechContainer = document.querySelector('#math-questions-page .character-speech-container.quiz');
+        speechContainer.classList.add('exit');
+        
+        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        setTimeout(() => {
+          const questionContainer = document.querySelector('#math-questions-page .question-container');
+          questionContainer.classList.add('exit');
+          
+          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
+          setTimeout(() => {
+            currentMathQuestionIndex++;
+            speechContainer.classList.remove('exit');
+            questionContainer.classList.remove('exit');
+            loadMathQuestion();
+          }, 400);
+        }, 750);
+      }, 3000);
     }
 
     // دالة لإعادة تعيين اختبار الرياضيات
@@ -1660,32 +1745,32 @@
 
     // ========== NATURE FUNCTIONS ==========
     function loadNatureQuestion() {
-  if (currentNatureQuestionIndex >= natureQuestions.length) {
-    showNatureResults();
-    return;
-  }
+      if (currentNatureQuestionIndex >= natureQuestions.length) {
+        showNatureResults();
+        return;
+      }
 
-  const question = natureQuestions[currentNatureQuestionIndex];
-  document.getElementById('nature-question-text').textContent = question.question;
+      const question = natureQuestions[currentNatureQuestionIndex];
+      document.getElementById('nature-question-text').textContent = question.question;
 
-  const progress = ((currentNatureQuestionIndex + 1) / natureQuestions.length) * 100;
-  document.getElementById('nature-progress-bar').style.width = `${progress}%`;
-  
-  const optionsContainer = document.getElementById('nature-options-container');
-  optionsContainer.innerHTML = "";
-  
-  question.options.forEach((option, index) => {
-    const button = document.createElement('button');
-    button.className = 'option-button';
-    button.innerHTML = option; // تغيير إلى innerHTML
-    adjustFontSize(button);
-    button.addEventListener('click', () => checkNatureAnswer(index));
-    optionsContainer.appendChild(button);
-  });
-  
-  // إعادة إضافة الأصوات للأزرار الجديدة
-  onPageChange();
-}
+      const progress = ((currentNatureQuestionIndex + 1) / natureQuestions.length) * 100;
+      document.getElementById('nature-progress-bar').style.width = `${progress}%`;
+      
+      const optionsContainer = document.getElementById('nature-options-container');
+      optionsContainer.innerHTML = "";
+      
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.innerHTML = option; // تغيير إلى innerHTML
+        adjustFontSize(button);
+        button.addEventListener('click', () => checkNatureAnswer(index));
+        optionsContainer.appendChild(button);
+      });
+      
+      // إعادة إضافة الأصوات للأزرار الجديدة
+      onPageChange();
+    }
 
     function checkNatureAnswer(selectedIndex) {
       const question = natureQuestions[currentNatureQuestionIndex];
@@ -1703,10 +1788,26 @@
         buttons[question.correctAnswer].classList.add('correct');
       }
       
+      // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        currentNatureQuestionIndex++;
-        loadNatureQuestion();
-      }, 1500);
+        // إضافة أنيميشن الخروج للسؤال أولاً
+        const speechContainer = document.querySelector('#nature-questions-page .character-speech-container.quiz');
+        speechContainer.classList.add('exit');
+        
+        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        setTimeout(() => {
+          const questionContainer = document.querySelector('#nature-questions-page .question-container');
+          questionContainer.classList.add('exit');
+          
+          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
+          setTimeout(() => {
+            currentNatureQuestionIndex++;
+            speechContainer.classList.remove('exit');
+            questionContainer.classList.remove('exit');
+            loadNatureQuestion();
+          }, 400);
+        }, 750);
+      }, 3000);
     }
 
     function resetNatureQuiz() {
@@ -1801,10 +1902,26 @@
         buttons[question.correctAnswer].classList.add('correct');
       }
       
+      // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        currentUzbekistanQuestionIndex++;
-        loadUzbekistanQuestion();
-      }, 1500);
+        // إضافة أنيميشن الخروج للسؤال أولاً
+        const speechContainer = document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz');
+        speechContainer.classList.add('exit');
+        
+        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        setTimeout(() => {
+          const questionContainer = document.querySelector('#uzbekistan-questions-page .question-container');
+          questionContainer.classList.add('exit');
+          
+          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
+          setTimeout(() => {
+            currentUzbekistanQuestionIndex++;
+            speechContainer.classList.remove('exit');
+            questionContainer.classList.remove('exit');
+            loadUzbekistanQuestion();
+          }, 400);
+        }, 750);
+      }, 3000);
     }
 
     function resetUzbekistanQuiz() {
@@ -1856,32 +1973,32 @@
 
     // ========== ANCESTORS FUNCTIONS ==========
     function loadAncestorsQuestion() {
-  if (currentAncestorsQuestionIndex >= ancestorsQuestions.length) {
-    showAncestorsResults();
-    return;
-  }
+      if (currentAncestorsQuestionIndex >= ancestorsQuestions.length) {
+        showAncestorsResults();
+        return;
+      }
 
-  const question = ancestorsQuestions[currentAncestorsQuestionIndex];
-  document.getElementById('ancestors-question-text').textContent = question.question;
-  
-  const progress = ((currentAncestorsQuestionIndex + 1) / ancestorsQuestions.length) * 100;
-  document.getElementById('ancestors-progress-bar').style.width = `${progress}%`;
-  
-  const optionsContainer = document.getElementById('ancestors-options-container');
-  optionsContainer.innerHTML = "";
-  
-  question.options.forEach((option, index) => {
-    const button = document.createElement('button');
-    button.className = 'option-button';
-    button.innerHTML = option; // تغيير من textContent إلى innerHTML
-    adjustFontSize(button);
-    button.addEventListener('click', () => checkAncestorsAnswer(index));
-    optionsContainer.appendChild(button);
-  });
-  
-  // إعادة إضافة الأصوات للأزرار الجديدة
-  onPageChange();
-}
+      const question = ancestorsQuestions[currentAncestorsQuestionIndex];
+      document.getElementById('ancestors-question-text').textContent = question.question;
+      
+      const progress = ((currentAncestorsQuestionIndex + 1) / ancestorsQuestions.length) * 100;
+      document.getElementById('ancestors-progress-bar').style.width = `${progress}%`;
+      
+      const optionsContainer = document.getElementById('ancestors-options-container');
+      optionsContainer.innerHTML = "";
+      
+      question.options.forEach((option, index) => {
+        const button = document.createElement('button');
+        button.className = 'option-button';
+        button.innerHTML = option; // تغيير من textContent إلى innerHTML
+        adjustFontSize(button);
+        button.addEventListener('click', () => checkAncestorsAnswer(index));
+        optionsContainer.appendChild(button);
+      });
+      
+      // إعادة إضافة الأصوات للأزرار الجديدة
+      onPageChange();
+    }
 
     function checkAncestorsAnswer(selectedIndex) {
       const question = ancestorsQuestions[currentAncestorsQuestionIndex];
@@ -1899,10 +2016,26 @@
         buttons[question.correctAnswer].classList.add('correct');
       }
       
+      // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        currentAncestorsQuestionIndex++;
-        loadAncestorsQuestion();
-      }, 1500);
+        // إضافة أنيميشن الخروج للسؤال أولاً
+        const speechContainer = document.querySelector('#ancestors-questions-page .character-speech-container.quiz');
+        speechContainer.classList.add('exit');
+        
+        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        setTimeout(() => {
+          const questionContainer = document.querySelector('#ancestors-questions-page .question-container');
+          questionContainer.classList.add('exit');
+          
+          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
+          setTimeout(() => {
+            currentAncestorsQuestionIndex++;
+            speechContainer.classList.remove('exit');
+            questionContainer.classList.remove('exit');
+            loadAncestorsQuestion();
+          }, 400);
+        }, 750);
+      }, 3000);
     }
 
     function resetAncestorsQuiz() {
