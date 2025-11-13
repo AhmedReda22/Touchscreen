@@ -105,8 +105,8 @@
     }
 
     .robot-character {
-      width: clamp(200px, 40vw, 400px); /* تكبير الروبوت بشكل ملحوظ */
-      height: clamp(200px, 40vw, 400px);
+      width: clamp(150px, 25vw, 250px);
+  height: clamp(150px, 25vw, 250px);
       background-image: url('./imgs/charachter.png');
       background-size: contain;
       background-repeat: no-repeat;
@@ -143,7 +143,7 @@
   background-color: transparent;
   color: white; /* أزرق داكن */
   font-weight: 800;
-  font-size: clamp(1.5rem, 4vw, 2.5rem); /* تكبير الخط */
+  font-size: clamp(1.5rem, 4vw, 2.1rem); /* تكبير الخط */
   border: none;
       cursor: pointer;
       transition: transform 0.3s ease;
@@ -219,43 +219,43 @@
     }
 
     .character-speech-container.knowledge {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-      gap: 20px;
-      flex-shrink: 0;
-      margin-top: 65px;
-    }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 20px;
+  flex-shrink: 0;
+  margin-top: 30px;
+}
 
     .speech-bubble-container {
-      width: 650PX;
-      background-image: url('./imgs/2.png');
-      background-size: 100% 110%;
-      background-repeat: no-repeat;
-      background-position: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: clamp(80px, 15vw, 150px) clamp(30px, 8vw, 120px);
+  width: 500px;
+  background-image: url('./imgs/2.png');
+  background-size: 100% 110%;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: clamp(50px, 10vw, 100px) clamp(20px, 5vw, 80px);
       z-index: 9;
       flex-shrink: 0;
       margin: 0 clamp(20px, 5vw, 40px);
     }
 
     .speech-bubble-container p {
-      color: #1e3a8a;
-      font-weight: 800;
-      font-size: clamp(0.9rem, 2vw, 1.6rem);
-      line-height: 1.5;
-      min-height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  color: #45312C;
+  font-weight: 800;
+  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  line-height: 1.5;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
     .topics-section {
       padding: 0 1rem;
@@ -279,18 +279,18 @@
     }
 
     .topic-card {
-      background-color: rgba(64, 120, 120, 0.8);
-      border-radius: 1.5rem;
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-      min-height: 200px;
-    }
+  background-color: rgba(64, 120, 120, 0.8);
+  border-radius: 1.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  min-height: 150px;
+}
 
     .topic-card:hover {
       transform: scale(1.05);
@@ -302,13 +302,13 @@
     }
 
     .topic-icon {
-      width: clamp(80px, 15vw, 150px);
-      height: clamp(80px, 15vw, 150px);
-      margin-bottom: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  width: clamp(60px, 10vw, 100px);
+  height: clamp(60px, 10vw, 100px);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
     .topic-icon img {
       width: 100%;
@@ -317,11 +317,11 @@
       animation: zoomInOut 3s ease-in-out infinite;
     }
 
-    .topic-title {
-      font-size: clamp(1rem, 2vw, 1.3rem);
-      font-weight: bold;
-      text-align: center;
-    }
+   .topic-title {
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+  font-weight: bold;
+  text-align: center;
+}
 
     /* ========== زر العودة وزر الصفحة الرئيسية ========== */
     .navigation-buttons {
@@ -379,17 +379,17 @@
 
     /* التعديلات المطلوبة: جعل quiz-header يكون position: relative */
     .quiz-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 0 1rem;
-      flex-shrink: 0;
-      height: 15vh;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 90px;
-      position: relative; /* إضافة هذه الخاصية */
-    }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  flex-shrink: 0;
+  height: 15vh;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 40px; /* غيري من 90px إلى 40px */
+  position: relative;
+}
 
     .quiz-title {
       font-size: clamp(1.5rem, 4vw, 2.5rem);
@@ -404,19 +404,30 @@
 
     /* التعديلات المطلوبة: جعل الأيقونة في أعلى اليمين */
     .quiz-icon {
-      width: clamp(80px, 15vw, 150px);
-      height: clamp(80px, 15vw, 150px);
-      animation: zoomInOut 3s ease-in-out infinite;
-      flex-shrink: 0;
-      order: 2;
-      /* إضافة الخصائص التالية لوضع الأيقونة في أعلى اليمين */
-      position: absolute;
-      top: 0;
-      right: 0;
-      margin: 10px;
-    }
+  width: clamp(100px, 20vw, 180px); /* تكبير من 80px إلى 100px */
+  height: clamp(100px, 20vw, 180px); /* تكبير من 80px إلى 100px */
+  animation: zoomInOut 3s ease-in-out infinite;
+  flex-shrink: 0;
+  order: 2;
+  position: relative;
+  top: 0;
+  right: 0;
+  margin: 10px;
+}
 
-    .quiz-icon img {
+    /* أيقونة العداد الجديدة */
+    .countdown-icon {
+  width: clamp(100px, 20vw, 250px); /* تكبير من 80px إلى 100px */
+  height: clamp(100px, 20vw, 250px); /* تكبير من 80px إلى 100px */
+  flex-shrink: 0;
+  order: 0;
+  position: relative;
+  top: 0;
+  left: 0;
+  margin: 10px;
+}
+
+    .quiz-icon img, .countdown-icon img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -475,7 +486,7 @@
       background-repeat: no-repeat;
       background-position: center;
       background-color: transparent;
-      color: #1e3a8a;
+      color: #45312C;
       font-weight: 700;
       font-size: clamp(1.2rem, 2.5vw, 2.2rem);
       border: none;
@@ -541,19 +552,20 @@
     }
 
     .result-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-      max-width: 800px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 2rem;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      width: 90%;
-      flex-grow: 1;
-    }
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    flex-grow: 1;
+    margin-top: -100px; /* إضافة هذا السطر لرفع النتائج */
+}
 
     .result-title {
       font-size: clamp(1.8rem, 4vw, 2.5rem);
@@ -606,7 +618,14 @@
 
     /* ========== ANIMATIONS FOR QUESTIONS AND ANSWERS ========== */
     /* أنيميشن السؤال ينزل من أعلى الشاشة */
+    /* تم إزالة الأنيميشن من character-speech-container.quiz ليظل الروبوت ثابتاً */
     .character-speech-container.quiz {
+      /* إزالة الخصائص التي تسبب الحركة للروبوت */
+      opacity: 1; /* يجب أن يكون مرئياً */
+      transform: translateY(0); /* يجب أن يكون ثابتاً */
+    }
+
+    .character-speech-container.quiz .speech-bubble-container {
       animation: slideDownQuestion 0.5s ease-out forwards;
       opacity: 0;
       transform: translateY(-100vh);
@@ -642,9 +661,10 @@
       }
     }
 
+    /* ========== التعديلات الجديدة ========== */
     /* أنيميشن اختفاء السؤال للأعلى */
-    .character-speech-container.quiz.exit {
-      animation: slideUpQuestion 0.4s ease-in forwards;
+    .character-speech-container.quiz.exit .speech-bubble-container {
+      animation: slideUpQuestion 0.5s ease-in forwards;
     }
 
     @keyframes slideUpQuestion {
@@ -660,7 +680,7 @@
 
     /* أنيميشن اختفاء الإجابات للأسفل */
     .question-container.exit {
-      animation: slideDownAnswers 0.4s ease-in forwards;
+      animation: slideDownAnswers 0.5s ease-in forwards;
     }
 
     @keyframes slideDownAnswers {
@@ -838,6 +858,27 @@
         height: 15vh;
       }
     }
+
+
+    /* إيقاف أنيميشن الروبوت في صفحات الأسئلة فقط */
+#math-questions-page .robot-character,
+#nature-questions-page .robot-character,
+#uzbekistan-questions-page .robot-character,
+#ancestors-questions-page .robot-character {
+    animation: none !important;
+}
+
+.character-speech-container.quiz .robot-character {
+    animation: none !important;
+}
+
+/* إخفاء فقاعة الكلام في صفحة النتائج */
+#uzbekistan-result-container ~ .character-speech-container.quiz,
+#math-result-container ~ .character-speech-container.quiz,
+#nature-result-container ~ .character-speech-container.quiz,
+#ancestors-result-container ~ .character-speech-container.quiz {
+    display: none !important;
+}
   </style>
 </head>
 <body>
@@ -861,9 +902,10 @@
     </div>
 
     <div class="lang-buttons">
-      <button id="boshlash-btn">Boshlash</button>
-      <button id="nachat-btn">Начать</button>
-      <button id="start-btn">START</button>
+      <button id="boshlash-btn">BOSHLASH</button>
+<button id="nachat-btn">НАЧАТЬ</button>
+<button id="start-btn">START</button>
+
     </div>
   </div>
 
@@ -875,8 +917,9 @@
   </video>
     <div class="knowledge-content">
       <!-- إعادة إضافة فقاعة الكلام لصفحة المعرفة -->
+       <div class="robot-character"></div>
       <div class="character-speech-container knowledge">
-        <div class="robot-character"></div>
+        
         <div class="speech-bubble-container">
           <p>Choose a topic to begin your adventure of knowledge!</p>
         </div>
@@ -918,6 +961,9 @@
   <div id="math-questions-page" class="quiz-page" style="background-image: url('./imgs/9.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
       <div class="quiz-header">
+        <div class="countdown-icon">
+          <img src="./imgs/countdown.gif" alt="Countdown">
+        </div>
         <div class="quiz-title">Simple Mathematics</div>
         <div class="quiz-icon">
           <img src="./imgs/6.png" alt="Math Icon">
@@ -964,6 +1010,9 @@
   <div id="nature-questions-page" class="quiz-page" style="background-image: url('./imgs/10.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
       <div class="quiz-header">
+        <div class="countdown-icon">
+          <img src="./imgs/countdown.gif" alt="Countdown">
+        </div>
         <div class="quiz-title">Nature & Environment</div>
         <div class="quiz-icon">
           <img src="./imgs/5.png" alt="Nature Icon">
@@ -1010,6 +1059,9 @@
   <div id="uzbekistan-questions-page" class="quiz-page" style="background-image: url('./imgs/11.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
       <div class="quiz-header">
+        <div class="countdown-icon">
+          <img src="./imgs/countdown.gif" alt="Countdown">
+        </div>
         <div class="quiz-title">Uzbekistan Knowledge</div>
         <div class="quiz-icon">
           <img src="./imgs/4.png" alt="Uzbekistan Icon">
@@ -1056,6 +1108,9 @@
   <div id="ancestors-questions-page" class="quiz-page" style="background-image: url('./imgs/12.png'); background-size: cover; background-position: center;">
     <div class="quiz-content">
       <div class="quiz-header">
+        <div class="countdown-icon">
+          <img src="./imgs/countdown.gif" alt="Countdown">
+        </div>
         <div class="quiz-title">Great Ancestors</div>
         <div class="quiz-icon">
           <img src="./imgs/3.png" alt="Ancestors Icon">
@@ -1675,23 +1730,23 @@
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        // إضافة أنيميشن الخروج للسؤال أولاً
+        // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#math-questions-page .character-speech-container.quiz');
-        speechContainer.classList.add('exit');
+        const questionContainer = document.querySelector('#math-questions-page .question-container');
         
-        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        // تطبيق أنيميشن الخروج على فقاعة الكلام (للأعلى)
+        speechContainer.classList.add('exit');
+        // تطبيق أنيميشن الخروج على الإجابات (للأسفل)
+        questionContainer.classList.add('exit');
+        
+        // بعد انتهاء الأنيميشن (500ms)، تحميل السؤال التالي
         setTimeout(() => {
-          const questionContainer = document.querySelector('#math-questions-page .question-container');
-          questionContainer.classList.add('exit');
-          
-          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
-          setTimeout(() => {
-            currentMathQuestionIndex++;
-            speechContainer.classList.remove('exit');
-            questionContainer.classList.remove('exit');
-            loadMathQuestion();
-          }, 400);
-        }, 750);
+          currentMathQuestionIndex++;
+          // إزالة كلاس الخروج من فقاعة الكلام والإجابات
+          speechContainer.classList.remove('exit');
+          questionContainer.classList.remove('exit');
+          loadMathQuestion();
+        }, 500);
       }, 3000);
     }
 
@@ -1790,23 +1845,23 @@
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        // إضافة أنيميشن الخروج للسؤال أولاً
+        // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#nature-questions-page .character-speech-container.quiz');
-        speechContainer.classList.add('exit');
+        const questionContainer = document.querySelector('#nature-questions-page .question-container');
         
-        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        // تطبيق أنيميشن الخروج على فقاعة الكلام (للأعلى)
+        speechContainer.classList.add('exit');
+        // تطبيق أنيميشن الخروج على الإجابات (للأسفل)
+        questionContainer.classList.add('exit');
+        
+        // بعد انتهاء الأنيميشن (500ms)، تحميل السؤال التالي
         setTimeout(() => {
-          const questionContainer = document.querySelector('#nature-questions-page .question-container');
-          questionContainer.classList.add('exit');
-          
-          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
-          setTimeout(() => {
-            currentNatureQuestionIndex++;
-            speechContainer.classList.remove('exit');
-            questionContainer.classList.remove('exit');
-            loadNatureQuestion();
-          }, 400);
-        }, 750);
+          currentNatureQuestionIndex++;
+          // إزالة كلاس الخروج من فقاعة الكلام والإجابات
+          speechContainer.classList.remove('exit');
+          questionContainer.classList.remove('exit');
+          loadNatureQuestion();
+        }, 500);
       }, 3000);
     }
 
@@ -1904,23 +1959,23 @@
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        // إضافة أنيميشن الخروج للسؤال أولاً
+        // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz');
-        speechContainer.classList.add('exit');
+        const questionContainer = document.querySelector('#uzbekistan-questions-page .question-container');
         
-        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        // تطبيق أنيميشن الخروج على فقاعة الكلام (للأعلى)
+        speechContainer.classList.add('exit');
+        // تطبيق أنيميشن الخروج على الإجابات (للأسفل)
+        questionContainer.classList.add('exit');
+        
+        // بعد انتهاء الأنيميشن (500ms)، تحميل السؤال التالي
         setTimeout(() => {
-          const questionContainer = document.querySelector('#uzbekistan-questions-page .question-container');
-          questionContainer.classList.add('exit');
-          
-          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
-          setTimeout(() => {
-            currentUzbekistanQuestionIndex++;
-            speechContainer.classList.remove('exit');
-            questionContainer.classList.remove('exit');
-            loadUzbekistanQuestion();
-          }, 400);
-        }, 750);
+          currentUzbekistanQuestionIndex++;
+          // إزالة كلاس الخروج من فقاعة الكلام والإجابات
+          speechContainer.classList.remove('exit');
+          questionContainer.classList.remove('exit');
+          loadUzbekistanQuestion();
+        }, 500);
       }, 3000);
     }
 
@@ -1931,38 +1986,43 @@
       document.getElementById('uzbekistan-progress-bar').style.width = '0%';
     }
 
-    function showUzbekistanResults() {
-      document.getElementById('uzbekistan-question-text').textContent = "You've completed the Uzbekistan quiz!";
-      document.getElementById('uzbekistan-options-container').innerHTML = "";
-      document.getElementById('uzbekistan-progress-bar').style.width = "100%";
-      
-      const percentage = (uzbekistanScore / uzbekistanQuestions.length) * 100;
-      document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${uzbekistanQuestions.length}`;
-      
-      let message = "";
-      let title = "";
-      
-      if (percentage >= 90) {
+   function showUzbekistanResults() {
+    // إخفاء فقاعة الكلام
+    document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz').style.display = 'none';
+    
+    // إخفاء حاوية الأسئلة
+    document.querySelector('#uzbekistan-questions-page .question-container').style.display = 'none';
+    
+    // إخفاء شريط التقدم
+    document.querySelector('#uzbekistan-questions-page .progress-container').style.display = 'none';
+    
+    // إظهار النتائج
+    document.getElementById('uzbekistan-result-container').style.display = 'flex';
+    
+    // باقي الكود كما هو...
+    const percentage = (uzbekistanScore / uzbekistanQuestions.length) * 100;
+    document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${uzbekistanQuestions.length}`;
+    
+    let message = "";
+    let title = "";
+    
+    if (percentage >= 90) {
         title = "Uzbekistan Expert!";
         message = "Incredible! You have excellent knowledge about Uzbekistan's rich culture and history!";
-      } else if (percentage >= 70) {
+    } else if (percentage >= 70) {
         title = "Great Job!";
         message = "Wonderful! You know Uzbekistan very well!";
-      } else if (percentage >= 50) {
+    } else if (percentage >= 50) {
         title = "Good Effort!";
         message = "Well done! You're learning about Uzbekistan's amazing heritage!";
-      } else {
+    } else {
         title = "Keep Learning!";
         message = "Uzbekistan has a fascinating history and culture! Keep exploring and learning!";
-      }
-      
-      document.getElementById('uzbekistan-result-title').textContent = title;
-      document.getElementById('uzbekistan-result-message').textContent = message;
-      document.getElementById('uzbekistan-result-container').style.display = 'flex';
-      
-      // إعادة إضافة الأصوات للأزرار في صفحة النتائج
-      onPageChange();
     }
+    
+    document.getElementById('uzbekistan-result-title').textContent = title;
+    document.getElementById('uzbekistan-result-message').textContent = message;
+}
 
     document.getElementById('uzbekistan-restart-button').addEventListener('click', () => {
       currentUzbekistanQuestionIndex = 0;
@@ -2018,23 +2078,23 @@
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
-        // إضافة أنيميشن الخروج للسؤال أولاً
+        // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#ancestors-questions-page .character-speech-container.quiz');
-        speechContainer.classList.add('exit');
+        const questionContainer = document.querySelector('#ancestors-questions-page .question-container');
         
-        // بعد 0.75 ثانية، إضافة أنيميشن الخروج للإجابات
+        // تطبيق أنيميشن الخروج على فقاعة الكلام (للأعلى)
+        speechContainer.classList.add('exit');
+        // تطبيق أنيميشن الخروج على الإجابات (للأسفل)
+        questionContainer.classList.add('exit');
+        
+        // بعد انتهاء الأنيميشن (500ms)، تحميل السؤال التالي
         setTimeout(() => {
-          const questionContainer = document.querySelector('#ancestors-questions-page .question-container');
-          questionContainer.classList.add('exit');
-          
-          // بعد انتهاء الأنيميشن، تحميل السؤال التالي
-          setTimeout(() => {
-            currentAncestorsQuestionIndex++;
-            speechContainer.classList.remove('exit');
-            questionContainer.classList.remove('exit');
-            loadAncestorsQuestion();
-          }, 400);
-        }, 750);
+          currentAncestorsQuestionIndex++;
+          // إزالة كلاس الخروج من فقاعة الكلام والإجابات
+          speechContainer.classList.remove('exit');
+          questionContainer.classList.remove('exit');
+          loadAncestorsQuestion();
+        }, 500);
       }, 3000);
     }
 
