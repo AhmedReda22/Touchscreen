@@ -190,40 +190,39 @@
     }
 
     /* ========== KNOWLEDGE PAGE ========== */
-    /* ========== KNOWLEDGE PAGE ========== */
-#knowledge-page {
-  display: none;
-  flex-direction: column;
-  height: 100vh;
-  color: white;
-  padding: 2vh 20px;
-  position: relative;
-  overflow: hidden;
-}
+    #knowledge-page {
+      display: none;
+      flex-direction: column;
+      height: 100vh;
+      color: white;
+      padding: 2vh 20px;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* إضافة الفيديو كخلفية لصفحة المعرفة */
-#knowledge-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('./imgs/8.png'); /* صورة احتياطية */
-  background-size: cover;
-  background-position: center;
-  z-index: -2;
-}
+    /* إضافة الفيديو كخلفية لصفحة المعرفة */
+    #knowledge-page::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('./imgs/8.png'); /* صورة احتياطية */
+      background-size: cover;
+      background-position: center;
+      z-index: -2;
+    }
 
-#knowledge-bg-video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -1;
-}
+    #knowledge-bg-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+    }
 
     .knowledge-content {
       display: flex;
@@ -366,16 +365,18 @@
       justify-content: space-between;
     }
 
+    /* التعديلات المطلوبة: جعل quiz-header يكون position: relative */
     .quiz-header {
       display: flex;
-      justify-content: center; /* تغيير من space-between إلى center */
+      justify-content: center;
       align-items: center;
       padding: 0 1rem;
       flex-shrink: 0;
       height: 15vh;
-      flex-direction: column; /* تغيير الاتجاه إلى عمودي */
-      gap: 10px; /* إضافة مسافة بين العناصر */
+      flex-direction: column;
+      gap: 10px;
       margin-top: 90px;
+      position: relative; /* إضافة هذه الخاصية */
     }
 
     .quiz-title {
@@ -383,17 +384,24 @@
       font-weight: 800;
       color: #ffc900;
       text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-      text-align: center; /* تغيير من left إلى center */
+      text-align: center;
       flex: 1;
-      order: 1; /* ترتيب العنوان أولاً */
+      order: 1;
+      /* العنوان يبقى في المنتصف */
     }
 
+    /* التعديلات المطلوبة: جعل الأيقونة في أعلى اليمين */
     .quiz-icon {
       width: clamp(80px, 15vw, 150px);
       height: clamp(80px, 15vw, 150px);
       animation: zoomInOut 3s ease-in-out infinite;
       flex-shrink: 0;
-      order: 2; /* ترتيب الأيقونة ثانياً */
+      order: 2;
+      /* إضافة الخصائص التالية لوضع الأيقونة في أعلى اليمين */
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 10px;
     }
 
     .quiz-icon img {
