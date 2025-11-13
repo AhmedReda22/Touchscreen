@@ -225,13 +225,15 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  position: relative;
   gap: 20px;
   flex-shrink: 0;
-  margin-top: 30px;
+  height: 30vh;
+  margin-top: 65px;
 }
 
-    .speech-bubble-container {
-  width: 500px;
+   .speech-bubble-container {
+  width: 650PX;
   background-image: url('./imgs/2.png');
   background-size: 100% 110%;
   background-repeat: no-repeat;
@@ -240,18 +242,18 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: clamp(50px, 10vw, 100px) clamp(20px, 5vw, 80px);
-      z-index: 9;
-      flex-shrink: 0;
-      margin: 0 clamp(20px, 5vw, 40px);
-    }
+  padding: clamp(80px, 15vw, 150px) clamp(30px, 8vw, 120px);
+  z-index: 9;
+  flex-shrink: 0;
+  margin: 0 clamp(20px, 5vw, 40px);
+}
 
     .speech-bubble-container p {
-  color: #45312C;
+  color: #1e3a8a;
   font-weight: 800;
-  font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+  font-size: clamp(0.9rem, 2vw, 1.6rem);
   line-height: 1.5;
-  min-height: 60px;
+  min-height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -278,10 +280,10 @@
       padding: 10px;
     }
 
-    .topic-card {
+  .topic-card {
   background-color: rgba(64, 120, 120, 0.8);
   border-radius: 1.5rem;
-  padding: 1rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -289,7 +291,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  min-height: 150px;
+  min-height: 200px;
 }
 
     .topic-card:hover {
@@ -301,10 +303,10 @@
       box-shadow: 0 0 0 4px #fbbf24, 0 15px 40px rgba(0, 0, 0, 0.3);
     }
 
-    .topic-icon {
-  width: clamp(60px, 10vw, 100px);
-  height: clamp(60px, 10vw, 100px);
-  margin-bottom: 0.5rem;
+   .topic-icon {
+  width: clamp(80px, 15vw, 150px);
+  height: clamp(80px, 15vw, 150px);
+  margin-bottom: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,8 +319,8 @@
       animation: zoomInOut 3s ease-in-out infinite;
     }
 
-   .topic-title {
-  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+ .topic-title {
+  font-size: clamp(1rem, 2vw, 1.3rem);
   font-weight: bold;
   text-align: center;
 }
@@ -872,7 +874,13 @@
     animation: none !important;
 }
 
-
+/* إخفاء فقاعة الكلام في صفحة النتائج */
+#uzbekistan-result-container ~ .character-speech-container.quiz,
+#math-result-container ~ .character-speech-container.quiz,
+#nature-result-container ~ .character-speech-container.quiz,
+#ancestors-result-container ~ .character-speech-container.quiz {
+    display: none !important;
+}
   </style>
 </head>
 <body>
@@ -909,15 +917,14 @@
     <source src="./imgs/bg.mp4" type="video/mp4">
     <!-- إذا لم يدعم المتصالف الفيديو، سيتم استخدام الصورة الخلفية -->
   </video>
-    <div class="knowledge-content">
-      <!-- إعادة إضافة فقاعة الكلام لصفحة المعرفة -->
-       <div class="robot-character"></div>
-      <div class="character-speech-container knowledge">
-        
-        <div class="speech-bubble-container">
-          <p>Choose a topic to begin your adventure of knowledge!</p>
-        </div>
-      </div>
+   <div class="knowledge-content">
+  <!-- إعادة إضافة فقاعة الكلام لصفحة المعرفة -->
+  <div class="character-speech-container knowledge">
+    <div class="robot-character"></div>
+    <div class="speech-bubble-container">
+      <p>Choose a topic to begin your adventure of knowledge!</p>
+    </div>
+  </div>
 
       <div class="topics-section">
         <div class="topics-grid">
@@ -1980,38 +1987,43 @@
       document.getElementById('uzbekistan-progress-bar').style.width = '0%';
     }
 
-    function showUzbekistanResults() {
-      document.getElementById('uzbekistan-question-text').textContent = "You've completed the Uzbekistan quiz!";
-      document.getElementById('uzbekistan-options-container').innerHTML = "";
-      document.getElementById('uzbekistan-progress-bar').style.width = "100%";
-      
-      const percentage = (uzbekistanScore / uzbekistanQuestions.length) * 100;
-      document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${uzbekistanQuestions.length}`;
-      
-      let message = "";
-      let title = "";
-      
-      if (percentage >= 90) {
+   function showUzbekistanResults() {
+    // إخفاء فقاعة الكلام
+    document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz').style.display = 'none';
+    
+    // إخفاء حاوية الأسئلة
+    document.querySelector('#uzbekistan-questions-page .question-container').style.display = 'none';
+    
+    // إخفاء شريط التقدم
+    document.querySelector('#uzbekistan-questions-page .progress-container').style.display = 'none';
+    
+    // إظهار النتائج
+    document.getElementById('uzbekistan-result-container').style.display = 'flex';
+    
+    // باقي الكود كما هو...
+    const percentage = (uzbekistanScore / uzbekistanQuestions.length) * 100;
+    document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${uzbekistanQuestions.length}`;
+    
+    let message = "";
+    let title = "";
+    
+    if (percentage >= 90) {
         title = "Uzbekistan Expert!";
         message = "Incredible! You have excellent knowledge about Uzbekistan's rich culture and history!";
-      } else if (percentage >= 70) {
+    } else if (percentage >= 70) {
         title = "Great Job!";
         message = "Wonderful! You know Uzbekistan very well!";
-      } else if (percentage >= 50) {
+    } else if (percentage >= 50) {
         title = "Good Effort!";
         message = "Well done! You're learning about Uzbekistan's amazing heritage!";
-      } else {
+    } else {
         title = "Keep Learning!";
         message = "Uzbekistan has a fascinating history and culture! Keep exploring and learning!";
-      }
-      
-      document.getElementById('uzbekistan-result-title').textContent = title;
-      document.getElementById('uzbekistan-result-message').textContent = message;
-      document.getElementById('uzbekistan-result-container').style.display = 'flex';
-      
-      // إعادة إضافة الأصوات للأزرار في صفحة النتائج
-      onPageChange();
     }
+    
+    document.getElementById('uzbekistan-result-title').textContent = title;
+    document.getElementById('uzbekistan-result-message').textContent = message;
+}
 
     document.getElementById('uzbekistan-restart-button').addEventListener('click', () => {
       currentUzbekistanQuestionIndex = 0;
