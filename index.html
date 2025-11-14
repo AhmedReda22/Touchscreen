@@ -1311,7 +1311,12 @@
     }
     
     // دالة إضافة مستمعات الأصوات لجميع الأزرار
+// دالة إضافة مستمعات الأصوات لجميع الأزرار
 function addSoundToButtons() {
+  // إنشاء عناصر صوتية للأصوات الجديدة
+  const homeSound = new Audio('./sounds/home.mp3');
+  const topicsSound = new Audio('./sounds/topics.mp3');
+  
   // جميع الأزرار في الصفحة
   const allButtons = document.querySelectorAll('button, .topic-card, .option-button');
   
@@ -1322,6 +1327,26 @@ function addSoundToButtons() {
     // إضافة صوت button-click.mp3 لأزرار START فقط في الصفحة الأولى
     if (button.id === 'start-btn' || button.id === 'boshlash-btn' || button.id === 'nachat-btn') {
       button.addEventListener('click', playButtonSound);
+    }
+    
+    // إضافة صوت home.mp3 لأزرار Home
+    if (button.classList.contains('main-home-button') || button.classList.contains('home-button')) {
+      button.addEventListener('click', function() {
+        homeSound.currentTime = 0;
+        homeSound.play().catch(e => console.log('Home sound play failed:', e));
+      });
+    }
+    
+    // إضافة صوت topics.mp3 لبطاقات المواضيع
+    if (button.classList.contains('topic-card') || 
+        button.textContent.includes('Ancestors') ||
+        button.textContent.includes('Uzbekistan') ||
+        button.textContent.includes('Nature') ||
+        button.textContent.includes('Math')) {
+      button.addEventListener('click', function() {
+        topicsSound.currentTime = 0;
+        topicsSound.play().catch(e => console.log('Topics sound play failed:', e));
+      });
     }
   });
 }
