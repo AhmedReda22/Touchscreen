@@ -1299,14 +1299,35 @@
   <script>
     // ========== SOUND EFFECTS ==========
     // إنشاء عناصر صوتية للتأثيرات الصوتية
-    const buttonClickSound = new Audio();
-    buttonClickSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="; // صوت افتراضي
-    
-    // إضافة أصوات الإجابات الصحيحة والخاطئة
-    const correctAnswerSound = new Audio('./sounds/Right.mp3');
-    const wrongAnswerSound = new Audio('./sounds/wrong.mp3');
-    
-    // محاولة تحميل أصوات حقيقية إذا كانت متوفرة
+const buttonClickSound = new Audio();
+buttonClickSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="; // صوت افتراضي
+
+// إضافة أصوات الإجابات الصحيحة والخاطئة
+const correctAnswerSound = new Audio('./sounds/Right.mp3');
+const wrongAnswerSound = new Audio('./sounds/wrong.mp3');
+
+// تعريف الأصوات الأخرى
+const homeSound = new Audio('./sounds/home.mp3');
+const topicsSound = new Audio('./sounds/topics.mp3');
+
+
+
+// دالة مركزية لتشغيل الصوت مع إيقاف أي صوت آخر
+function playSound(audioElement) {
+  // إيقاف جميع الأصوات الأخرى قبل تشغيل الصوت الجديد
+  [buttonClickSound, correctAnswerSound, wrongAnswerSound, homeSound, topicsSound].forEach(sound => {
+    if (sound !== audioElement && !sound.paused) {
+      sound.pause();
+      sound.currentTime = 0;
+    }
+  });
+
+  // إعادة تشغيل الصوت من البداية
+  audioElement.currentTime = 0;
+  audioElement.play().catch(e => console.log('Sound play failed:', e));
+}
+
+// محاولة تحميل أصوات حقيقية إذا كانت متوفرة
     function loadSoundEffects() {
       // يمكن استبدال هذه بالمقاطع الصوتية الفعلية
       try {
@@ -1324,41 +1345,21 @@
     
     // دالة تشغيل صوت النقر
     function playButtonSound() {
-      try {
-        buttonClickSound.currentTime = 0;
-        buttonClickSound.play().catch(e => console.log('Sound play failed:', e));
-      } catch (e) {
-        console.log('Sound error:', e);
-      }
+      playSound(buttonClickSound);
     }
     
     // دالة تشغيل صوت الإجابة الصحيحة
     function playCorrectSound() {
-      try {
-        correctAnswerSound.currentTime = 0;
-        correctAnswerSound.play().catch(e => console.log('Correct sound play failed:', e));
-      } catch (e) {
-        console.log('Correct sound error:', e);
-      }
+      playSound(correctAnswerSound);
     }
     
     // دالة تشغيل صوت الإجابة الخاطئة
     function playWrongSound() {
-      try {
-        wrongAnswerSound.currentTime = 0;
-        wrongAnswerSound.play().catch(e => console.log('Wrong sound play failed:', e));
-      } catch (e) {
-        console.log('Wrong sound error:', e);
-      }
+      playSound(wrongAnswerSound);
     }
     
     // دالة إضافة مستمعات الأصوات لجميع الأزرار
-// دالة إضافة مستمعات الأصوات لجميع الأزرار
 function addSoundToButtons() {
-  // إنشاء عناصر صوتية للأصوات الجديدة
-  const homeSound = new Audio('./sounds/home.mp3');
-  const topicsSound = new Audio('./sounds/topics.mp3');
-  
   // جميع الأزرار في الصفحة
   const allButtons = document.querySelectorAll('button, .topic-card, .option-button');
   
@@ -1374,8 +1375,7 @@ function addSoundToButtons() {
     // إضافة صوت home.mp3 لأزرار Home
     if (button.classList.contains('main-home-button') || button.classList.contains('home-button')) {
       button.addEventListener('click', function() {
-        homeSound.currentTime = 0;
-        homeSound.play().catch(e => console.log('Home sound play failed:', e));
+        playSound(homeSound);
       });
     }
     
@@ -1386,8 +1386,7 @@ function addSoundToButtons() {
         button.textContent.includes('Nature') ||
         button.textContent.includes('Math')) {
       button.addEventListener('click', function() {
-        topicsSound.currentTime = 0;
-        topicsSound.play().catch(e => console.log('Topics sound play failed:', e));
+        playSound(topicsSound);
       });
     }
   });
@@ -2128,6 +2127,8 @@ function addSoundToButtons() {
       }, 3000);
     }
 
+    
+    
     // ========== MATH FUNCTIONS ==========
     function loadMathQuestion() {
       // إذا لم تكن الأسئلة قد تم خلطها بعد، قم بخلطها
