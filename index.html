@@ -1575,25 +1575,33 @@
       return shuffled;
     }
 
-    // ========== دالة خلط عشوائي للاختيارات ==========
+    // ========== دالة خلط عشوائي للاختيارات مع الحفاظ على الإجابة الصحيحة ==========
     function shuffleOptions(question) {
-      // إنشاء نسخة من السؤال
-      const shuffledQuestion = {...question};
-      
-      // إنشاء مصفوفة من المؤشرات للاختيارات
-      const indices = [0, 1, 2];
-      const shuffledIndices = shuffleArray(indices);
-      
-      // إعادة ترتيب الاختيارات بناءً على المؤشرات المخلوطة
-      shuffledQuestion.options = shuffledIndices.map(i => question.options[i]);
-      
-      // تحديث الإجابة الصحيحة بناءً على الترتيب الجديد
-      shuffledQuestion.correctAnswer = shuffledIndices.indexOf(question.correctAnswer);
-      
-      return shuffledQuestion;
-    }
-
-    // ========== MATH QUESTIONS ==========
+  const shuffledQuestion = {...question};
+  
+  // دمج الخيارات مع مؤشراتها الأصلية
+  const optionsWithIndices = question.options.map((option, index) => ({
+    option,
+    originalIndex: index
+  }));
+  
+  // خلط الخيارات
+  const shuffledOptions = shuffleArray(optionsWithIndices);
+  
+  // تحديث الخيارات المخلوطة
+  shuffledQuestion.options = shuffledOptions.map(item => item.option);
+  
+  // إيجاد المؤشر الجديد للإجابة الصحيحة
+  const newCorrectIndex = shuffledOptions.findIndex(
+    item => item.originalIndex === question.correctAnswer
+  );
+  
+  // تحديث الإجابة الصحيحة للموضع الجديد
+  shuffledQuestion.correctAnswer = newCorrectIndex;
+  
+  return shuffledQuestion;
+}
+// ========== MATH QUESTIONS ==========
     const mathQuestions = [
       {
         question: "Let's add! What is 8 + 6?",
@@ -1955,7 +1963,7 @@
         return;
       }
 
-      // خلط الاختيارات لكل سؤال
+      // خلط الاختيارات لكل سؤال مع الحفاظ على الإجابة الصحيحة
       const question = shuffleOptions(currentMathQuestions[currentMathQuestionIndex]);
       
       document.getElementById('math-question-text').textContent = question.question;
@@ -1971,7 +1979,7 @@
         button.className = 'option-button';
         button.innerHTML = option; // تغيير إلى innerHTML
         adjustFontSize(button);
-        button.addEventListener('click', () => checkMathAnswer(index));
+        button.addEventListener('click', () => checkMathAnswer(index, question.correctAnswer));
         optionsContainer.appendChild(button);
       });
       
@@ -1982,23 +1990,22 @@
       onPageChange();
     }
 
-    function checkMathAnswer(selectedIndex) {
+    function checkMathAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
       clearInterval(mathCountdownTimer);
       
-      const question = currentMathQuestions[currentMathQuestionIndex];
       const buttons = document.querySelectorAll('#math-options-container .option-button');
       
       buttons.forEach(button => {
         button.style.pointerEvents = 'none';
       });
       
-      if (selectedIndex === question.correctAnswer) {
+      if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         mathScore++;
       } else {
         buttons[selectedIndex].classList.add('incorrect');
-        buttons[question.correctAnswer].classList.add('correct');
+        buttons[correctAnswer].classList.add('correct');
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
@@ -2073,7 +2080,7 @@
         return;
       }
 
-      // خلط الاختيارات لكل سؤال
+      // خلط الاختيارات لكل سؤال مع الحفاظ على الإجابة الصحيحة
       const question = shuffleOptions(currentNatureQuestions[currentNatureQuestionIndex]);
       
       document.getElementById('nature-question-text').textContent = question.question;
@@ -2089,7 +2096,7 @@
         button.className = 'option-button';
         button.innerHTML = option; // تغيير إلى innerHTML
         adjustFontSize(button);
-        button.addEventListener('click', () => checkNatureAnswer(index));
+        button.addEventListener('click', () => checkNatureAnswer(index, question.correctAnswer));
         optionsContainer.appendChild(button);
       });
       
@@ -2100,23 +2107,22 @@
       onPageChange();
     }
 
-    function checkNatureAnswer(selectedIndex) {
+    function checkNatureAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
       clearInterval(natureCountdownTimer);
       
-      const question = currentNatureQuestions[currentNatureQuestionIndex];
       const buttons = document.querySelectorAll('#nature-options-container .option-button');
       
       buttons.forEach(button => {
         button.style.pointerEvents = 'none';
       });
       
-      if (selectedIndex === question.correctAnswer) {
+      if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         natureScore++;
       } else {
         buttons[selectedIndex].classList.add('incorrect');
-        buttons[question.correctAnswer].classList.add('correct');
+        buttons[correctAnswer].classList.add('correct');
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
@@ -2191,7 +2197,7 @@
         return;
       }
 
-      // خلط الاختيارات لكل سؤال
+      // خلط الاختيارات لكل سؤال مع الحفاظ على الإجابة الصحيحة
       const question = shuffleOptions(currentUzbekistanQuestions[currentUzbekistanQuestionIndex]);
       
       document.getElementById('uzbekistan-question-text').textContent = question.question;
@@ -2207,7 +2213,7 @@
         button.className = 'option-button';
         button.textContent = option;
         adjustFontSize(button); // ضبط حجم الخط بناءً على طول النص
-        button.addEventListener('click', () => checkUzbekistanAnswer(index));
+        button.addEventListener('click', () => checkUzbekistanAnswer(index, question.correctAnswer));
         optionsContainer.appendChild(button);
       });
       
@@ -2218,23 +2224,22 @@
       onPageChange();
     }
 
-    function checkUzbekistanAnswer(selectedIndex) {
+    function checkUzbekistanAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
       clearInterval(uzbekistanCountdownTimer);
       
-      const question = currentUzbekistanQuestions[currentUzbekistanQuestionIndex];
       const buttons = document.querySelectorAll('#uzbekistan-options-container .option-button');
       
       buttons.forEach(button => {
         button.style.pointerEvents = 'none';
       });
       
-      if (selectedIndex === question.correctAnswer) {
+      if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         uzbekistanScore++;
       } else {
         buttons[selectedIndex].classList.add('incorrect');
-        buttons[question.correctAnswer].classList.add('correct');
+        buttons[correctAnswer].classList.add('correct');
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
@@ -2314,7 +2319,7 @@
         return;
       }
 
-      // خلط الاختيارات لكل سؤال
+      // خلط الاختيارات لكل سؤال مع الحفاظ على الإجابة الصحيحة
       const question = shuffleOptions(currentAncestorsQuestions[currentAncestorsQuestionIndex]);
       
       document.getElementById('ancestors-question-text').textContent = question.question;
@@ -2330,7 +2335,7 @@
         button.className = 'option-button';
         button.innerHTML = option; // تغيير من textContent إلى innerHTML
         adjustFontSize(button);
-        button.addEventListener('click', () => checkAncestorsAnswer(index));
+        button.addEventListener('click', () => checkAncestorsAnswer(index, question.correctAnswer));
         optionsContainer.appendChild(button);
       });
       
@@ -2341,23 +2346,22 @@
       onPageChange();
     }
 
-    function checkAncestorsAnswer(selectedIndex) {
+    function checkAncestorsAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
       clearInterval(ancestorsCountdownTimer);
       
-      const question = currentAncestorsQuestions[currentAncestorsQuestionIndex];
       const buttons = document.querySelectorAll('#ancestors-options-container .option-button');
       
       buttons.forEach(button => {
         button.style.pointerEvents = 'none';
       });
       
-      if (selectedIndex === question.correctAnswer) {
+      if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         ancestorsScore++;
       } else {
         buttons[selectedIndex].classList.add('incorrect');
-        buttons[question.correctAnswer].classList.add('correct');
+        buttons[correctAnswer].classList.add('correct');
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
