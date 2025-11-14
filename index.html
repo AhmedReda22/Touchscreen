@@ -2053,78 +2053,83 @@ function addSoundToButtons() {
     function handleTimeout(quizType, questionIndex, correctAnswer) {
       const buttons = document.querySelectorAll(`#${quizType}-options-container .option-button`);
       
-      // تعطيل جميع الأزرار
-      buttons.forEach(button => {
-        button.style.pointerEvents = 'none';
-      });
-      
-      // عرض الإجابة الصحيحة
-      buttons[correctAnswer].classList.add('correct');
-      
-      // إظهار أيقونة الخطأ
-      const wrongIcon = document.getElementById(`${quizType}-wrong-icon`);
-      if (wrongIcon) {
-        wrongIcon.style.display = 'block';
-      }
-      
-      // تشغيل صوت الإجابة الخاطئة
-      playWrongSound();
-      
-      // الانتظار 3 ثواني قبل الانتقال للسؤال التالي
-      setTimeout(() => {
-        // إخفاء أيقونة الخطأ
+      // التحقق مما إذا كان السؤال لا يزال نشطًا (لم يتم الإجابة عليه بعد)
+      // إذا كانت الأزرار لا تزال قابلة للنقر، فهذا يعني أن الوقت قد انتهى قبل الإجابة
+      if (buttons.length > 0 && buttons[0].style.pointerEvents !== 'none') {
+        
+        // تعطيل جميع الأزرار
+        buttons.forEach(button => {
+          button.style.pointerEvents = 'none';
+        });
+        
+        // عرض الإجابة الصحيحة
+        buttons[correctAnswer].classList.add('correct');
+        
+        // إظهار أيقونة الخطأ
+        const wrongIcon = document.getElementById(`${quizType}-wrong-icon`);
         if (wrongIcon) {
-          wrongIcon.style.display = 'none';
+          wrongIcon.style.display = 'block';
         }
         
-        // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
-        const speechContainer = document.querySelector(`#${quizType}-questions-page .character-speech-container.quiz`);
-        const questionContainer = document.querySelector(`#${quizType}-questions-page .question-container`);
+        // تشغيل صوت الإجابة الخاطئة
+        playWrongSound();
         
-        // تطبيق أنيميشن الخروج على فقاعة الكلام (للأعلى)
-        speechContainer.classList.add('exit');
-        // تطبيق أنيميشن الخروج على الإجابات (للأسفل)
-        questionContainer.classList.add('exit');
-        
-        // بعد انتهاء الأنيميشن (500ms)، تحميل السؤال التالي
+        // الانتظار 3 ثواني قبل الانتقال للسؤال التالي
         setTimeout(() => {
-          // زيادة مؤشر السؤال الحالي
-          switch(quizType) {
-            case 'math':
-              currentMathQuestionIndex++;
-              break;
-            case 'nature':
-              currentNatureQuestionIndex++;
-              break;
-            case 'uzbekistan':
-              currentUzbekistanQuestionIndex++;
-              break;
-            case 'ancestors':
-              currentAncestorsQuestionIndex++;
-              break;
+          // إخفاء أيقونة الخطأ
+          if (wrongIcon) {
+            wrongIcon.style.display = 'none';
           }
           
-          // إزالة كلاس الخروج من فقاعة الكلام والإجابات
-          speechContainer.classList.remove('exit');
-          questionContainer.classList.remove('exit');
+          // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
+          const speechContainer = document.querySelector(`#${quizType}-questions-page .character-speech-container.quiz`);
+          const questionContainer = document.querySelector(`#${quizType}-questions-page .question-container`);
           
-          // تحميل السؤال التالي
-          switch(quizType) {
-            case 'math':
-              loadMathQuestion();
-              break;
-            case 'nature':
-              loadNatureQuestion();
-              break;
-            case 'uzbekistan':
-              loadUzbekistanQuestion();
-              break;
-            case 'ancestors':
-              loadAncestorsQuestion();
-              break;
-          }
-        }, 500);
-      }, 3000);
+          // تطبيق أنيميشن الخروج على فقاعة الكلام (للأعلى)
+          speechContainer.classList.add('exit');
+          // تطبيق أنيميشن الخروج على الإجابات (للأسفل)
+          questionContainer.classList.add('exit');
+          
+          // بعد انتهاء الأنيميشن (500ms)، تحميل السؤال التالي
+          setTimeout(() => {
+            // زيادة مؤشر السؤال الحالي
+            switch(quizType) {
+              case 'math':
+                currentMathQuestionIndex++;
+                break;
+              case 'nature':
+                currentNatureQuestionIndex++;
+                break;
+              case 'uzbekistan':
+                currentUzbekistanQuestionIndex++;
+                break;
+              case 'ancestors':
+                currentAncestorsQuestionIndex++;
+                break;
+            }
+            
+            // إزالة كلاس الخروج من فقاعة الكلام والإجابات
+            speechContainer.classList.remove('exit');
+            questionContainer.classList.remove('exit');
+            
+            // تحميل السؤال التالي
+            switch(quizType) {
+              case 'math':
+                loadMathQuestion();
+                break;
+              case 'nature':
+                loadNatureQuestion();
+                break;
+              case 'uzbekistan':
+                loadUzbekistanQuestion();
+                break;
+              case 'ancestors':
+                loadAncestorsQuestion();
+                break;
+            }
+          }, 500);
+        }, 3000);
+      }
     }
 
     
@@ -2170,7 +2175,7 @@ function addSoundToButtons() {
 
     function checkMathAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
-      clearInterval(mathCountdownTimer);
+      clearInterval(window.mathCountdownTimer);
       
       const buttons = document.querySelectorAll('#math-options-container .option-button');
       
@@ -2317,7 +2322,7 @@ function addSoundToButtons() {
 
     function checkNatureAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
-      clearInterval(natureCountdownTimer);
+      clearInterval(window.natureCountdownTimer);
       
       const buttons = document.querySelectorAll('#nature-options-container .option-button');
       
@@ -2464,7 +2469,7 @@ function addSoundToButtons() {
 
     function checkUzbekistanAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
-      clearInterval(uzbekistanCountdownTimer);
+      clearInterval(window.uzbekistanCountdownTimer);
       
       const buttons = document.querySelectorAll('#uzbekistan-options-container .option-button');
       
@@ -2608,7 +2613,7 @@ function addSoundToButtons() {
 
     function checkAncestorsAnswer(selectedIndex, correctAnswer) {
       // إيقاف العد التنازلي
-      clearInterval(ancestorsCountdownTimer);
+      clearInterval(window.ancestorsCountdownTimer);
       
       const buttons = document.querySelectorAll('#ancestors-options-container .option-button');
       
