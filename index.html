@@ -1024,7 +1024,7 @@
   <div class="character-speech-container knowledge">
     <div class="robot-character"></div>
     <div class="speech-bubble-container">
-      <p>Choose a topic to begin your adventure of knowledge!</p>
+      <p id="knowledge-speech-text">Choose a topic to begin your adventure of knowledge!</p>
     </div>
   </div>
 
@@ -1032,19 +1032,19 @@
         <div class="topics-grid">
           <div class="topic-card" onclick="selectTopic(this, 'ancestors')">
             <div class="topic-icon"><img src="./imgs/3.png" alt="Ancestors"></div>
-            <div class="topic-title">Great Ancestors</div>
+            <div class="topic-title" id="ancestors-topic-title">Great Ancestors</div>
           </div>
           <div class="topic-card" onclick="selectTopic(this, 'uzbekistan')">
             <div class="topic-icon"><img src="./imgs/4.png" alt="Uzbekistan"></div>
-            <div class="topic-title">Uzbekistan Knowledge</div>
+            <div class="topic-title" id="uzbekistan-topic-title">Uzbekistan Knowledge</div>
           </div>
           <div class="topic-card" onclick="selectTopic(this, 'nature')">
             <div class="topic-icon"><img src="./imgs/5.png" alt="Nature"></div>
-            <div class="topic-title">Nature & Environment</div>
+            <div class="topic-title" id="nature-topic-title">Nature & Environment</div>
           </div>
           <div class="topic-card" onclick="selectTopic(this, 'math')">
             <div class="topic-icon"><img src="./imgs/6.png" alt="Math"></div>
-            <div class="topic-title">Simple Mathematics</div>
+            <div class="topic-title" id="math-topic-title">Simple Mathematics</div>
           </div>
         </div>
       </div>
@@ -1076,7 +1076,7 @@
           <img src="./imgs/countdown.gif" alt="Countdown">
           <div class="countdown-timer" id="math-countdown">15</div>
         </div>
-        <div class="quiz-title">Simple Mathematics</div>
+        <div class="quiz-title" id="math-quiz-title">Simple Mathematics</div>
         <div class="quiz-icon">
           <img src="./imgs/6.png" alt="Math Icon">
         </div>
@@ -1134,7 +1134,7 @@
           <img src="./imgs/countdown.gif" alt="Countdown">
           <div class="countdown-timer" id="nature-countdown">15</div>
         </div>
-        <div class="quiz-title">Nature & Environment</div>
+        <div class="quiz-title" id="nature-quiz-title">Nature & Environment</div>
         <div class="quiz-icon">
           <img src="./imgs/5.png" alt="Nature Icon">
         </div>
@@ -1192,7 +1192,7 @@
           <img src="./imgs/countdown.gif" alt="Countdown">
           <div class="countdown-timer" id="uzbekistan-countdown">15</div>
         </div>
-        <div class="quiz-title">Uzbekistan Knowledge</div>
+        <div class="quiz-title" id="uzbekistan-quiz-title">Uzbekistan Knowledge</div>
         <div class="quiz-icon">
           <img src="./imgs/4.png" alt="Uzbekistan Icon">
         </div>
@@ -1250,7 +1250,7 @@
           <img src="./imgs/countdown.gif" alt="Countdown">
           <div class="countdown-timer" id="ancestors-countdown">15</div>
         </div>
-        <div class="quiz-title">Great Ancestors</div>
+        <div class="quiz-title" id="ancestors-quiz-title">Great Ancestors</div>
         <div class="quiz-icon">
           <img src="./imgs/3.png" alt="Ancestors Icon">
         </div>
@@ -1293,6 +1293,205 @@
   </div>
 
   <script>
+    // ========== LANGUAGE SYSTEM ==========
+    // تحديد اللغة الحالية
+    let currentLanguage = 'en';
+    
+    // كائنات اللغات
+    const languages = {
+      en: {
+        code: 'en',
+        title: 'SHARPEN YOUR MIND',
+        subtitle: 'ARE YOU READY TO CHALLENGE YOUR BRAIN WITH SOME FUN QUESTIONS?',
+        knowledgeSpeech: 'Choose a topic to begin your adventure of knowledge!',
+        topics: {
+          ancestors: 'Great Ancestors',
+          uzbekistan: 'Uzbekistan Knowledge',
+          nature: 'Nature & Environment',
+          math: 'Simple Mathematics'
+        },
+        quizTitles: {
+          math: 'Simple Mathematics',
+          nature: 'Nature & Environment',
+          uzbekistan: 'Uzbekistan Knowledge',
+          ancestors: 'Great Ancestors'
+        },
+        resultTitles: {
+          math: 'Math Genius!',
+          nature: 'Nature Expert!',
+          uzbekistan: 'Uzbekistan Expert!',
+          ancestors: 'History Master!'
+        },
+        resultMessages: {
+          math: {
+            excellent: "Wow! You're a math wizard! Your skills are absolutely amazing!",
+            good: "Excellent work! You have a strong understanding of mathematics!",
+            average: "Well done! You have a good foundation, keep practicing to improve!",
+            poor: "Don't worry! Math takes practice. Keep trying and you'll get better!"
+          },
+          nature: {
+            excellent: "Amazing! You're a true nature lover with incredible knowledge!",
+            good: "Excellent! You have wonderful knowledge about nature and environment!",
+            average: "Well done! You care about our planet, keep learning about nature!",
+            poor: "Nature is amazing! Keep exploring and learning about our beautiful world!"
+          },
+          uzbekistan: {
+            excellent: "Incredible! You have excellent knowledge about Uzbekistan's rich culture and history!",
+            good: "Wonderful! You know Uzbekistan very well!",
+            average: "Well done! You're learning about Uzbekistan's amazing heritage!",
+            poor: "Uzbekistan has a fascinating history and culture! Keep exploring and learning!"
+          },
+          ancestors: {
+            excellent: "Outstanding! You have incredible knowledge about our great ancestors and their achievements!",
+            good: "Excellent! You respect and understand our ancestors' legacy very well!",
+            average: "Well done! You're learning about the amazing people who shaped our world!",
+            poor: "Our ancestors have amazing stories! Keep exploring and learning from history!"
+          }
+        },
+        restartButton: 'Try Again',
+        scoreText: 'Score: ',
+        quizCompleted: 'Quiz Completed!'
+      },
+      uz: {
+        code: 'uz',
+        title: 'AQLINGIZNI OʻTKIRLASHTIRING',
+        subtitle: 'MIYANGIZNI QIZIQARLI SAVOLLAR BILAN SINAB KOʻRISHGA TAYYORMISIZ?',
+        knowledgeSpeech: 'Bilim sarguzashtingizni boshlash uchun mavzuni tanlang!',
+        topics: {
+          ancestors: 'Buyuk Ajdodlar',
+          uzbekistan: 'Oʻzbekiston Bilimi',
+          nature: 'Tabiat va Atrof-muhit',
+          math: 'Oddiy Matematika'
+        },
+        quizTitles: {
+          math: 'Oddiy Matematika',
+          nature: 'Tabiat va Atrof-muhit',
+          uzbekistan: 'Oʻzbekiston Bilimi',
+          ancestors: 'Buyuk Ajdodlar'
+        },
+        resultTitles: {
+          math: 'Matematika Dahosi!',
+          nature: 'Tabiat Mutaxassisi!',
+          uzbekistan: 'Oʻzbekiston Mutaxassisi!',
+          ancestors: 'Tarix Ustasi!'
+        },
+        resultMessages: {
+          math: {
+            excellent: "Voy! Siz matematika sehrgarsiz! Koʻnikmalaringiz juda ajoyib!",
+            good: "Ajoyib ish! Siz matematikani juda yaxshi tushunasiz!",
+            average: "Yaxshi qildingiz! Sizda yaxshi asos bor, yaxshilash uchun mashq qilishda davom eting!",
+            poor: "Xavotir olmang! Matematika mashqni talab qiladi. Harakat qilishda davom eting va siz yaxshilanasiz!"
+          },
+          nature: {
+            excellent: "Ajoyib! Siz haqiqiy tabiat sevuvchisiz va aqlga sigʻmaydigan bilimlarga egasiz!",
+            good: "Ajoyib! Siz tabiat va atrof-muhit haqida ajoyib bilimlarga egasiz!",
+            average: "Yaxshi qildingiz! Siz sayyoramiz haqida qaygʻurasiz, tabiat haqida oʻrganishda davom eting!",
+            poor: "Tabiat ajoyib! Goʻzal dunyomiz haqida tadqiq qilish va oʻrganishda davom eting!"
+          },
+          uzbekistan: {
+            excellent: "Aqlga sigʻmas! Siz Oʻzbekistonning boy madaniyati va tarixi haqida ajoyib bilimlarga egasiz!",
+            good: "Ajoyib! Siz Oʻzbekistonni juda yaxshi bilasiz!",
+            average: "Yaxshi qildingiz! Siz Oʻzbekistonning ajoyib merosi haqida oʻrganyapsiz!",
+            poor: "Oʻzbekistonning qiziqarli tarixi va madaniyati bor! Tadqiq qilish va oʻrganishda davom eting!"
+          },
+          ancestors: {
+            excellent: "Ajoyib! Siz buyuk ajdodlarimiz va ularning yutuqlari haqida aqlga sigʻmaydigan bilimlarga egasiz!",
+            good: "Ajoyib! Siz ajdodlarimizning merosini hurmat qilasiz va juda yaxshi tushunasiz!",
+            average: "Yaxshi qildingiz! Siz dunyomizni shakllantirgan ajoyib odamlar haqida oʻrganyapsiz!",
+            poor: "Ajdodlarimizning ajoyib hikoyalari bor! Tarixdan tadqiq qilish va oʻrganishda davom eting!"
+          }
+        },
+        restartButton: 'Qayta Urinish',
+        scoreText: 'Hisob: ',
+        quizCompleted: 'Test Yakunlandi!'
+      },
+      ru: {
+        code: 'ru',
+        title: 'ОСТРИТЕ СВОЙ УМ',
+        subtitle: 'ГОТОВЫ ЛИ ВЫ ИСПЫТАТЬ СВОЙ МОЗГ ИНТЕРЕСНЫМИ ВОПРОСАМИ?',
+        knowledgeSpeech: 'Выберите тему, чтобы начать свое приключение в мир знаний!',
+        topics: {
+          ancestors: 'Великие Предки',
+          uzbekistan: 'Знания об Узбекистане',
+          nature: 'Природа и Окружающая Среда',
+          math: 'Простая Математика'
+        },
+        quizTitles: {
+          math: 'Простая Математика',
+          nature: 'Природа и Окружающая Среда',
+          uzbekistan: 'Знания об Узбекистане',
+          ancestors: 'Великие Предки'
+        },
+        resultTitles: {
+          math: 'Математический Гений!',
+          nature: 'Эксперт по Природе!',
+          uzbekistan: 'Эксперт по Узбекистану!',
+          ancestors: 'Мастер Истории!'
+        },
+        resultMessages: {
+          math: {
+            excellent: "Вау! Вы математический волшебник! Ваши навыки абсолютно потрясающие!",
+            good: "Отличная работа! У вас отличное понимание математики!",
+            average: "Молодец! У вас хорошая основа, продолжайте практиковаться, чтобы улучшить!",
+            poor: "Не волнуйтесь! Математика требует практики. Продолжайте пытаться, и у вас получится!"
+          },
+          nature: {
+            excellent: "Потрясающе! Вы настоящий любитель природы с невероятными знаниями!",
+            good: "Отлично! У вас замечательные знания о природе и окружающей среде!",
+            average: "Молодец! Вы заботитесь о нашей планете, продолжайте узнавать о природе!",
+            poor: "Природа удивительна! Продолжайте исследовать и узнавать о нашем прекрасном мире!"
+          },
+          uzbekistan: {
+            excellent: "Невероятно! У вас отличные знания о богатой культуре и истории Узбекистана!",
+            good: "Замечательно! Вы очень хорошо знаете Узбекистан!",
+            average: "Молодец! Вы изучаете удивительное наследие Узбекистана!",
+            poor: "У Узбекистана увлекательная история и культура! Продолжайте исследовать и узнавать!"
+          },
+          ancestors: {
+            excellent: "Выдающийся результат! У вас невероятные знания о наших великих предках и их достижениях!",
+            good: "Отлично! Вы очень хорошо уважаете и понимаете наследие наших предков!",
+            average: "Молодец! Вы изучаете удивительных людей, которые сформировали наш мир!",
+            poor: "У наших предков удивительные истории! Продолжайте исследовать и учиться у истории!"
+          }
+        },
+        restartButton: 'Попробовать Снова',
+        scoreText: 'Счет: ',
+        quizCompleted: 'Тест Завершен!'
+      }
+    };
+
+    // ========== دالة تغيير اللغة ==========
+    function changeLanguage(langCode) {
+      currentLanguage = langCode;
+      const lang = languages[langCode];
+      
+      // تحديث نصوص الصفحة الرئيسية
+      document.getElementById('title-text').textContent = lang.title;
+      document.getElementById('subtitle-text').textContent = lang.subtitle;
+      
+      // تحديث نصوص صفحة المعرفة
+      document.getElementById('knowledge-speech-text').textContent = lang.knowledgeSpeech;
+      document.getElementById('ancestors-topic-title').textContent = lang.topics.ancestors;
+      document.getElementById('uzbekistan-topic-title').textContent = lang.topics.uzbekistan;
+      document.getElementById('nature-topic-title').textContent = lang.topics.nature;
+      document.getElementById('math-topic-title').textContent = lang.topics.math;
+      
+      // تحديث عناوين الاختبارات
+      document.getElementById('math-quiz-title').textContent = lang.quizTitles.math;
+      document.getElementById('nature-quiz-title').textContent = lang.quizTitles.nature;
+      document.getElementById('uzbekistan-quiz-title').textContent = lang.quizTitles.uzbekistan;
+      document.getElementById('ancestors-quiz-title').textContent = lang.quizTitles.ancestors;
+      
+      // تحديث نصوص النتائج
+      document.querySelectorAll('.result-title').forEach(el => {
+        el.textContent = lang.quizCompleted;
+      });
+      
+      document.querySelectorAll('.restart-button').forEach(el => {
+        el.textContent = lang.restartButton;
+      });
+    }
+
     // ========== SOUND EFFECTS ==========
     // إنشاء عناصر صوتية للتأثيرات الصوتية
     const buttonClickSound = new Audio();
@@ -1446,64 +1645,84 @@
       resetQuizUI('ancestors');
     }
 
-    // ========== دالة إعادة تعيين واجهة المستخدم للاختبارات ==========
-    function resetQuizUI(quizType) {
-      // إعادة تعيين شريط التقدم
-      const progressBar = document.getElementById(`${quizType}-progress-bar`);
-      if (progressBar) progressBar.style.width = '0%';
-      
-      // إعادة تعيين المؤقت
-      const countdown = document.getElementById(`${quizType}-countdown`);
-      if (countdown) {
-        countdown.textContent = '15';
-        countdown.classList.remove('warning');
-      }
-      
-      // إخفاء صفحة النتائج
-      const resultContainer = document.getElementById(`${quizType}-result-container`);
-      if (resultContainer) resultContainer.style.display = 'none';
-      
-      // إعادة تعيين الأزرار
-      const optionsContainer = document.getElementById(`${quizType}-options-container`);
-      if (optionsContainer) optionsContainer.innerHTML = '';
-      
-      // إعادة تعيين نص السؤال
-      const questionText = document.getElementById(`${quizType}-question-text`);
-      if (questionText) {
-        // إعادة تعيين لنص السؤال الافتراضي حسب نوع الاختبار
-        switch(quizType) {
-          case 'math':
-            questionText.textContent = "What is the largest three-digit number?";
-            break;
-          case 'nature':
-            questionText.textContent = "What does the Sun give us?";
-            break;
-          case 'uzbekistan':
-            questionText.textContent = "How many regions does Uzbekistan have?";
-            break;
-          case 'ancestors':
-            questionText.textContent = "What was Amir Temur's motto?";
-            break;
-        }
-      }
-      
-      // إعادة إظهار العناصر المخفية
-      const speechContainer = document.querySelector(`#${quizType}-questions-page .character-speech-container.quiz`);
-      if (speechContainer) speechContainer.style.display = 'flex';
-      
-      const questionContainer = document.querySelector(`#${quizType}-questions-page .question-container`);
-      if (questionContainer) questionContainer.style.display = 'flex';
-      
-      const progressContainer = document.querySelector(`#${quizType}-questions-page .progress-container`);
-      if (progressContainer) progressContainer.style.display = 'block';
-      
-      // إخفاء أيقونات الإجابات
-      const correctIcon = document.getElementById(`${quizType}-correct-icon`);
-      const wrongIcon = document.getElementById(`${quizType}-wrong-icon`);
-      if (correctIcon) correctIcon.style.display = 'none';
-      if (wrongIcon) wrongIcon.style.display = 'none';
+    // ========== دالة محسنة لإعادة تعيين واجهة المستخدم للاختبارات ==========
+function resetQuizUI(quizType) {
+  // إعادة تعيين شريط التقدم
+  const progressBar = document.getElementById(`${quizType}-progress-bar`);
+  if (progressBar) progressBar.style.width = '0%';
+  
+  // إعادة تعيين المؤقت
+  const countdown = document.getElementById(`${quizType}-countdown`);
+  if (countdown) {
+    countdown.textContent = '15';
+    countdown.classList.remove('warning');
+  }
+  
+  // إخفاء صفحة النتائج
+  const resultContainer = document.getElementById(`${quizType}-result-container`);
+  if (resultContainer) resultContainer.style.display = 'none';
+  
+  // إعادة تعيين الأزرار
+  const optionsContainer = document.getElementById(`${quizType}-options-container`);
+  if (optionsContainer) optionsContainer.innerHTML = '';
+  
+  // إعادة تعيين نص السؤال
+  const questionText = document.getElementById(`${quizType}-question-text`);
+  if (questionText) {
+    // إعادة تعيين لنص السؤال الافتراضي حسب نوع الاختبار
+    switch(quizType) {
+      case 'math':
+        questionText.textContent = "What is the largest three-digit number?";
+        break;
+      case 'nature':
+        questionText.textContent = "What does the Sun give us?";
+        break;
+      case 'uzbekistan':
+        questionText.textContent = "How many regions does Uzbekistan have?";
+        break;
+      case 'ancestors':
+        questionText.textContent = "What was Amir Temur's motto?";
+        break;
     }
-
+  }
+  
+  // ========== التعديلات الجديدة: إعادة إظهار جميع العناصر المخفية ==========
+  
+  // إعادة إظهار فقاعة الكلام
+  const speechContainer = document.querySelector(`#${quizType}-questions-page .character-speech-container.quiz`);
+  if (speechContainer) {
+    speechContainer.style.display = 'flex';
+    // إعادة إظهار فقاعة الكلام داخلياً
+    const speechBubble = speechContainer.querySelector('.speech-bubble-container');
+    if (speechBubble) speechBubble.style.display = 'flex';
+  }
+  
+  // إعادة إظهار حاوية الأسئلة
+  const questionContainer = document.querySelector(`#${quizType}-questions-page .question-container`);
+  if (questionContainer) {
+    questionContainer.style.display = 'flex';
+    questionContainer.classList.remove('exit'); // إزالة حالة الخروج
+  }
+  
+  // إعادة إظهار شريط التقدم
+  const progressContainer = document.querySelector(`#${quizType}-questions-page .progress-container`);
+  if (progressContainer) progressContainer.style.display = 'block';
+  
+  // إعادة إظهار العداد
+  const countdownIcon = document.querySelector(`#${quizType}-questions-page .countdown-icon`);
+  if (countdownIcon) countdownIcon.style.display = 'flex';
+  
+  // إزالة أي أنيميشن خروج من فقاعة الكلام
+  if (speechContainer) speechContainer.classList.remove('exit');
+  
+  // إخفاء أيقونات الإجابات
+  const correctIcon = document.getElementById(`${quizType}-correct-icon`);
+  const wrongIcon = document.getElementById(`${quizType}-wrong-icon`);
+  if (correctIcon) correctIcon.style.display = 'none';
+  if (wrongIcon) wrongIcon.style.display = 'none';
+}
+    
+    
     // دالة العودة إلى الشاشة الرئيسية
     function returnToMainScreen() {
         // إيقاف جميع المؤقتات
@@ -1559,40 +1778,21 @@
     });
     
     // ========== LANGUAGE ROTATION FOR HOLDING PAGE ==========
-    const languages = [
-      {
-        code: 'en',
-        title: 'SHARPEN YOUR MIND',
-        subtitle: 'ARE YOU READY TO CHALLENGE YOUR BRAIN WITH SOME FUN QUESTIONS?'
-      },
-      {
-        code: 'uz',
-        title: 'AQLINGIZNI OʻTKIRLASHTIRING',
-        subtitle: 'MIYANGIZNI QIZIQARLI SAVOLLAR BILAN SINAB KOʻRISHGA TAYYORMISIZ?'
-      },
-      {
-        code: 'ru',
-        title: 'ОСТРИТЕ СВОЙ УМ',
-        subtitle: 'ГОТОВЫ ЛИ ВЫ ИСПЫТАТЬ СВОЙ МОЗГ ИНТЕРЕСНЫМИ ВОПРОСАМИ?'
-      }
-    ];
-
     let currentLanguageIndex = 0;
     let languageInterval;
 
     function startLanguageRotation() {
   // تعيين الفاصل الزمني لتغيير اللغة كل 6 ثوانٍ
   languageInterval = setInterval(() => {
-    currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
-    updateLanguageContent();
+    currentLanguageIndex = (currentLanguageIndex + 1) % Object.keys(languages).length;
+    const langCodes = Object.keys(languages);
+    updateLanguageContent(languages[langCodes[currentLanguageIndex]]);
   }, 6000);
 }
 
-    function updateLanguageContent() {
-      const currentLang = languages[currentLanguageIndex];
-      document.getElementById('title-text').textContent = currentLang.title;
-      document.getElementById('subtitle-text').textContent = currentLang.subtitle;
-      // تم إزالة تحديث نص الفقاعة
+    function updateLanguageContent(lang) {
+      document.getElementById('title-text').textContent = lang.title;
+      document.getElementById('subtitle-text').textContent = lang.subtitle;
     }
 
     function stopLanguageRotation() {
@@ -1621,16 +1821,35 @@
       resetInactivityTimer(); // أضف هذا السطر
     }
 
-    // الانتقال إلى صفحة المعرفة
-    document.querySelectorAll('#start-btn, #boshlash-btn, #nachat-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        stopLanguageRotation(); // إيقاف تغيير اللغات عند الانتقال
-        document.getElementById('holding-page').style.display = 'none';
-        document.getElementById('knowledge-page').style.display = 'flex';
-        currentPage = 'knowledge';
-        window.scrollTo(0, 0);
-        onPageChange();
-      });
+    // الانتقال إلى صفحة المعرفة مع تحديد اللغة
+    document.getElementById('start-btn').addEventListener('click', () => {
+      stopLanguageRotation(); // إيقاف تغيير اللغات عند الانتقال
+      changeLanguage('en');
+      document.getElementById('holding-page').style.display = 'none';
+      document.getElementById('knowledge-page').style.display = 'flex';
+      currentPage = 'knowledge';
+      window.scrollTo(0, 0);
+      onPageChange();
+    });
+
+    document.getElementById('boshlash-btn').addEventListener('click', () => {
+      stopLanguageRotation(); // إيقاف تغيير اللغات عند الانتقال
+      changeLanguage('uz');
+      document.getElementById('holding-page').style.display = 'none';
+      document.getElementById('knowledge-page').style.display = 'flex';
+      currentPage = 'knowledge';
+      window.scrollTo(0, 0);
+      onPageChange();
+    });
+
+    document.getElementById('nachat-btn').addEventListener('click', () => {
+      stopLanguageRotation(); // إيقاف تغيير اللغات عند الانتقال
+      changeLanguage('ru');
+      document.getElementById('holding-page').style.display = 'none';
+      document.getElementById('knowledge-page').style.display = 'flex';
+      currentPage = 'knowledge';
+      window.scrollTo(0, 0);
+      onPageChange();
     });
 
     // اختيار موضوع
@@ -1815,221 +2034,646 @@
   
   return shuffledQuestion;
 }
+
 // ========== MATH QUESTIONS ==========
-    const mathQuestions = [
-      {
-        question: "Let's add! What is 8 + 6?",
-        options: ["14", "13", "15"],
-        correctAnswer: 0
-      },
-      {
-        question: "Let's subtract! What is 9 – 4?",
-        options: ["6", "5", "4"],
-        correctAnswer: 1
-      },
-      {
-        question: "Let's multiply! What is 7 × 2?",
-        options: ["12", "14", "16"],
-        correctAnswer: 1
-      },
-      {
-        question: "Let's divide! What is 18 ÷ 3?",
-        options: ["6", "5", "4"],
-        correctAnswer: 0
-      },
-      {
-        question: "Find the odd number:",
-        options: ["24", "19", "10"],
-        correctAnswer: 1
-      },
-      {
-        question: "How many days are there in a week?",
-        options: ["5", "6", "7"],
-        correctAnswer: 2
-      },
-      {
-        question: "What is the smallest two-digit number?",
-        options: ["11", "10", "12"],
-        correctAnswer: 1
-      },
-      {
-        question: "Let's add! What is 4 + 9?",
-        options: ["13", "12", "14"],
-        correctAnswer: 0
-      },
-      {
-        question: "Let's multiply! What is 5 × 5?",
-        options: ["20", "30", "25"],
-        correctAnswer: 2
-      },
-      {
-        question: "2, 4, 6, 8, … What is the next number?",
-        options: ["9", "10", "12"],
-        correctAnswer: 1
-      }
-    ];
+    const mathQuestions = {
+      en: [
+        {
+          question: "Let's add! What is 8 + 6?",
+          options: ["14", "13", "15"],
+          correctAnswer: 0
+        },
+        {
+          question: "Let's subtract! What is 9 – 4?",
+          options: ["6", "5", "4"],
+          correctAnswer: 1
+        },
+        {
+          question: "Let's multiply! What is 7 × 2?",
+          options: ["12", "14", "16"],
+          correctAnswer: 1
+        },
+        {
+          question: "Let's divide! What is 18 ÷ 3?",
+          options: ["6", "5", "4"],
+          correctAnswer: 0
+        },
+        {
+          question: "Find the odd number:",
+          options: ["24", "19", "10"],
+          correctAnswer: 1
+        },
+        {
+          question: "How many days are there in a week?",
+          options: ["5", "6", "7"],
+          correctAnswer: 2
+        },
+        {
+          question: "What is the smallest two-digit number?",
+          options: ["11", "10", "12"],
+          correctAnswer: 1
+        },
+        {
+          question: "Let's add! What is 4 + 9?",
+          options: ["13", "12", "14"],
+          correctAnswer: 0
+        },
+        {
+          question: "Let's multiply! What is 5 × 5?",
+          options: ["20", "30", "25"],
+          correctAnswer: 2
+        },
+        {
+          question: "2, 4, 6, 8, … What is the next number?",
+          options: ["9", "10", "12"],
+          correctAnswer: 1
+        }
+      ],
+      uz: [
+        {
+          question: "Qoʻshamiz! 8 + 6 nechchi?",
+          options: ["14", "13", "15"],
+          correctAnswer: 0
+        },
+        {
+          question: "Ayirib koʻramiz! 9 – 4 nechchi?",
+          options: ["6", "5", "4"],
+          correctAnswer: 1
+        },
+        {
+          question: "Koʻpaytiramiz! 7 × 2 nechchi?",
+          options: ["12", "14", "16"],
+          correctAnswer: 1
+        },
+        {
+          question: "Boʻlamiz! 18 ÷ 3 nechchi?",
+          options: ["6", "5", "4"],
+          correctAnswer: 0
+        },
+        {
+          question: "Toq sonni toping:",
+          options: ["24", "19", "10"],
+          correctAnswer: 1
+        },
+        {
+          question: "Bir haftada necha kun bor?",
+          options: ["5", "6", "7"],
+          correctAnswer: 2
+        },
+        {
+          question: "Eng kichik ikki xonali son qaysi?",
+          options: ["11", "10", "12"],
+          correctAnswer: 1
+        },
+        {
+          question: "Qoʻshamiz! 4 + 9 nechchi?",
+          options: ["13", "12", "14"],
+          correctAnswer: 0
+        },
+        {
+          question: "Koʻpaytiramiz! 5 × 5 nechchi?",
+          options: ["20", "30", "25"],
+          correctAnswer: 2
+        },
+        {
+          question: "2, 4, 6, 8, … Keyingi son qaysi?",
+          options: ["9", "10", "12"],
+          correctAnswer: 1
+        }
+      ],
+      ru: [
+        {
+          question: "Давайте сложим! Сколько будет 8 + 6?",
+          options: ["14", "13", "15"],
+          correctAnswer: 0
+        },
+        {
+          question: "Давайте вычтем! Сколько будет 9 – 4?",
+          options: ["6", "5", "4"],
+          correctAnswer: 1
+        },
+        {
+          question: "Давайте умножим! Сколько будет 7 × 2?",
+          options: ["12", "14", "16"],
+          correctAnswer: 1
+        },
+        {
+          question: "Давайте разделим! Сколько будет 18 ÷ 3?",
+          options: ["6", "5", "4"],
+          correctAnswer: 0
+        },
+        {
+          question: "Найдите нечетное число:",
+          options: ["24", "19", "10"],
+          correctAnswer: 1
+        },
+        {
+          question: "Сколько дней в неделе?",
+          options: ["5", "6", "7"],
+          correctAnswer: 2
+        },
+        {
+          question: "Какое наименьшее двузначное число?",
+          options: ["11", "10", "12"],
+          correctAnswer: 1
+        },
+        {
+          question: "Давайте сложим! Сколько будет 4 + 9?",
+          options: ["13", "12", "14"],
+          correctAnswer: 0
+        },
+        {
+          question: "Давайте умножим! Сколько будет 5 × 5?",
+          options: ["20", "30", "25"],
+          correctAnswer: 2
+        },
+        {
+          question: "2, 4, 6, 8, … Какое следующее число?",
+          options: ["9", "10", "12"],
+          correctAnswer: 1
+        }
+      ]
+    };
 
     // ========== NATURE QUESTIONS ==========
-    const natureQuestions = [
-      {
-        question: "What does the Sun give us?",
-        options: ["Heat and light", "Electricity", "Water"],
-        correctAnswer: 0
-      },
-      {
-        question: "Which one lives in water?",
-        options: ["Bird", "Fish", "Cat"],
-        correctAnswer: 1
-      },
-      {
-        question: "Which animal can see well in the dark?",
-        options: ["Cow", "Bat", "Rabbit"],
-        correctAnswer: 1
-      },
-      {
-        question: "Where do leaves grow?",
-        options: ["On trees", "In the soil", "In winter"],
-        correctAnswer: 0
-      },
-      {
-        question: "During which season do people wear more clothes?",
-        options: ["Spring", "Summer", "Winter"],
-        correctAnswer: 2
-      },
-      {
-        question: "Where do animals live?",
-        options: ["In airplanes", "In forests", "In cars"],
-        correctAnswer: 1
-      },
-      {
-        question: "What do flowers grow from?",
-        options: ["Seeds", "Leaves", "Water"],
-        correctAnswer: 0
-      },
-      {
-        question: "Why do we need air?",
-        options: ["For breathing", "For drinking", "For running"],
-        correctAnswer: 0
-      },
-      {
-        question: "In which season does it rain the most?",
-        options: ["Spring", "Summer", "Winter"],
-        correctAnswer: 0
-      },
-      {
-        question: "What is the purpose of a tree's roots?",
-        options: ["To produce leaves", "To attach to the soil<br>and absorb nutrients", "To produce fruit"],
-        correctAnswer: 1
-      }
-    ];
+    const natureQuestions = {
+      en: [
+        {
+          question: "What does the Sun give us?",
+          options: ["Heat and light", "Electricity", "Water"],
+          correctAnswer: 0
+        },
+        {
+          question: "Which one lives in water?",
+          options: ["Bird", "Fish", "Cat"],
+          correctAnswer: 1
+        },
+        {
+          question: "Which animal can see well in the dark?",
+          options: ["Cow", "Bat", "Rabbit"],
+          correctAnswer: 1
+        },
+        {
+          question: "Where do leaves grow?",
+          options: ["On trees", "In the soil", "In winter"],
+          correctAnswer: 0
+        },
+        {
+          question: "During which season do people wear more clothes?",
+          options: ["Spring", "Summer", "Winter"],
+          correctAnswer: 2
+        },
+        {
+          question: "Where do animals live?",
+          options: ["In airplanes", "In forests", "In cars"],
+          correctAnswer: 1
+        },
+        {
+          question: "What do flowers grow from?",
+          options: ["Seeds", "Leaves", "Water"],
+          correctAnswer: 0
+        },
+        {
+          question: "Why do we need air?",
+          options: ["For breathing", "For drinking", "For running"],
+          correctAnswer: 0
+        },
+        {
+          question: "In which season does it rain the most?",
+          options: ["Spring", "Summer", "Winter"],
+          correctAnswer: 0
+        },
+        {
+          question: "What is the purpose of a tree's roots?",
+          options: ["To produce leaves", "To attach to the soil<br>and absorb nutrients", "To produce fruit"],
+          correctAnswer: 1
+        }
+      ],
+      uz: [
+        {
+          question: "Quyosh bizga nima beradi?",
+          options: ["Issiqlik va nur", "Elektrik", "Suv"],
+          correctAnswer: 0
+        },
+        {
+          question: "Qaysi biri suvda yashaydi?",
+          options: ["Qush", "Baliq", "Mushuk"],
+          correctAnswer: 1
+        },
+        {
+          question: "Qaysi hayvon qorongʻuda yaxshi koʻradi?",
+          options: ["Sigir", "Koʻrshapalak", "Quyon"],
+          correctAnswer: 1
+        },
+        {
+          question: "Barglar qayerda oʻsadi?",
+          options: ["Daraxtlarda", "Tuproqda", "Qishda"],
+          correctAnswer: 0
+        },
+        {
+          question: "Qaysi faslda odamlar koʻproq kiyim kiyishadi?",
+          options: ["Bahor", "Yoz", "Qish"],
+          correctAnswer: 2
+        },
+        {
+          question: "Hayvonlar qayerda yashaydi?",
+          options: ["Samolyotlarda", "Oʻrmonlarda", "Mashinalarda"],
+          correctAnswer: 1
+        },
+        {
+          question: "Gullar nimalardan oʻsadi?",
+          options: ["Urugʻlardan", "Barglardan", "Suvdan"],
+          correctAnswer: 0
+        },
+        {
+          question: "Nima uchun bizga havo kerak?",
+          options: ["Nafas olish uchun", "Ichish uchun", "Yugurish uchun"],
+          correctAnswer: 0
+        },
+        {
+          question: "Qaysi faslda eng koʻp yogʻin yogʻadi?",
+          options: ["Bahor", "Yoz", "Qish"],
+          correctAnswer: 0
+        },
+        {
+          question: "Daraxt ildizlarining vazifasi nima?",
+          options: ["Barg ishlab chiqarish", "Tuproqqa yopishish<br>va ozuqalarni soʻrish", "Meva ishlab chiqarish"],
+          correctAnswer: 1
+        }
+      ],
+      ru: [
+        {
+          question: "Что нам дает Солнце?",
+          options: ["Тепло и свет", "Электричество", "Воду"],
+          correctAnswer: 0
+        },
+        {
+          question: "Кто живет в воде?",
+          options: ["Птица", "Рыба", "Кошка"],
+          correctAnswer: 1
+        },
+        {
+          question: "Какое животное хорошо видит в темноте?",
+          options: ["Корова", "Летучая мышь", "Кролик"],
+          correctAnswer: 1
+        },
+        {
+          question: "Где растут листья?",
+          options: ["На деревьях", "В почве", "Зимой"],
+          correctAnswer: 0
+        },
+        {
+          question: "В какое время года люди носят больше одежды?",
+          options: ["Весной", "Летом", "Зимой"],
+          correctAnswer: 2
+        },
+        {
+          question: "Где живут животные?",
+          options: ["В самолетах", "В лесах", "В машинах"],
+          correctAnswer: 1
+        },
+        {
+          question: "Из чего растут цветы?",
+          options: ["Из семян", "Из листьев", "Из воды"],
+          correctAnswer: 0
+        },
+        {
+          question: "Зачем нам нужен воздух?",
+          options: ["Для дыхания", "Для питья", "Для бега"],
+          correctAnswer: 0
+        },
+        {
+          question: "В какое время года больше всего дождей?",
+          options: ["Весной", "Летом", "Зимой"],
+          correctAnswer: 0
+        },
+        {
+          question: "Для чего нужны корни дерева?",
+          options: ["Для производства листьев", "Для прикрепления к почве<br>и поглощения питательных веществ", "Для производства плодов"],
+          correctAnswer: 1
+        }
+      ]
+    };
 
     // ========== UZBEKISTAN QUESTIONS ==========
-    const uzbekistanQuestions = [
-      {
-        question: "How many regions does Uzbekistan have?",
-        options: ["14", "12", "13"],
-        correctAnswer: 1
-      },
-      {
-        question: "Which river flows through Uzbekistan?",
-        options: ["Nile", "Amu Darya", "Danube"],
-        correctAnswer: 1
-      },
-      {
-        question: "What is the national currency of Uzbekistan?",
-        options: ["Soʻm", "Ruble", "Riyal"],
-        correctAnswer: 0
-      },
-      {
-        question: "Where is Uzbekistan located?",
-        options: ["North America", "Central Asia", "South Africa"],
-        correctAnswer: 1
-      },
-      {
-        question: "In which city is the Kok Saroy Palace located?",
-        options: ["Bukhara", "Tashkent", "Qarshi"],
-        correctAnswer: 1
-      },
-      {
-        question: "What is Andijan famous for?",
-        options: ["Its sea", "Its gardens", "Its mountains"],
-        correctAnswer: 1
-      },
-      {
-        question: "How many verses does Uzbekistan's national anthem have?",
-        options: ["3", "4", "5"],
-        correctAnswer: 1
-      },
-      {
-        question: "What is the official language of Uzbekistan?",
-        options: ["Uzbek", "Persian", "Turkmen"],
-        correctAnswer: 0
-      },
-      {
-        question: "Where is the 'Hazrati Imam' complex located?",
-        options: ["Tashkent", "Khiva", "Urgench"],
-        correctAnswer: 0
-      },
-      {
-        question: "In which city is 'Ichan Qal'a' located?",
-        options: ["Samarkand", "Khiva", "Fergana"],
-        correctAnswer: 1
-      }
-    ];
+    const uzbekistanQuestions = {
+      en: [
+        {
+          question: "How many regions does Uzbekistan have?",
+          options: ["14", "12", "13"],
+          correctAnswer: 1
+        },
+        {
+          question: "Which river flows through Uzbekistan?",
+          options: ["Nile", "Amu Darya", "Danube"],
+          correctAnswer: 1
+        },
+        {
+          question: "What is the national currency of Uzbekistan?",
+          options: ["Soʻm", "Ruble", "Riyal"],
+          correctAnswer: 0
+        },
+        {
+          question: "Where is Uzbekistan located?",
+          options: ["North America", "Central Asia", "South Africa"],
+          correctAnswer: 1
+        },
+        {
+          question: "In which city is the Kok Saroy Palace located?",
+          options: ["Bukhara", "Tashkent", "Qarshi"],
+          correctAnswer: 1
+        },
+        {
+          question: "What is Andijan famous for?",
+          options: ["Its sea", "Its gardens", "Its mountains"],
+          correctAnswer: 1
+        },
+        {
+          question: "How many verses does Uzbekistan's national anthem have?",
+          options: ["3", "4", "5"],
+          correctAnswer: 1
+        },
+        {
+          question: "What is the official language of Uzbekistan?",
+          options: ["Uzbek", "Persian", "Turkmen"],
+          correctAnswer: 0
+        },
+        {
+          question: "Where is the 'Hazrati Imam' complex located?",
+          options: ["Tashkent", "Khiva", "Urgench"],
+          correctAnswer: 0
+        },
+        {
+          question: "In which city is 'Ichan Qal'a' located?",
+          options: ["Samarkand", "Khiva", "Fergana"],
+          correctAnswer: 1
+        }
+      ],
+      uz: [
+        {
+          question: "Oʻzbekistonda nechta viloyat bor?",
+          options: ["14", "12", "13"],
+          correctAnswer: 1
+        },
+        {
+          question: "Qaysi daryo Oʻzbekiston orqali oqadi?",
+          options: ["Nil", "Amudaryo", "Dunay"],
+          correctAnswer: 1
+        },
+        {
+          question: "Oʻzbekistonning milliy valyutasi qaysi?",
+          options: ["Soʻm", "Rubl", "Riyol"],
+          correctAnswer: 0
+        },
+        {
+          question: "Oʻzbekiston qayerda joylashgan?",
+          options: ["Shimoliy Amerika", "Markaziy Osiyo", "Janubiy Afrika"],
+          correctAnswer: 1
+        },
+        {
+          question: "Koʻk Saroy saroyi qaysi shaharda joylashgan?",
+          options: ["Buxoro", "Toshkent", "Qarshi"],
+          correctAnswer: 1
+        },
+        {
+          question: "Andijon nima bilan mashhur?",
+          options: ["Dengizi bilan", "Bogʻlari bilan", "Togʻlari bilan"],
+          correctAnswer: 1
+        },
+        {
+          question: "Oʻzbekiston madhiyasida nechta misra bor?",
+          options: ["3", "4", "5"],
+          correctAnswer: 1
+        },
+        {
+          question: "Oʻzbekistonning rasmiy tili qaysi?",
+          options: ["Oʻzbek", "Fors", "Turkman"],
+          correctAnswer: 0
+        },
+        {
+          question: "'Hazrati Imom' majmuasi qayerda joylashgan?",
+          options: ["Toshkent", "Xiva", "Urganch"],
+          correctAnswer: 0
+        },
+        {
+          question: "'Ichan Qalʼa' qaysi shaharda joylashgan?",
+          options: ["Samarqand", "Xiva", "Fargʻona"],
+          correctAnswer: 1
+        }
+      ],
+      ru: [
+        {
+          question: "Сколько областей в Узбекистане?",
+          options: ["14", "12", "13"],
+          correctAnswer: 1
+        },
+        {
+          question: "Какая река протекает через Узбекистан?",
+          options: ["Нил", "Амударья", "Дунай"],
+          correctAnswer: 1
+        },
+        {
+          question: "Какая национальная валюта Узбекистана?",
+          options: ["Сум", "Рубль", "Риял"],
+          correctAnswer: 0
+        },
+        {
+          question: "Где находится Узбекистан?",
+          options: ["Северная Америка", "Центральная Азия", "Южная Африка"],
+          correctAnswer: 1
+        },
+        {
+          question: "В каком городе находится дворец Кок Сарой?",
+          options: ["Бухара", "Ташкент", "Карши"],
+          correctAnswer: 1
+        },
+        {
+          question: "Чем знаменит Андижан?",
+          options: ["Своим морем", "Своими садами", "Своими горами"],
+          correctAnswer: 1
+        },
+        {
+          question: "Сколько куплетов в гимне Узбекистана?",
+          options: ["3", "4", "5"],
+          correctAnswer: 1
+        },
+        {
+          question: "Какой официальный язык Узбекистана?",
+          options: ["Узбекский", "Персидский", "Туркменский"],
+          correctAnswer: 0
+        },
+        {
+          question: "Где находится комплекс 'Хазрати Имам'?",
+          options: ["Ташкент", "Хива", "Ургенч"],
+          correctAnswer: 0
+        },
+        {
+          question: "В каком городе находится 'Ичан-Кала'?",
+          options: ["Самарканд", "Хива", "Фергана"],
+          correctAnswer: 1
+        }
+      ]
+    };
 
     // ========== ANCESTORS QUESTIONS ==========
-    const ancestorsQuestions = [
-      {
-        question: "What was Amir Temur's motto?",
-        options: ["Knowledge and power", "Justice and order", "Patience and courage"],
-        correctAnswer: 1
-      },
-      {
-        question: "How many languages did Beruni know?",
-        options: ["2", "4", "More than 5"],
-        correctAnswer: 2
-      },
-      {
-        question: "What kind of works did Alisher Navoi write?",
-        options: ["Scientific articles", "Ghazals and rubaiyat<br>(poems and quatrains)", "Epics"],
-        correctAnswer: 1
-      },
-      {
-        question: "Where was Ibn Sina born?",
-        options: ["Bukhara", "Termez", "Andijan"],
-        correctAnswer: 0
-      },
-      {
-        question: "How many years did it take to build Ulughbek's observatory?",
-        options: ["1 year", "3 years", "5 years"],
-        correctAnswer: 1
-      },
-      {
-        question: "In which century did Al-Khwarizmi live?",
-        options: ["9th century", "13th century", "15th century"],
-        correctAnswer: 0
-      },
-      {
-        question: "Where is Amir Temur's mausoleum located?",
-        options: ["Bukhara", "Samarkand", "Tashkent"],
-        correctAnswer: 1
-      },
-      {
-        question: "In which city is the statue of Alisher Navoi located in the city centre?",
-        options: ["Termez", "Namangan", "Tashkent"],
-        correctAnswer: 2
-      },
-      {
-        question: "From which city did Beruni come?",
-        options: ["Khwarazm", "Bukhara", "Samarkand"],
-        correctAnswer: 0
-      },
-      {
-        question: "What did Ulughbek mainly study?",
-        options: ["Music", "Astronomy", "Medicine"],
-        correctAnswer: 1
-      }
-    ];
+    const ancestorsQuestions = {
+      en: [
+        {
+          question: "What was Amir Temur's motto?",
+          options: ["Knowledge and power", "Justice and order", "Patience and courage"],
+          correctAnswer: 1
+        },
+        {
+          question: "How many languages did Beruni know?",
+          options: ["2", "4", "More than 5"],
+          correctAnswer: 2
+        },
+        {
+          question: "What kind of works did Alisher Navoi write?",
+          options: ["Scientific articles", "Ghazals and rubaiyat<br>(poems and quatrains)", "Epics"],
+          correctAnswer: 1
+        },
+        {
+          question: "Where was Ibn Sina born?",
+          options: ["Bukhara", "Termez", "Andijan"],
+          correctAnswer: 0
+        },
+        {
+          question: "How many years did it take to build Ulughbek's observatory?",
+          options: ["1 year", "3 years", "5 years"],
+          correctAnswer: 1
+        },
+        {
+          question: "In which century did Al-Khwarizmi live?",
+          options: ["9th century", "13th century", "15th century"],
+          correctAnswer: 0
+        },
+        {
+          question: "Where is Amir Temur's mausoleum located?",
+          options: ["Bukhara", "Samarkand", "Tashkent"],
+          correctAnswer: 1
+        },
+        {
+          question: "In which city is the statue of Alisher Navoi located in the city centre?",
+          options: ["Termez", "Namangan", "Tashkent"],
+          correctAnswer: 2
+        },
+        {
+          question: "From which city did Beruni come?",
+          options: ["Khwarazm", "Bukhara", "Samarkand"],
+          correctAnswer: 0
+        },
+        {
+          question: "What did Ulughbek mainly study?",
+          options: ["Music", "Astronomy", "Medicine"],
+          correctAnswer: 1
+        }
+      ],
+      uz: [
+        {
+          question: "Amir Temurning shiori nima edi?",
+          options: ["Bilim va kuch", "Adolat va tartib", "Sabr va jasorat"],
+          correctAnswer: 1
+        },
+        {
+          question: "Beruni nechta tilni bilardi?",
+          options: ["2", "4", "5 tildan koʻp"],
+          correctAnswer: 2
+        },
+        {
+          question: "Alisher Navoiy qanday asarlar yozgan?",
+          options: ["Ilmiy maqolalar", "Gʻazal va ruboiylar<br>(sheʼrlar va toʻrtliklar)", "Dostonlar"],
+          correctAnswer: 1
+        },
+        {
+          question: "Ibn Sino qayerda tugʻilgan?",
+          options: ["Buxoro", "Termiz", "Andijon"],
+          correctAnswer: 0
+        },
+        {
+          question: "Ulugʻbek rasadxonasini qurishga necha yil ketgan?",
+          options: ["1 yil", "3 yil", "5 yil"],
+          correctAnswer: 1
+        },
+        {
+          question: "Xorazmiy qaysi asrda yashagan?",
+          options: ["9-asr", "13-asr", "15-asr"],
+          correctAnswer: 0
+        },
+        {
+          question: "Amir Temurning maqbarasi qayerda joylashgan?",
+          options: ["Buxoro", "Samarqand", "Toshkent"],
+          correctAnswer: 1
+        },
+        {
+          question: "Alisher Navoiy haykali qaysi shahar markazida joylashgan?",
+          options: ["Termiz", "Namangan", "Toshkent"],
+          correctAnswer: 2
+        },
+        {
+          question: "Beruni qaysi shahardan kelgan?",
+          options: ["Xorazm", "Buxoro", "Samarqand"],
+          correctAnswer: 0
+        },
+        {
+          question: "Ulugʻbek asosan nimani oʻrgangan?",
+          options: ["Musiqani", "Astronomiyani", "Tibbiyotni"],
+          correctAnswer: 1
+        }
+      ],
+      ru: [
+        {
+          question: "Каким был девиз Амира Темура?",
+          options: ["Знание и сила", "Справедливость и порядок", "Терпение и мужество"],
+          correctAnswer: 1
+        },
+        {
+          question: "Сколько языков знал Беруни?",
+          options: ["2", "4", "Более 5"],
+          correctAnswer: 2
+        },
+        {
+          question: "Какие произведения писал Алишер Навои?",
+          options: ["Научные статьи", "Газели и рубаи<br>(стихи и четверостишия)", "Эпосы"],
+          correctAnswer: 1
+        },
+        {
+          question: "Где родился Ибн Сина?",
+          options: ["Бухара", "Термез", "Андижан"],
+          correctAnswer: 0
+        },
+        {
+          question: "Сколько лет потребовалось для строительства обсерватории Улугбека?",
+          options: ["1 год", "3 года", "5 лет"],
+          correctAnswer: 1
+        },
+        {
+          question: "В каком веке жил Аль-Хорезми?",
+          options: ["9 век", "13 век", "15 век"],
+          correctAnswer: 0
+        },
+        {
+          question: "Где находится мавзолей Амира Темура?",
+          options: ["Бухара", "Самарканд", "Ташкент"],
+          correctAnswer: 1
+        },
+        {
+          question: "В каком городе в центре города находится статуя Алишера Навои?",
+          options: ["Термез", "Наманган", "Ташкент"],
+          correctAnswer: 2
+        },
+        {
+          question: "Из какого города был Беруни?",
+          options: ["Хорезм", "Бухара", "Самарканд"],
+          correctAnswer: 0
+        },
+        {
+          question: "Что в основном изучал Улугбек?",
+          options: ["Музыку", "Астрономию", "Медицину"],
+          correctAnswer: 1
+        }
+      ]
+    };
 
     // المتغيرات العامة لكل اختبار
     let currentMathQuestions = [];
@@ -2201,7 +2845,7 @@
     function loadMathQuestion() {
       // إذا لم تكن الأسئلة قد تم خلطها بعد، قم بخلطها
       if (currentMathQuestions.length === 0) {
-        currentMathQuestions = shuffleArray(mathQuestions);
+        currentMathQuestions = shuffleArray(mathQuestions[currentLanguage]);
       }
       
       if (currentMathQuestionIndex >= currentMathQuestions.length) {
@@ -2313,26 +2957,22 @@
       document.getElementById('math-result-container').style.display = 'flex';
       
       const percentage = (mathScore / currentMathQuestions.length) * 100;
-      document.getElementById('math-result-score').textContent = `Score: ${mathScore}/${currentMathQuestions.length}`;
+      document.getElementById('math-result-score').textContent = languages[currentLanguage].scoreText + `${mathScore}/${currentMathQuestions.length}`;
       
       let message = "";
-      let title = "";
+      let title = languages[currentLanguage].resultTitles.math;
       
       if (percentage >= 90) {
-        title = "Math Genius!";
-        message = "Wow! You're a math wizard! Your skills are absolutely amazing!";
+        message = languages[currentLanguage].resultMessages.math.excellent;
       } else if (percentage >= 70) {
-        title = "Great Job!";
-        message = "Excellent work! You have a strong understanding of mathematics!";
+        message = languages[currentLanguage].resultMessages.math.good;
       } else if (percentage >= 50) {
-        title = "Good Effort!";
-        message = "Well done! You have a good foundation, keep practicing to improve!";
+        message = languages[currentLanguage].resultMessages.math.average;
       } else {
-        title = "Keep Learning!";
-        message = "Don't worry! Math takes practice. Keep trying and you'll get better!";
+        message = languages[currentLanguage].resultMessages.math.poor;
       }
       
-      document.getElementById('math-result-title').textContent = title;
+      document.getElementById('math-result-title').textContent = languages[currentLanguage].quizCompleted;
       document.getElementById('math-result-message').textContent = message;
       
       // إعادة إضافة الأصوات للأزرار في صفحة النتائج
@@ -2348,7 +2988,7 @@
     function loadNatureQuestion() {
       // إذا لم تكن الأسئلة قد تم خلطها بعد، قم بخلطها
       if (currentNatureQuestions.length === 0) {
-        currentNatureQuestions = shuffleArray(natureQuestions);
+        currentNatureQuestions = shuffleArray(natureQuestions[currentLanguage]);
       }
       
       if (currentNatureQuestionIndex >= currentNatureQuestions.length) {
@@ -2460,26 +3100,22 @@
       document.getElementById('nature-result-container').style.display = 'flex';
       
       const percentage = (natureScore / currentNatureQuestions.length) * 100;
-      document.getElementById('nature-result-score').textContent = `Score: ${natureScore}/${currentNatureQuestions.length}`;
+      document.getElementById('nature-result-score').textContent = languages[currentLanguage].scoreText + `${natureScore}/${currentNatureQuestions.length}`;
       
       let message = "";
-      let title = "";
+      let title = languages[currentLanguage].resultTitles.nature;
       
       if (percentage >= 90) {
-        title = "Nature Expert!";
-        message = "Amazing! You're a true nature lover with incredible knowledge!";
+        message = languages[currentLanguage].resultMessages.nature.excellent;
       } else if (percentage >= 70) {
-        title = "Great Job!";
-        message = "Excellent! You have wonderful knowledge about nature and environment!";
+        message = languages[currentLanguage].resultMessages.nature.good;
       } else if (percentage >= 50) {
-        title = "Good Effort!";
-        message = "Well done! You care about our planet, keep learning about nature!";
+        message = languages[currentLanguage].resultMessages.nature.average;
       } else {
-        title = "Keep Exploring!";
-        message = "Nature is amazing! Keep exploring and learning about our beautiful world!";
+        message = languages[currentLanguage].resultMessages.nature.poor;
       }
       
-      document.getElementById('nature-result-title').textContent = title;
+      document.getElementById('nature-result-title').textContent = languages[currentLanguage].quizCompleted;
       document.getElementById('nature-result-message').textContent = message;
       
       // إعادة إضافة الأصوات للأزرار في صفحة النتائج
@@ -2495,7 +3131,7 @@
     function loadUzbekistanQuestion() {
       // إذا لم تكن الأسئلة قد تم خلطها بعد، قم بخلطها
       if (currentUzbekistanQuestions.length === 0) {
-        currentUzbekistanQuestions = shuffleArray(uzbekistanQuestions);
+        currentUzbekistanQuestions = shuffleArray(uzbekistanQuestions[currentLanguage]);
       }
       
       if (currentUzbekistanQuestionIndex >= currentUzbekistanQuestions.length) {
@@ -2607,26 +3243,22 @@
       document.getElementById('uzbekistan-result-container').style.display = 'flex';
       
       const percentage = (uzbekistanScore / currentUzbekistanQuestions.length) * 100;
-      document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${currentUzbekistanQuestions.length}`;
+      document.getElementById('uzbekistan-result-score').textContent = languages[currentLanguage].scoreText + `${uzbekistanScore}/${currentUzbekistanQuestions.length}`;
       
       let message = "";
-      let title = "";
+      let title = languages[currentLanguage].resultTitles.uzbekistan;
       
       if (percentage >= 90) {
-          title = "Uzbekistan Expert!";
-          message = "Incredible! You have excellent knowledge about Uzbekistan's rich culture and history!";
+          message = languages[currentLanguage].resultMessages.uzbekistan.excellent;
       } else if (percentage >= 70) {
-          title = "Great Job!";
-          message = "Wonderful! You know Uzbekistan very well!";
+          message = languages[currentLanguage].resultMessages.uzbekistan.good;
       } else if (percentage >= 50) {
-          title = "Good Effort!";
-          message = "Well done! You're learning about Uzbekistan's amazing heritage!";
+          message = languages[currentLanguage].resultMessages.uzbekistan.average;
       } else {
-          title = "Keep Learning!";
-          message = "Uzbekistan has a fascinating history and culture! Keep exploring and learning!";
+          message = languages[currentLanguage].resultMessages.uzbekistan.poor;
       }
       
-      document.getElementById('uzbekistan-result-title').textContent = title;
+      document.getElementById('uzbekistan-result-title').textContent = languages[currentLanguage].quizCompleted;
       document.getElementById('uzbekistan-result-message').textContent = message;
     }
 
@@ -2639,7 +3271,7 @@
     function loadAncestorsQuestion() {
       // إذا لم تكن الأسئلة قد تم خلطها بعد، قم بخلطها
       if (currentAncestorsQuestions.length === 0) {
-        currentAncestorsQuestions = shuffleArray(ancestorsQuestions);
+        currentAncestorsQuestions = shuffleArray(ancestorsQuestions[currentLanguage]);
       }
       
       if (currentAncestorsQuestionIndex >= currentAncestorsQuestions.length) {
@@ -2751,26 +3383,22 @@
       document.getElementById('ancestors-result-container').style.display = 'flex';
       
       const percentage = (ancestorsScore / currentAncestorsQuestions.length) * 100;
-      document.getElementById('ancestors-result-score').textContent = `Score: ${ancestorsScore}/${currentAncestorsQuestions.length}`;
+      document.getElementById('ancestors-result-score').textContent = languages[currentLanguage].scoreText + `${ancestorsScore}/${currentAncestorsQuestions.length}`;
       
       let message = "";
-      let title = "";
+      let title = languages[currentLanguage].resultTitles.ancestors;
       
       if (percentage >= 90) {
-        title = "History Master!";
-        message = "Outstanding! You have incredible knowledge about our great ancestors and their achievements!";
+        message = languages[currentLanguage].resultMessages.ancestors.excellent;
       } else if (percentage >= 70) {
-        title = "Great Job!";
-        message = "Excellent! You respect and understand our ancestors' legacy very well!";
+        message = languages[currentLanguage].resultMessages.ancestors.good;
       } else if (percentage >= 50) {
-        title = "Good Effort!";
-        message = "Well done! You're learning about the amazing people who shaped our world!";
+        message = languages[currentLanguage].resultMessages.ancestors.average;
       } else {
-        title = "Keep Learning!";
-        message = "Our ancestors have amazing stories! Keep exploring and learning from history!";
+        message = languages[currentLanguage].resultMessages.ancestors.poor;
       }
       
-      document.getElementById('ancestors-result-title').textContent = title;
+      document.getElementById('ancestors-result-title').textContent = languages[currentLanguage].quizCompleted;
       document.getElementById('ancestors-result-message').textContent = message;
       
       // إعادة إضافة الأصوات للأزرار في صفحة النتائج
