@@ -906,6 +906,19 @@
     #ancestors-result-container ~ .character-speech-container.quiz {
         display: none !important;
     }
+
+
+
+    /* إخفاء فقاعة الكلام فقط في صفحة النتائج مع إبقاء الروبوت */
+#math-result-container ~ .character-speech-container.quiz .speech-bubble-container,
+#nature-result-container ~ .character-speech-container.quiz .speech-bubble-container,
+#uzbekistan-result-container ~ .character-speech-container.quiz .speech-bubble-container,
+#ancestors-result-container ~ .character-speech-container.quiz .speech-bubble-container {
+    display: none !important;
+}
+
+
+
   </style>
 </head>
 <body>
@@ -2370,7 +2383,6 @@
     }
 
     function showAncestorsResults() {
-      document.getElementById('ancestors-question-text').textContent = "You've completed the ancestors quiz!";
       document.getElementById('ancestors-options-container').innerHTML = "";
       document.getElementById('ancestors-progress-bar').style.width = "100%";
       
@@ -2406,6 +2418,10 @@
       hardResetAllQuizzes();
       loadAncestorsQuestion();
     });
+
+
+
+    
   </script>
 
 </body>
