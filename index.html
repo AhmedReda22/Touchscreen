@@ -1260,6 +1260,10 @@
     const buttonClickSound = new Audio();
     buttonClickSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="; // صوت افتراضي
     
+    // إضافة أصوات الإجابات الصحيحة والخاطئة
+    const correctAnswerSound = new Audio('./sounds/Right.mp3');
+    const wrongAnswerSound = new Audio('./sounds/wrong.mp3');
+    
     // محاولة تحميل أصوات حقيقية إذا كانت متوفرة
     function loadSoundEffects() {
       // يمكن استبدال هذه بالمقاطع الصوتية الفعلية
@@ -1267,6 +1271,10 @@
         // صوت نقرة زر عادي
         buttonClickSound.src = './sounds/button-click.mp3';
         buttonClickSound.load();
+        
+        // تحميل أصوات الإجابات
+        correctAnswerSound.load();
+        wrongAnswerSound.load();
       } catch (e) {
         console.log('Using default button sound');
       }
@@ -1282,18 +1290,41 @@
       }
     }
     
-    // دالة إضافة مستمعات الأصوات لجميع الأزرار
-    function addSoundToButtons() {
-      // جميع الأزرار في الصفحة
-      const allButtons = document.querySelectorAll('button, .topic-card, .option-button');
-      
-      allButtons.forEach(button => {
-        // إزالة المستمعين السابقين لمنع التكرار
-        button.removeEventListener('click', playButtonSound);
-        // إضافة مستمع جديد
-        button.addEventListener('click', playButtonSound);
-      });
+    // دالة تشغيل صوت الإجابة الصحيحة
+    function playCorrectSound() {
+      try {
+        correctAnswerSound.currentTime = 0;
+        correctAnswerSound.play().catch(e => console.log('Correct sound play failed:', e));
+      } catch (e) {
+        console.log('Correct sound error:', e);
+      }
     }
+    
+    // دالة تشغيل صوت الإجابة الخاطئة
+    function playWrongSound() {
+      try {
+        wrongAnswerSound.currentTime = 0;
+        wrongAnswerSound.play().catch(e => console.log('Wrong sound play failed:', e));
+      } catch (e) {
+        console.log('Wrong sound error:', e);
+      }
+    }
+    
+    // دالة إضافة مستمعات الأصوات لجميع الأزرار
+function addSoundToButtons() {
+  // جميع الأزرار في الصفحة
+  const allButtons = document.querySelectorAll('button, .topic-card, .option-button');
+  
+  allButtons.forEach(button => {
+    // إزالة المستمعين السابقين لمنع التكرار
+    button.removeEventListener('click', playButtonSound);
+    
+    // إضافة صوت button-click.mp3 لأزرار START فقط في الصفحة الأولى
+    if (button.id === 'start-btn' || button.id === 'boshlash-btn' || button.id === 'nachat-btn') {
+      button.addEventListener('click', playButtonSound);
+    }
+  });
+}
     
     // ========== AUTO-RETURN TIMER ==========
     let inactivityTimer;
@@ -1970,6 +2001,9 @@
         wrongIcon.style.display = 'block';
       }
       
+      // تشغيل صوت الإجابة الخاطئة
+      playWrongSound();
+      
       // الانتظار 3 ثواني قبل الانتقال للسؤال التالي
       setTimeout(() => {
         // إخفاء أيقونة الخطأ
@@ -2085,6 +2119,9 @@
         if (correctIcon) {
           correctIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الصحيحة
+        playCorrectSound();
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
@@ -2094,6 +2131,9 @@
         if (wrongIcon) {
           wrongIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الخاطئة
+        playWrongSound();
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
@@ -2220,6 +2260,9 @@
         if (correctIcon) {
           correctIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الصحيحة
+        playCorrectSound();
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
@@ -2229,6 +2272,9 @@
         if (wrongIcon) {
           wrongIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الخاطئة
+        playWrongSound();
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
@@ -2355,6 +2401,9 @@
         if (correctIcon) {
           correctIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الصحيحة
+        playCorrectSound();
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
@@ -2364,6 +2413,9 @@
         if (wrongIcon) {
           wrongIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الخاطئة
+        playWrongSound();
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
@@ -2495,6 +2547,9 @@
         if (correctIcon) {
           correctIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الصحيحة
+        playCorrectSound();
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
@@ -2504,6 +2559,9 @@
         if (wrongIcon) {
           wrongIcon.style.display = 'block';
         }
+        
+        // تشغيل صوت الإجابة الخاطئة
+        playWrongSound();
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
