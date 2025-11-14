@@ -963,10 +963,6 @@
         align-items: center;
         justify-content: center;
     }
-    
-    .result-container ~ .character-speech-container.quiz .robot-character {
-        display: block !important;
-    }
 
 
     /* ========== تعديلات الروبوت في صفحة النتائج ========== */
@@ -1299,35 +1295,36 @@
   <script>
     // ========== SOUND EFFECTS ==========
     // إنشاء عناصر صوتية للتأثيرات الصوتية
-const buttonClickSound = new Audio();
-buttonClickSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="; // صوت افتراضي
+    const buttonClickSound = new Audio();
+    buttonClickSound.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA=="; // صوت افتراضي
 
-// إضافة أصوات الإجابات الصحيحة والخاطئة
-const correctAnswerSound = new Audio('./sounds/Right.mp3');
-const wrongAnswerSound = new Audio('./sounds/wrong.mp3');
+    // إضافة أصوات الإجابات الصحيحة والخاطئة
+    const correctAnswerSound = new Audio('./sounds/Right.mp3');
+    const wrongAnswerSound = new Audio('./sounds/wrong.mp3');
 
-// تعريف الأصوات الأخرى
-const homeSound = new Audio('./sounds/home.mp3');
-const topicsSound = new Audio('./sounds/topics.mp3');
+    // تعريف الأصوات الأخرى
+    const homeSound = new Audio('./sounds/home.mp3');
+    const topicsSound = new Audio('./sounds/topics.mp3');
 
+    // متغير لتتبع الصفحة الحالية
+    let currentPage = 'holding';
 
+    // دالة مركزية لتشغيل الصوت مع إيقاف أي صوت آخر
+    function playSound(audioElement) {
+      // إيقاف جميع الأصوات الأخرى قبل تشغيل الصوت الجديد
+      [buttonClickSound, correctAnswerSound, wrongAnswerSound, homeSound, topicsSound].forEach(sound => {
+        if (sound !== audioElement && !sound.paused) {
+          sound.pause();
+          sound.currentTime = 0;
+        }
+      });
 
-// دالة مركزية لتشغيل الصوت مع إيقاف أي صوت آخر
-function playSound(audioElement) {
-  // إيقاف جميع الأصوات الأخرى قبل تشغيل الصوت الجديد
-  [buttonClickSound, correctAnswerSound, wrongAnswerSound, homeSound, topicsSound].forEach(sound => {
-    if (sound !== audioElement && !sound.paused) {
-      sound.pause();
-      sound.currentTime = 0;
+      // إعادة تشغيل الصوت من البداية
+      audioElement.currentTime = 0;
+      audioElement.play().catch(e => console.log('Sound play failed:', e));
     }
-  });
 
-  // إعادة تشغيل الصوت من البداية
-  audioElement.currentTime = 0;
-  audioElement.play().catch(e => console.log('Sound play failed:', e));
-}
-
-// محاولة تحميل أصوات حقيقية إذا كانت متوفرة
+    // محاولة تحميل أصوات حقيقية إذا كانت متوفرة
     function loadSoundEffects() {
       // يمكن استبدال هذه بالمقاطع الصوتية الفعلية
       try {
@@ -1350,51 +1347,69 @@ function playSound(audioElement) {
     
     // دالة تشغيل صوت الإجابة الصحيحة
     function playCorrectSound() {
-      playSound(correctAnswerSound);
+      // تشغيل الصوت فقط إذا كنا في صفحة أسئلة
+      if (currentPage.includes('questions')) {
+        playSound(correctAnswerSound);
+      }
     }
     
     // دالة تشغيل صوت الإجابة الخاطئة
     function playWrongSound() {
-      playSound(wrongAnswerSound);
+      // تشغيل الصوت فقط إذا كنا في صفحة أسئلة
+      if (currentPage.includes('questions')) {
+        playSound(wrongAnswerSound);
+      }
     }
     
     // دالة إضافة مستمعات الأصوات لجميع الأزرار
-function addSoundToButtons() {
-  // جميع الأزرار في الصفحة
-  const allButtons = document.querySelectorAll('button, .topic-card, .option-button');
-  
-  allButtons.forEach(button => {
-    // إزالة المستمعين السابقين لمنع التكرار
-    button.removeEventListener('click', playButtonSound);
-    
-    // إضافة صوت button-click.mp3 لأزرار START فقط في الصفحة الأولى
-    if (button.id === 'start-btn' || button.id === 'boshlash-btn' || button.id === 'nachat-btn') {
-      button.addEventListener('click', playButtonSound);
-    }
-    
-    // إضافة صوت home.mp3 لأزرار Home
-    if (button.classList.contains('main-home-button') || button.classList.contains('home-button')) {
-      button.addEventListener('click', function() {
-        playSound(homeSound);
+    function addSoundToButtons() {
+      // جميع الأزرار في الصفحة
+      const allButtons = document.querySelectorAll('button, .topic-card, .option-button');
+      
+      allButtons.forEach(button => {
+        // إزالة المستمعين السابقين لمنع التكرار
+        button.removeEventListener('click', playButtonSound);
+        
+        // إضافة صوت button-click.mp3 لأزرار START فقط في الصفحة الأولى
+        if (button.id === 'start-btn' || button.id === 'boshlash-btn' || button.id === 'nachat-btn') {
+          button.addEventListener('click', playButtonSound);
+        }
+        
+        // إضافة صوت home.mp3 لأزرار Home
+        if (button.classList.contains('main-home-button') || button.classList.contains('home-button')) {
+          button.addEventListener('click', function() {
+            playSound(homeSound);
+          });
+        }
+        
+        // إضافة صوت topics.mp3 لبطاقات المواضيع
+        if (button.classList.contains('topic-card') || 
+            button.textContent.includes('Ancestors') ||
+            button.textContent.includes('Uzbekistan') ||
+            button.textContent.includes('Nature') ||
+            button.textContent.includes('Math')) {
+          button.addEventListener('click', function() {
+            playSound(topicsSound);
+          });
+        }
       });
     }
-    
-    // إضافة صوت topics.mp3 لبطاقات المواضيع
-    if (button.classList.contains('topic-card') || 
-        button.textContent.includes('Ancestors') ||
-        button.textContent.includes('Uzbekistan') ||
-        button.textContent.includes('Nature') ||
-        button.textContent.includes('Math')) {
-      button.addEventListener('click', function() {
-        playSound(topicsSound);
-      });
-    }
-  });
-}
     
     // ========== AUTO-RETURN TIMER ==========
     let inactivityTimer;
     const INACTIVITY_TIMEOUT = 90000; // 90 ثانية
+
+    // ========== دالة إيقاف جميع المؤقتات ==========
+    function stopAllTimers() {
+        // إيقاف مؤقتات العد التنازلي للأسئلة
+        clearInterval(mathCountdownTimer);
+        clearInterval(natureCountdownTimer);
+        clearInterval(uzbekistanCountdownTimer);
+        clearInterval(ancestorsCountdownTimer);
+        
+        // إيقاف مؤتمر عدم النشاط
+        clearTimeout(inactivityTimer);
+    }
 
     // دالة إعادة تعيين المؤقت
     function resetInactivityTimer() {
@@ -1404,11 +1419,8 @@ function addSoundToButtons() {
 
     // ========== دالة إعادة تعيين شاملة لجميع الاختبارات ==========
     function hardResetAllQuizzes() {
-      // إيقاف جميع المؤقتات
-      clearInterval(mathCountdownTimer);
-      clearInterval(natureCountdownTimer);
-      clearInterval(uzbekistanCountdownTimer);
-      clearInterval(ancestorsCountdownTimer);
+      // إيقاف جميع المؤقتات أولاً
+      stopAllTimers();
       
       // إعادة تعيين جميع المتغيرات
       currentMathQuestions = [];
@@ -1495,7 +1507,7 @@ function addSoundToButtons() {
     // دالة العودة إلى الشاشة الرئيسية
     function returnToMainScreen() {
         // إيقاف جميع المؤقتات
-        clearTimeout(inactivityTimer);
+        stopAllTimers();
         
         // إعادة تعيين شاملة لجميع الاختبارات
         hardResetAllQuizzes();
@@ -1507,6 +1519,9 @@ function addSoundToButtons() {
         document.getElementById('nature-questions-page').style.display = 'none';
         document.getElementById('uzbekistan-questions-page').style.display = 'none';
         document.getElementById('ancestors-questions-page').style.display = 'none';
+        
+        // تحديث الصفحة الحالية
+        currentPage = 'holding';
         
         // إعادة تشغيل تغيير اللغات
         startLanguageRotation();
@@ -1530,6 +1545,18 @@ function addSoundToButtons() {
         // بدء المؤقت لأول مرة
         resetInactivityTimer();
     }
+    
+    // ========== إضافة مستمع حدث visibility change ==========
+    // هذا يحل المشكلة عندما يغير المستخدم التبويب أو يقلل النافذة
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            // إذا أصبحت الصفحة غير مرئية، أوقف جميع المؤقتات
+            stopAllTimers();
+        } else {
+            // إذا عادت الصفحة للظهور، أعد تشغيل مؤتمر عدم النشاط
+            resetInactivityTimer();
+        }
+    });
     
     // ========== LANGUAGE ROTATION FOR HOLDING PAGE ==========
     const languages = [
@@ -1600,6 +1627,7 @@ function addSoundToButtons() {
         stopLanguageRotation(); // إيقاف تغيير اللغات عند الانتقال
         document.getElementById('holding-page').style.display = 'none';
         document.getElementById('knowledge-page').style.display = 'flex';
+        currentPage = 'knowledge';
         window.scrollTo(0, 0);
         onPageChange();
       });
@@ -1618,18 +1646,22 @@ function addSoundToButtons() {
         switch(type) {
           case 'math':
             document.getElementById('math-questions-page').style.display = 'flex';
+            currentPage = 'math-questions';
             loadMathQuestion();
             break;
           case 'nature':
             document.getElementById('nature-questions-page').style.display = 'flex';
+            currentPage = 'nature-questions';
             loadNatureQuestion();
             break;
           case 'uzbekistan':
             document.getElementById('uzbekistan-questions-page').style.display = 'flex';
+            currentPage = 'uzbekistan-questions';
             loadUzbekistanQuestion();
             break;
           case 'ancestors':
             document.getElementById('ancestors-questions-page').style.display = 'flex';
+            currentPage = 'ancestors-questions';
             loadAncestorsQuestion();
             break;
         }
@@ -1640,9 +1672,11 @@ function addSoundToButtons() {
 
     // زر الرجوع إلى صفحة المعرفة - إخفاء هذا الزر في صفحة المعرفة
     document.getElementById('home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('knowledge-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      currentPage = 'holding';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
@@ -1650,9 +1684,11 @@ function addSoundToButtons() {
 
     // زر العودة إلى الصفحة الرئيسية الأولى - إبقاء هذا الزر مرئيًا
     document.getElementById('main-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('knowledge-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      currentPage = 'holding';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
@@ -1660,68 +1696,84 @@ function addSoundToButtons() {
 
     // أزرار العودة من صفحات الاختبارات
     document.getElementById('math-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('math-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      currentPage = 'knowledge';
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('math-main-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('math-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      currentPage = 'holding';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('nature-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('nature-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      currentPage = 'knowledge';
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('nature-main-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('nature-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      currentPage = 'holding';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('uzbekistan-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('uzbekistan-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      currentPage = 'knowledge';
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('uzbekistan-main-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('uzbekistan-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      currentPage = 'holding';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('ancestors-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('ancestors-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
+      currentPage = 'knowledge';
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('ancestors-main-home-btn').addEventListener('click', () => {
+      stopAllTimers(); // إضافة هذا السطر
       hardResetAllQuizzes();
       document.getElementById('ancestors-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
+      currentPage = 'holding';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
@@ -2027,8 +2079,19 @@ function addSoundToButtons() {
       // إعادة تعيين المؤقت السابق إذا كان موجوداً
       clearInterval(window[`${quizType}CountdownTimer`]);
       
+      // التحقق مما إذا كانت الصفحة الحالية هي صفحة الأسئلة
+      if (!currentPage.includes('questions')) {
+        return; // لا تبدأ المؤقت إذا لم نكن في صفحة الأسئلة
+      }
+      
       // تحديث المؤقت
       window[`${quizType}CountdownTimer`] = setInterval(() => {
+        // التحقق مرة أخرى مما إذا كنا لا نزال في صفحة الأسئلة
+        if (!currentPage.includes('questions')) {
+          clearInterval(window[`${quizType}CountdownTimer`]);
+          return;
+        }
+        
         countdownElement.textContent = timeLeft;
         
         // تغيير اللون عند اقتراب انتهاء الوقت
