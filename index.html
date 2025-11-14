@@ -123,6 +123,9 @@
       100% { transform: translateY(0) rotate(0deg); }
     }
 
+    .quiz-page .robot-character{
+      animation: robotMove 2.5s ease-in-out infinite;
+    }
     .lang-buttons {
       width: 100%;
       display: flex;
@@ -427,6 +430,10 @@
       top: 0;
       left: 0;
       margin: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     /* مؤقت العد التنازلي */
@@ -442,7 +449,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto;
+      margin: 10px auto 0;
       border: 3px solid #ffc900;
     }
 
@@ -991,6 +998,7 @@
       <div class="quiz-header">
         <div class="countdown-icon">
           <img src="./imgs/countdown.gif" alt="Countdown">
+          <div class="countdown-timer" id="math-countdown">15</div>
         </div>
         <div class="quiz-title">Simple Mathematics</div>
         <div class="quiz-icon">
@@ -1007,7 +1015,6 @@
       </div>
 
       <div class="question-container">
-        <div class="countdown-timer" id="math-countdown">15</div>
         <div class="options-container" id="math-options-container">
           <!-- Options will be populated by JavaScript -->
         </div>
@@ -1041,6 +1048,7 @@
       <div class="quiz-header">
         <div class="countdown-icon">
           <img src="./imgs/countdown.gif" alt="Countdown">
+          <div class="countdown-timer" id="nature-countdown">15</div>
         </div>
         <div class="quiz-title">Nature & Environment</div>
         <div class="quiz-icon">
@@ -1057,7 +1065,6 @@
       </div>
 
       <div class="question-container">
-        <div class="countdown-timer" id="nature-countdown">15</div>
         <div class="options-container" id="nature-options-container">
           <!-- Options will be populated by JavaScript -->
         </div>
@@ -1091,6 +1098,7 @@
       <div class="quiz-header">
         <div class="countdown-icon">
           <img src="./imgs/countdown.gif" alt="Countdown">
+          <div class="countdown-timer" id="uzbekistan-countdown">15</div>
         </div>
         <div class="quiz-title">Uzbekistan Knowledge</div>
         <div class="quiz-icon">
@@ -1107,7 +1115,6 @@
       </div>
 
       <div class="question-container">
-        <div class="countdown-timer" id="uzbekistan-countdown">15</div>
         <div class="options-container" id="uzbekistan-options-container">
           <!-- Options will be populated by JavaScript -->
         </div>
@@ -1141,6 +1148,7 @@
       <div class="quiz-header">
         <div class="countdown-icon">
           <img src="./imgs/countdown.gif" alt="Countdown">
+          <div class="countdown-timer" id="ancestors-countdown">15</div>
         </div>
         <div class="quiz-title">Great Ancestors</div>
         <div class="quiz-icon">
@@ -1157,7 +1165,6 @@
       </div>
 
       <div class="question-container">
-        <div class="countdown-timer" id="ancestors-countdown">15</div>
         <div class="options-container" id="ancestors-options-container">
           <!-- Options will be populated by JavaScript -->
         </div>
@@ -1236,10 +1243,97 @@
         inactivityTimer = setTimeout(returnToMainScreen, INACTIVITY_TIMEOUT);
     }
 
+    // ========== دالة إعادة تعيين شاملة لجميع الاختبارات ==========
+    function hardResetAllQuizzes() {
+      // إيقاف جميع المؤقتات
+      clearInterval(mathCountdownTimer);
+      clearInterval(natureCountdownTimer);
+      clearInterval(uzbekistanCountdownTimer);
+      clearInterval(ancestorsCountdownTimer);
+      
+      // إعادة تعيين جميع المتغيرات
+      currentMathQuestions = [];
+      currentMathQuestionIndex = 0;
+      mathScore = 0;
+      
+      currentNatureQuestions = [];
+      currentNatureQuestionIndex = 0;
+      natureScore = 0;
+      
+      currentUzbekistanQuestions = [];
+      currentUzbekistanQuestionIndex = 0;
+      uzbekistanScore = 0;
+      
+      currentAncestorsQuestions = [];
+      currentAncestorsQuestionIndex = 0;
+      ancestorsScore = 0;
+      
+      // إعادة تعيين واجهة المستخدم لجميع صفحات الاختبارات
+      resetQuizUI('math');
+      resetQuizUI('nature');
+      resetQuizUI('uzbekistan');
+      resetQuizUI('ancestors');
+    }
+
+    // ========== دالة إعادة تعيين واجهة المستخدم للاختبارات ==========
+    function resetQuizUI(quizType) {
+      // إعادة تعيين شريط التقدم
+      const progressBar = document.getElementById(`${quizType}-progress-bar`);
+      if (progressBar) progressBar.style.width = '0%';
+      
+      // إعادة تعيين المؤقت
+      const countdown = document.getElementById(`${quizType}-countdown`);
+      if (countdown) {
+        countdown.textContent = '15';
+        countdown.classList.remove('warning');
+      }
+      
+      // إخفاء صفحة النتائج
+      const resultContainer = document.getElementById(`${quizType}-result-container`);
+      if (resultContainer) resultContainer.style.display = 'none';
+      
+      // إعادة تعيين الأزرار
+      const optionsContainer = document.getElementById(`${quizType}-options-container`);
+      if (optionsContainer) optionsContainer.innerHTML = '';
+      
+      // إعادة تعيين نص السؤال
+      const questionText = document.getElementById(`${quizType}-question-text`);
+      if (questionText) {
+        // إعادة تعيين لنص السؤال الافتراضي حسب نوع الاختبار
+        switch(quizType) {
+          case 'math':
+            questionText.textContent = "What is the largest three-digit number?";
+            break;
+          case 'nature':
+            questionText.textContent = "What does the Sun give us?";
+            break;
+          case 'uzbekistan':
+            questionText.textContent = "How many regions does Uzbekistan have?";
+            break;
+          case 'ancestors':
+            questionText.textContent = "What was Amir Temur's motto?";
+            break;
+        }
+      }
+      
+      // إعادة إظهار العناصر المخفية
+      const speechContainer = document.querySelector(`#${quizType}-questions-page .character-speech-container.quiz`);
+      if (speechContainer) speechContainer.style.display = 'flex';
+      
+      const questionContainer = document.querySelector(`#${quizType}-questions-page .question-container`);
+      if (questionContainer) questionContainer.style.display = 'flex';
+      
+      const progressContainer = document.querySelector(`#${quizType}-questions-page .progress-container`);
+      if (progressContainer) progressContainer.style.display = 'block';
+    }
+
     // دالة العودة إلى الشاشة الرئيسية
     function returnToMainScreen() {
         // إيقاف جميع المؤقتات
         clearTimeout(inactivityTimer);
+        
+        // إعادة تعيين شاملة لجميع الاختبارات
+        hardResetAllQuizzes();
         
         // إخفاء جميع الصفحات وإظهار الشاشة الرئيسية فقط
         document.getElementById('holding-page').style.display = 'flex';
@@ -1248,12 +1342,6 @@
         document.getElementById('nature-questions-page').style.display = 'none';
         document.getElementById('uzbekistan-questions-page').style.display = 'none';
         document.getElementById('ancestors-questions-page').style.display = 'none';
-        
-        // إعادة تعيين جميع الاختبارات
-        resetMathQuiz();
-        resetNatureQuiz();
-        resetUzbekistanQuiz();
-        resetAncestorsQuiz();
         
         // إعادة تشغيل تغيير اللغات
         startLanguageRotation();
@@ -1354,6 +1442,9 @@
 
     // اختيار موضوع
     function selectTopic(element, type) {
+      // إعادة تعيين أي اختبار سابق قبل البدء باختبار جديد
+      hardResetAllQuizzes();
+      
       document.querySelectorAll('.topic-card').forEach(card => card.classList.remove('selected'));
       element.classList.add('selected');
       
@@ -1384,6 +1475,7 @@
 
     // زر الرجوع إلى صفحة المعرفة - إخفاء هذا الزر في صفحة المعرفة
     document.getElementById('home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('knowledge-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
@@ -1393,6 +1485,7 @@
 
     // زر العودة إلى الصفحة الرئيسية الأولى - إبقاء هذا الزر مرئيًا
     document.getElementById('main-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('knowledge-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
@@ -1402,68 +1495,68 @@
 
     // أزرار العودة من صفحات الاختبارات
     document.getElementById('math-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('math-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
-      resetMathQuiz();
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('math-main-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('math-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
-      resetMathQuiz();
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('nature-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('nature-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
-      resetNatureQuiz();
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('nature-main-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('nature-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
-      resetNatureQuiz();
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('uzbekistan-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('uzbekistan-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
-      resetUzbekistanQuiz();
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('uzbekistan-main-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('uzbekistan-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
-      resetUzbekistanQuiz();
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('ancestors-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('ancestors-questions-page').style.display = 'none';
       document.getElementById('knowledge-page').style.display = 'flex';
-      resetAncestorsQuiz();
       window.scrollTo(0, 0);
       onPageChange();
     });
 
     document.getElementById('ancestors-main-home-btn').addEventListener('click', () => {
+      hardResetAllQuizzes();
       document.getElementById('ancestors-questions-page').style.display = 'none';
       document.getElementById('holding-page').style.display = 'flex';
-      resetAncestorsQuiz();
       startLanguageRotation(); // إعادة تشغيل تغيير اللغات عند العودة
       window.scrollTo(0, 0);
       onPageChange();
@@ -1927,16 +2020,6 @@
       }, 3000);
     }
 
-    // دالة لإعادة تعيين اختبار الرياضيات
-    function resetMathQuiz() {
-      currentMathQuestions = [];
-      currentMathQuestionIndex = 0;
-      mathScore = 0;
-      clearInterval(mathCountdownTimer);
-      document.getElementById('math-result-container').style.display = 'none';
-      document.getElementById('math-progress-bar').style.width = '0%';
-    }
-
     function showMathResults() {
       document.getElementById('math-question-text').textContent = "You've completed the math quiz!";
       document.getElementById('math-options-container').innerHTML = "";
@@ -1971,7 +2054,7 @@
     }
 
     document.getElementById('math-restart-button').addEventListener('click', () => {
-      resetMathQuiz();
+      hardResetAllQuizzes();
       loadMathQuestion();
     });
 
@@ -2055,15 +2138,6 @@
       }, 3000);
     }
 
-    function resetNatureQuiz() {
-      currentNatureQuestions = [];
-      currentNatureQuestionIndex = 0;
-      natureScore = 0;
-      clearInterval(natureCountdownTimer);
-      document.getElementById('nature-result-container').style.display = 'none';
-      document.getElementById('nature-progress-bar').style.width = '0%';
-    }
-
     function showNatureResults() {
       document.getElementById('nature-question-text').textContent = "You've completed the nature quiz!";
       document.getElementById('nature-options-container').innerHTML = "";
@@ -2098,7 +2172,7 @@
     }
 
     document.getElementById('nature-restart-button').addEventListener('click', () => {
-      resetNatureQuiz();
+      hardResetAllQuizzes();
       loadNatureQuestion();
     });
 
@@ -2182,15 +2256,6 @@
       }, 3000);
     }
 
-    function resetUzbekistanQuiz() {
-      currentUzbekistanQuestions = [];
-      currentUzbekistanQuestionIndex = 0;
-      uzbekistanScore = 0;
-      clearInterval(uzbekistanCountdownTimer);
-      document.getElementById('uzbekistan-result-container').style.display = 'none';
-      document.getElementById('uzbekistan-progress-bar').style.width = '0%';
-    }
-
     function showUzbekistanResults() {
       // إخفاء فقاعة الكلام
       document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz').style.display = 'none';
@@ -2230,7 +2295,7 @@
     }
 
     document.getElementById('uzbekistan-restart-button').addEventListener('click', () => {
-      resetUzbekistanQuiz();
+      hardResetAllQuizzes();
       loadUzbekistanQuestion();
     });
 
@@ -2314,15 +2379,6 @@
       }, 3000);
     }
 
-    function resetAncestorsQuiz() {
-      currentAncestorsQuestions = [];
-      currentAncestorsQuestionIndex = 0;
-      ancestorsScore = 0;
-      clearInterval(ancestorsCountdownTimer);
-      document.getElementById('ancestors-result-container').style.display = 'none';
-      document.getElementById('ancestors-progress-bar').style.width = '0%';
-    }
-
     function showAncestorsResults() {
       document.getElementById('ancestors-question-text').textContent = "You've completed the ancestors quiz!";
       document.getElementById('ancestors-options-container').innerHTML = "";
@@ -2357,7 +2413,7 @@
     }
 
     document.getElementById('ancestors-restart-button').addEventListener('click', () => {
-      resetAncestorsQuiz();
+      hardResetAllQuizzes();
       loadAncestorsQuestion();
     });
   </script>
