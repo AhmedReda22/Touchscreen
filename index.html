@@ -602,7 +602,6 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
       width: 90%;
       flex-grow: 1;
-      margin-top: -100px; /* إضافة هذا السطر لرفع النتائج */
     }
 
     .result-title {
@@ -946,6 +945,50 @@
     #ancestors-result-container ~ .character-speech-container.quiz .speech-bubble-container {
         display: none !important;
     }
+    
+    /* ========== التعديلات الجديدة ========== */
+    /* إخفاء العداد وعداد الوقت عند ظهور النتائج */
+    .result-container ~ .quiz-header .countdown-icon,
+    .result-container ~ .quiz-header .countdown-timer {
+        display: none !important;
+    }
+    
+    /* إخفاء فقاعة الكلام بالكامل عند ظهور النتائج */
+    .result-container ~ .character-speech-container.quiz .speech-bubble-container {
+        display: none !important;
+    }
+    
+    /* إبقاء الروبوت فقط عند ظهور النتائج */
+    .result-container ~ .character-speech-container.quiz {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .result-container ~ .character-speech-container.quiz .robot-character {
+        display: block !important;
+    }
+
+
+    /* ========== تعديلات الروبوت في صفحة النتائج ========== */
+.result-container ~ .character-speech-container.quiz {
+    position: absolute;
+    top: 20px; /* تعديل هذه القيمة لرفع الروبوت أكثر */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    margin-top: 0;
+}
+
+.result-container ~ .character-speech-container.quiz .robot-character {
+    width: clamp(100px, 15vw, 180px); /* تصغير حجم الروبوت */
+    height: clamp(100px, 15vw, 180px); /* تصغير حجم الروبوت */
+}
+
+/* إخفاء الروبوت الإضافي إذا كان موجوداً */
+.result-container ~ .character-speech-container.quiz .robot-character:nth-child(2) {
+    display: none;
+}
   </style>
 </head>
 <body>
@@ -2190,9 +2233,16 @@ function addSoundToButtons() {
     }
 
     function showMathResults() {
-      document.getElementById('math-question-text').textContent = "You've completed the math quiz!";
-      document.getElementById('math-options-container').innerHTML = "";
-      document.getElementById('math-progress-bar').style.width = "100%";
+      // إخفاء فقاعة الكلام وعداد الوقت
+      document.querySelector('#math-questions-page .character-speech-container.quiz .speech-bubble-container').style.display = 'none';
+      document.querySelector('#math-questions-page .quiz-header .countdown-icon').style.display = 'none';
+      
+      // إخفاء حاوية الأسئلة وشريط التقدم
+      document.querySelector('#math-questions-page .question-container').style.display = 'none';
+      document.querySelector('#math-questions-page .progress-container').style.display = 'none';
+      
+      // إظهار النتائج
+      document.getElementById('math-result-container').style.display = 'flex';
       
       const percentage = (mathScore / currentMathQuestions.length) * 100;
       document.getElementById('math-result-score').textContent = `Score: ${mathScore}/${currentMathQuestions.length}`;
@@ -2216,7 +2266,6 @@ function addSoundToButtons() {
       
       document.getElementById('math-result-title').textContent = title;
       document.getElementById('math-result-message').textContent = message;
-      document.getElementById('math-result-container').style.display = 'flex';
       
       // إعادة إضافة الأصوات للأزرار في صفحة النتائج
       onPageChange();
@@ -2331,9 +2380,16 @@ function addSoundToButtons() {
     }
 
     function showNatureResults() {
-      document.getElementById('nature-question-text').textContent = "You've completed the nature quiz!";
-      document.getElementById('nature-options-container').innerHTML = "";
-      document.getElementById('nature-progress-bar').style.width = "100%";
+      // إخفاء فقاعة الكلام وعداد الوقت
+      document.querySelector('#nature-questions-page .character-speech-container.quiz .speech-bubble-container').style.display = 'none';
+      document.querySelector('#nature-questions-page .quiz-header .countdown-icon').style.display = 'none';
+      
+      // إخفاء حاوية الأسئلة وشريط التقدم
+      document.querySelector('#nature-questions-page .question-container').style.display = 'none';
+      document.querySelector('#nature-questions-page .progress-container').style.display = 'none';
+      
+      // إظهار النتائج
+      document.getElementById('nature-result-container').style.display = 'flex';
       
       const percentage = (natureScore / currentNatureQuestions.length) * 100;
       document.getElementById('nature-result-score').textContent = `Score: ${natureScore}/${currentNatureQuestions.length}`;
@@ -2357,7 +2413,6 @@ function addSoundToButtons() {
       
       document.getElementById('nature-result-title').textContent = title;
       document.getElementById('nature-result-message').textContent = message;
-      document.getElementById('nature-result-container').style.display = 'flex';
       
       // إعادة إضافة الأصوات للأزرار في صفحة النتائج
       onPageChange();
@@ -2472,19 +2527,17 @@ function addSoundToButtons() {
     }
 
     function showUzbekistanResults() {
-      // إخفاء فقاعة الكلام
-      document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz').style.display = 'none';
+      // إخفاء فقاعة الكلام وعداد الوقت
+      document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz .speech-bubble-container').style.display = 'none';
+      document.querySelector('#uzbekistan-questions-page .quiz-header .countdown-icon').style.display = 'none';
       
-      // إخفاء حاوية الأسئلة
+      // إخفاء حاوية الأسئلة وشريط التقدم
       document.querySelector('#uzbekistan-questions-page .question-container').style.display = 'none';
-      
-      // إخفاء شريط التقدم
       document.querySelector('#uzbekistan-questions-page .progress-container').style.display = 'none';
       
       // إظهار النتائج
       document.getElementById('uzbekistan-result-container').style.display = 'flex';
       
-      // باقي الكود كما هو...
       const percentage = (uzbekistanScore / currentUzbekistanQuestions.length) * 100;
       document.getElementById('uzbekistan-result-score').textContent = `Score: ${uzbekistanScore}/${currentUzbekistanQuestions.length}`;
       
@@ -2618,8 +2671,16 @@ function addSoundToButtons() {
     }
 
     function showAncestorsResults() {
-      document.getElementById('ancestors-options-container').innerHTML = "";
-      document.getElementById('ancestors-progress-bar').style.width = "100%";
+      // إخفاء فقاعة الكلام وعداد الوقت
+      document.querySelector('#ancestors-questions-page .character-speech-container.quiz .speech-bubble-container').style.display = 'none';
+      document.querySelector('#ancestors-questions-page .quiz-header .countdown-icon').style.display = 'none';
+      
+      // إخفاء حاوية الأسئلة وشريط التقدم
+      document.querySelector('#ancestors-questions-page .question-container').style.display = 'none';
+      document.querySelector('#ancestors-questions-page .progress-container').style.display = 'none';
+      
+      // إظهار النتائج
+      document.getElementById('ancestors-result-container').style.display = 'flex';
       
       const percentage = (ancestorsScore / currentAncestorsQuestions.length) * 100;
       document.getElementById('ancestors-result-score').textContent = `Score: ${ancestorsScore}/${currentAncestorsQuestions.length}`;
@@ -2643,7 +2704,6 @@ function addSoundToButtons() {
       
       document.getElementById('ancestors-result-title').textContent = title;
       document.getElementById('ancestors-result-message').textContent = message;
-      document.getElementById('ancestors-result-container').style.display = 'flex';
       
       // إعادة إضافة الأصوات للأزرار في صفحة النتائج
       onPageChange();
