@@ -732,6 +732,40 @@
       }
     }
 
+    /* ========== أيقونات الإجابات الصحيحة والخاطئة ========== */
+    .answer-icon {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      width: clamp(200px, 40vw, 400px);
+      height: clamp(200px, 40vw, 400px);
+      z-index: 1000;
+      display: none;
+      animation: popIn 0.5s ease-out forwards;
+    }
+
+    .answer-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+      }
+      70% {
+        transform: translate(-50%, -50%) scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+      }
+    }
+
     /* ========== MEDIA QUERIES ========== */
     @media (max-width: 1200px) {
       .options-container {
@@ -897,8 +931,6 @@
       }
     }
 
-   
-
     /* إخفاء فقاعة الكلام في صفحة النتائج */
     #uzbekistan-result-container ~ .character-speech-container.quiz,
     #math-result-container ~ .character-speech-container.quiz,
@@ -907,18 +939,13 @@
         display: none !important;
     }
 
-
-
     /* إخفاء فقاعة الكلام فقط في صفحة النتائج مع إبقاء الروبوت */
-#math-result-container ~ .character-speech-container.quiz .speech-bubble-container,
-#nature-result-container ~ .character-speech-container.quiz .speech-bubble-container,
-#uzbekistan-result-container ~ .character-speech-container.quiz .speech-bubble-container,
-#ancestors-result-container ~ .character-speech-container.quiz .speech-bubble-container {
-    display: none !important;
-}
-
-
-
+    #math-result-container ~ .character-speech-container.quiz .speech-bubble-container,
+    #nature-result-container ~ .character-speech-container.quiz .speech-bubble-container,
+    #uzbekistan-result-container ~ .character-speech-container.quiz .speech-bubble-container,
+    #ancestors-result-container ~ .character-speech-container.quiz .speech-bubble-container {
+        display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -997,6 +1024,14 @@
 
   <!-- MATH QUESTIONS PAGE -->
   <div id="math-questions-page" class="quiz-page" style="background-image: url('./imgs/9.png'); background-size: cover; background-position: center;">
+    <!-- إضافة أيقونات الإجابات الصحيحة والخاطئة -->
+    <div class="answer-icon" id="math-correct-icon">
+      <img src="./imgs/correct.png" alt="Correct">
+    </div>
+    <div class="answer-icon" id="math-wrong-icon">
+      <img src="./imgs/wrong.png" alt="Wrong">
+    </div>
+    
     <div class="quiz-content">
       <div class="quiz-header">
         <div class="countdown-icon">
@@ -1047,6 +1082,14 @@
 
   <!-- NATURE QUESTIONS PAGE -->
   <div id="nature-questions-page" class="quiz-page" style="background-image: url('./imgs/10.png'); background-size: cover; background-position: center;">
+    <!-- إضافة أيقونات الإجابات الصحيحة والخاطئة -->
+    <div class="answer-icon" id="nature-correct-icon">
+      <img src="./imgs/correct.png" alt="Correct">
+    </div>
+    <div class="answer-icon" id="nature-wrong-icon">
+      <img src="./imgs/wrong.png" alt="Wrong">
+    </div>
+    
     <div class="quiz-content">
       <div class="quiz-header">
         <div class="countdown-icon">
@@ -1097,6 +1140,14 @@
 
   <!-- UZBEKISTAN QUESTIONS PAGE -->
   <div id="uzbekistan-questions-page" class="quiz-page" style="background-image: url('./imgs/11.png'); background-size: cover; background-position: center;">
+    <!-- إضافة أيقونات الإجابات الصحيحة والخاطئة -->
+    <div class="answer-icon" id="uzbekistan-correct-icon">
+      <img src="./imgs/correct.png" alt="Correct">
+    </div>
+    <div class="answer-icon" id="uzbekistan-wrong-icon">
+      <img src="./imgs/wrong.png" alt="Wrong">
+    </div>
+    
     <div class="quiz-content">
       <div class="quiz-header">
         <div class="countdown-icon">
@@ -1147,6 +1198,14 @@
 
   <!-- ANCESTORS QUESTIONS PAGE -->
   <div id="ancestors-questions-page" class="quiz-page" style="background-image: url('./imgs/12.png'); background-size: cover; background-position: center;">
+    <!-- إضافة أيقونات الإجابات الصحيحة والخاطئة -->
+    <div class="answer-icon" id="ancestors-correct-icon">
+      <img src="./imgs/correct.png" alt="Correct">
+    </div>
+    <div class="answer-icon" id="ancestors-wrong-icon">
+      <img src="./imgs/wrong.png" alt="Wrong">
+    </div>
+    
     <div class="quiz-content">
       <div class="quiz-header">
         <div class="countdown-icon">
@@ -1328,6 +1387,12 @@
       
       const progressContainer = document.querySelector(`#${quizType}-questions-page .progress-container`);
       if (progressContainer) progressContainer.style.display = 'block';
+      
+      // إخفاء أيقونات الإجابات
+      const correctIcon = document.getElementById(`${quizType}-correct-icon`);
+      const wrongIcon = document.getElementById(`${quizType}-wrong-icon`);
+      if (correctIcon) correctIcon.style.display = 'none';
+      if (wrongIcon) wrongIcon.style.display = 'none';
     }
 
     // دالة العودة إلى الشاشة الرئيسية
@@ -1899,8 +1964,19 @@
       // عرض الإجابة الصحيحة
       buttons[correctAnswer].classList.add('correct');
       
+      // إظهار أيقونة الخطأ
+      const wrongIcon = document.getElementById(`${quizType}-wrong-icon`);
+      if (wrongIcon) {
+        wrongIcon.style.display = 'block';
+      }
+      
       // الانتظار 3 ثواني قبل الانتقال للسؤال التالي
       setTimeout(() => {
+        // إخفاء أيقونة الخطأ
+        if (wrongIcon) {
+          wrongIcon.style.display = 'none';
+        }
+        
         // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector(`#${quizType}-questions-page .character-speech-container.quiz`);
         const questionContainer = document.querySelector(`#${quizType}-questions-page .question-container`);
@@ -2003,13 +2079,31 @@
       if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         mathScore++;
+        
+        // إظهار أيقونة الإجابة الصحيحة
+        const correctIcon = document.getElementById('math-correct-icon');
+        if (correctIcon) {
+          correctIcon.style.display = 'block';
+        }
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
+        
+        // إظهار أيقونة الإجابة الخاطئة
+        const wrongIcon = document.getElementById('math-wrong-icon');
+        if (wrongIcon) {
+          wrongIcon.style.display = 'block';
+        }
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
+        // إخفاء أيقونات الإجابات
+        const correctIcon = document.getElementById('math-correct-icon');
+        const wrongIcon = document.getElementById('math-wrong-icon');
+        if (correctIcon) correctIcon.style.display = 'none';
+        if (wrongIcon) wrongIcon.style.display = 'none';
+        
         // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#math-questions-page .character-speech-container.quiz');
         const questionContainer = document.querySelector('#math-questions-page .question-container');
@@ -2120,13 +2214,31 @@
       if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         natureScore++;
+        
+        // إظهار أيقونة الإجابة الصحيحة
+        const correctIcon = document.getElementById('nature-correct-icon');
+        if (correctIcon) {
+          correctIcon.style.display = 'block';
+        }
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
+        
+        // إظهار أيقونة الإجابة الخاطئة
+        const wrongIcon = document.getElementById('nature-wrong-icon');
+        if (wrongIcon) {
+          wrongIcon.style.display = 'block';
+        }
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
+        // إخفاء أيقونات الإجابات
+        const correctIcon = document.getElementById('nature-correct-icon');
+        const wrongIcon = document.getElementById('nature-wrong-icon');
+        if (correctIcon) correctIcon.style.display = 'none';
+        if (wrongIcon) wrongIcon.style.display = 'none';
+        
         // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#nature-questions-page .character-speech-container.quiz');
         const questionContainer = document.querySelector('#nature-questions-page .question-container');
@@ -2237,13 +2349,31 @@
       if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         uzbekistanScore++;
+        
+        // إظهار أيقونة الإجابة الصحيحة
+        const correctIcon = document.getElementById('uzbekistan-correct-icon');
+        if (correctIcon) {
+          correctIcon.style.display = 'block';
+        }
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
+        
+        // إظهار أيقونة الإجابة الخاطئة
+        const wrongIcon = document.getElementById('uzbekistan-wrong-icon');
+        if (wrongIcon) {
+          wrongIcon.style.display = 'block';
+        }
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
+        // إخفاء أيقونات الإجابات
+        const correctIcon = document.getElementById('uzbekistan-correct-icon');
+        const wrongIcon = document.getElementById('uzbekistan-wrong-icon');
+        if (correctIcon) correctIcon.style.display = 'none';
+        if (wrongIcon) wrongIcon.style.display = 'none';
+        
         // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#uzbekistan-questions-page .character-speech-container.quiz');
         const questionContainer = document.querySelector('#uzbekistan-questions-page .question-container');
@@ -2359,13 +2489,31 @@
       if (selectedIndex === correctAnswer) {
         buttons[selectedIndex].classList.add('correct');
         ancestorsScore++;
+        
+        // إظهار أيقونة الإجابة الصحيحة
+        const correctIcon = document.getElementById('ancestors-correct-icon');
+        if (correctIcon) {
+          correctIcon.style.display = 'block';
+        }
       } else {
         buttons[selectedIndex].classList.add('incorrect');
         buttons[correctAnswer].classList.add('correct');
+        
+        // إظهار أيقونة الإجابة الخاطئة
+        const wrongIcon = document.getElementById('ancestors-wrong-icon');
+        if (wrongIcon) {
+          wrongIcon.style.display = 'block';
+        }
       }
       
       // الانتظار 3 ثواني قبل بدء أنيميشن الخروج
       setTimeout(() => {
+        // إخفاء أيقونات الإجابات
+        const correctIcon = document.getElementById('ancestors-correct-icon');
+        const wrongIcon = document.getElementById('ancestors-wrong-icon');
+        if (correctIcon) correctIcon.style.display = 'none';
+        if (wrongIcon) wrongIcon.style.display = 'none';
+        
         // إضافة أنيميشن الخروج للسؤال والإجابات بشكل منفصل
         const speechContainer = document.querySelector('#ancestors-questions-page .character-speech-container.quiz');
         const questionContainer = document.querySelector('#ancestors-questions-page .question-container');
@@ -2422,11 +2570,6 @@
       hardResetAllQuizzes();
       loadAncestorsQuestion();
     });
-
-
-
-    
   </script>
-
 </body>
 </html>
